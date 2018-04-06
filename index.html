@@ -12,6 +12,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
   <script src="main.js"></script>
+  <script src="stock.js"></script>
+  <script src="testjson.js"></script>
 </head>
 
 <body>
@@ -21,21 +23,21 @@
   </header>
 
   <main>
-    <div id="portfolio-container" class="dashboard-section">
-      <h2>Portfolio</h2>
-      <div id="portfolio-left-bar" class="side-bar">
+    <div id="portfolio-container" class="ui grid dashboard-section">
+      <h2 class="section-header">Portfolio</h2>
+      <div id="portfolio-left-bar" class="ui vertical menu four wide column side-bar">
         <div id="porfolio-value"></div>
         <div id="my-stocks">
           <h3>My Stocks</h3>
         </div>
       </div>
-      <div id="portfolio-body">
+      <div id="portfolio-body" class="twelve wide column">
         <div id="volume-plot" class="portfolio-plot"></div>
         <div id="growth-plot" class="portfolio-plot"></div>
         <div class="details-table"></div>
       </div>
     </div>
-    <div id="compare-container" class="dashboard-section">
+    <!-- <div id="compare-container" class="dashboard-section">
       <h2>Compare</h2>
       <div id="compare-body">
         <div id="search"></div>
@@ -46,7 +48,7 @@
         <div id="compare-stocks"></div>
         <div id="suggested-stocks"></div>
       </div>
-    </div>
+    </div> -->
   </main>
 </body>
 </html>
