@@ -1,4 +1,4 @@
-var goog_day ={
+const GOOG_DAY = {
   "2018-04-06": {
     "open": "1020.0000",
     "high": "1031.4200",

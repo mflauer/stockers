@@ -1,4 +1,4 @@
-var fb_week = {
+const FB_WEEK = {
   "2018-04-06": {
     "open": "157.8100",
     "high": "161.5750",

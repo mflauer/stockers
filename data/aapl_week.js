@@ -1,4 +1,4 @@
-var aapl_week = {
+const AAPL_WEEK = {
   "2018-04-06": {
     "open": "167.8800",
     "high": "174.2304",

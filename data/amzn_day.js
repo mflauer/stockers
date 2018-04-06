@@ -1,4 +1,4 @@
-var amzn_day = {
+const AMZN_DAY = {
   "2018-04-06": {
     "open": "1429.9700",
     "high": "1452.5020",

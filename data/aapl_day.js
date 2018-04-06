@@ -1,4 +1,4 @@
-var aapl_day = {
+const AAPL_DAY = {
   "2018-04-06": {
     "open": "170.9700",
     "high": "172.4800",

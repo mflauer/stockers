@@ -1,4 +1,4 @@
-var goog_week = {
+const GOOG_WEEK = {
   "2018-04-06": {
     "open": "1022.8200",
     "high": "1042.7900",

@@ -1,4 +1,4 @@
-var amzn_week = {
+const AMZN_WEEK = {
   "2018-04-06": {
     "1. open": "1417.6200",
     "2. high": "1459.5600",
