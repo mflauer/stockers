@@ -6,11 +6,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <!-- <link rel="icon" type="image/png" href="img/favicon.png"> -->
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"/>
   <link rel="stylesheet" href="style.css">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
   <script src="main.js"></script>
 </head>
+
 <body>
-  <div>StockViz</div>
+  <header>
+    <h1>StockViz</h1>
+    <div></div>
+  </header>
+
+  <main>
+    <div id="portfolio-container" class="dashboard-section">
+      <h2>Portfolio</h2>
+      <div id="portfolio-left-bar" class="side-bar">
+        <div id="porfolio-value"></div>
+        <div id="my-stocks">
+          <h3>My Stocks</h3>
+        </div>
+      </div>
+      <div id="portfolio-body">
+        <div id="volume-plot" class="portfolio-plot"></div>
+        <div id="growth-plot" class="portfolio-plot"></div>
+        <div class="details-table"></div>
+      </div>
+    </div>
+    <div id="compare-container" class="dashboard-section">
+      <h2>Compare</h2>
+      <div id="compare-body">
+        <div id="search"></div>
+        <div id="compare-plot"></div>
+        <div class="details-table"></div>
+      </div>
+      <div id="compare-right-bar" class="side-bar">
+        <div id="compare-stocks"></div>
+        <div id="suggested-stocks"></div>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
