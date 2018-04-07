@@ -71,25 +71,19 @@ $('.selector>.item').click(function(e) {
 // example
 // `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=${API_KEY}`
 
-
-var x,
-    y;
-
-var color = d3.scale.category10();
-
+//var color = d3.scale.category10();
 
 var margin = {top: 40, right: 40, bottom: 40, left: 40},
-    width = 960 - margin.left - margin.right,
+    width = 500 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var parse = d3.time.format("%b %Y").parse;
 
-var x = d3.time.scale()
+var x = d3.scaleTime()
     .range([0, width]);
 
-var y = d3.scale.linear()
+var y = d3.scaleLinear()
     .range([height, 0]);
-
+/*
 var xAxis = d3.svg.axis()
     .scale(x)
     .tickSize(-height);
@@ -97,18 +91,19 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
     .scale(y)
     .ticks(4)
-    .orient("right");
+    .orient("left");
 
-var area = d3.svg.area()
-    .interpolate("monotone")
+var area = d3.area()
     .x(function(d) { return x(d.date); })
     .y0(height)
     .y1(function(d) { return y(d.price); });
+*/
 
-var line = d3.svg.line()
-    .interpolate("monotone")
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.price); });
+
+var line = d3.line()
+    .x(function(d, i) { return x(dates[i]); })
+    .y(function(d,i) { return y(prices[i]); })
+    .curve(d3.curveMonotoneX);
 
 var svg = d3.select("#compare-graph").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -116,63 +111,58 @@ var svg = d3.select("#compare-graph").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-svg.append("clipPath")
-    .attr("id", "clip")
-  .append("rect")
-    .attr("width", width)
-    .attr("height", height);
+
+function getDates(array) {
+  var date_list = [];
+  for (var i=0; i < array.length; i++) {
+    date_list.push(formatDate(i));
+  }
+  return date_list;
+}
+
+var dates = getDates(compareGraphData['dates'][0]);
+var prices = compareGraphData['goog'][0];
+console.log(prices);
 
 
-  x.domain([data[0].date, data[data.length - 1].date]);
-    y.domain([0, d3.max(data, function(d) { return d.price; })]).nice();
-
-    svg
-        .datum(data)
-        .on("click", click);
-
-    svg.append("path")
-        .attr("class", "area")
-        .attr("clip-path", "url(#clip)")
-        .attr("d", area);
-
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(" + width + ",0)")
-        .call(yAxis);
-
-    svg.append("path")
-        .attr("class", "line")
-        .attr("clip-path", "url(#clip)")
-        .attr("d", line);
+  x.domain([dates[0], dates[dates.length - 1]]);
+  y.domain([0, Math.max(prices)]);
+  /*
+  x.domain([dates, dates.length - 1]);
+  y.domain([0, d3.max(prices, function(d) { return d.price; })]);
+  */
 
     svg.append("text")
         .attr("x", width - 6)
         .attr("y", height - 6)
         .style("text-anchor", "end")
-        .text(data[0].symbol);
+        .text("GOOG");
 
-    // On click, update the x-axis.
-    function click() {
-      var n = data.length - 1,
-          i = Math.floor(Math.random() * n / 2),
-          j = i + Math.floor(Math.random() * n / 2) + 1;
-      x.domain([data[i].date, data[j].date]);
-      var t = svg.transition().duration(750);
-      t.select(".x.axis").call(xAxis);
-      t.select(".area").attr("d", area);
-      t.select(".line").attr("d", line);
-    }
-  });
+        // Add the X Axis
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x)
+                .tickFormat(d3.timeFormat("%Y-%m-%d")))
+        .selectAll("text")
+          .style("text-anchor", "end")
+          .attr("dx", "-.8em")
+          .attr("dy", ".15em")
+          .attr("transform", "rotate(-65)");
+
+    svg.append("path")
+          .data(prices) // 10. Binds data to the line
+          .attr("class", "line") // Assign a class for styling
+          .attr("d", line);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "axis")
+        .call(d3.axisLeft(y));
+
 
 
 
 //data is in compareGraphData
-
-dates = CompareGraphData['dates'];
 
 $('.ui.search').search({ source: SEARCH_CONTENT });
