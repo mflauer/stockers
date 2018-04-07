@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"/>
   <link rel="stylesheet" href="style.css">
 
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
   <script src="stock.js"></script>
 </head>
 
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="twelve wide column">
-          <div class="ui text compact menu">
+          <div id="portfolio-selector" class="ui text compact menu selector">
             <a class="active item">1D</a>
             <a class="item">5D</a>
             <a class="item">1M</a>
@@ -59,7 +59,7 @@
       <div class="ui grid">
         <div class="twelve wide column">
           <div>Search</div>
-          <div class="ui text compact menu">
+          <div id="compare-selector" class="ui text compact menu selector">
             <a class="active item">1D</a>
             <a class="item">5D</a>
             <a class="item">1M</a>

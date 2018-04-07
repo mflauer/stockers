@@ -1,31 +1,24 @@
-// selected timespan
-var portfolioTimespan = { //TODO set default values
-	startDate: '',
-	increment: '' // min, day, week
-}
-var compareTimespan;
+// graph start dates
+var portfolioGraphDate, compareGraphDate;
 
-$( "#portfolio-timespan" ).click(function(evt) {
-	var clickedTimeElem = evt.target;
+// table start times
+var portfolioTableDate, compareTableDate;
 
-	// remove 'active' class from other timespan menu items
-	$('#portfolio-timespan .item').removeClass('active');
+$('.selector>.item').click(function(e) {
+  var timeRangeElement = $(e.target);
 
-	$(clickedTimeElem).addClass('active')
-	var clickedTime = $(clickedTimeElem).text();
+  // remove 'active' class from other time range menu items
+  timeRangeElement.siblings().removeClass('active');
+  timeRangeElement.addClass('active');
 
-	portfolioTimespan = {
-		startDate: getStartDateString(clickedTime),
-		increment: TIME_TEXT_TO_INCREMENT[clickedTime]
-	}
+  var startDate = getStartDate(timeRangeElement.text())
 
-	console.log(portfolioTimespan)
-
+  var section = timeRangeElement.parent().attr('id').split('-')[0];
+  if (section == 'portfolio') {
+    portfolioGraphDate = startDate;
+  } else if (section == 'compare') {
+    compareGraphDate = startDate
+  }
+  console.log(portfolioGraphDate);
+  console.log(compareGraphDate);
 });
-
-
-
-
-
-
-
