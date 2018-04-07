@@ -1,8 +1,8 @@
-// graph start dates
-var portfolioGraphDate = compareGraphDate = getStartDate('1D');
+// graph data
+var portfolioGraphData, compareGraphData;
 
-// table start times
-var portfolioTableDate, compareTableDate;
+// table data
+var portfolioTableData, compareTableData;
 
 $('.selector>.item').click(function(e) {
   var timeRangeElement = $(e.target);
@@ -11,12 +11,11 @@ $('.selector>.item').click(function(e) {
   timeRangeElement.siblings().removeClass('active');
   timeRangeElement.addClass('active');
 
-  var startDate = getStartDate(timeRangeElement.text())
-
+  var timeRange = timeRangeElement.text();
   var section = timeRangeElement.parent().attr('id').split('-')[0];
   if (section == 'portfolio') {
-    portfolioGraphDate = startDate;
+    portfolioGraphData = getData(portfolioStocks, timeRange);
   } else if (section == 'compare') {
-    compareGraphDate = startDate
+    compareGraphData = getData(compareStocks, timeRange);
   }
 });
