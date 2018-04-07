@@ -53,7 +53,14 @@ function getGraphData(tickers, timeRange) {
 //////////////////////////////
 
 // search bar data
-$('.ui.search').search({ source: SEARCH_CONTENT });
+$('.ui.search').search({
+  source : getSearchContent(),
+  searchFields   : [
+    'title',
+    'description'
+  ],
+  fullTextSearch: false
+});
 
 // compare stocks
 var compareTickers = getCompareTickers();
