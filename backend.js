@@ -1,4 +1,4 @@
-// Stock data API key (https://www.alphavantage.co/)
+// Stock data API key (https://www. .co/)
 const API_KEY = 'MIRLW3E1H4871KNW';
 
 const SEARCH_CONTENT = [
@@ -74,16 +74,10 @@ function getCompareTickers() {
   return Object.keys(COMPARE_STOCKS);
 }
 
-function getCompareChecked() {
-  var stocks;
-  for (var ticker in COMPARE_STOCKS) {
-    stocks[ticker] = COMPARE_STOCKS[ticker].isChecked
-  }
-  return stocks;
+function getCompareChecked(ticker) {
+  return COMPARE_STOCKS[ticker].isChecked
 }
 
-function toggleChecked(ticker) {
+function toggleCompareChecked(ticker) {
   COMPARE_STOCKS[ticker] = !COMPARE_STOCKS[ticker];
 }
-
-
