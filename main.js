@@ -69,10 +69,9 @@ $('.ui.search').search({
     var ticker = result.title;
     backend.addToCompareStocks(ticker);
     addCompareStock(ticker);
-    $('.ui.search').search('set value', '');
-    $('.ui.search').search('query');
   }
 });
+$('.ui.search').search('set value', '');
 
 // compare stocks
 backend.getCompareTickers().map(x => addCompareStock(x));
