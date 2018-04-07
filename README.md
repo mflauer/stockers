@@ -13,5 +13,5 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 - colorcode stocks
 - plots
 - padding on hover in table?
-- extra line when first items in table are missing
+- extra line when first item in table is missing
 - icon in change column
