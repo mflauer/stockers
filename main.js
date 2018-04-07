@@ -43,34 +43,48 @@ var area = d3.svg.area()
     .x(function(d) { return x(d.date); })
     .y1(function(d) { return y(d.price); });
 
-d3.json("/data/aapl_day.js", function(data=AAPL_DAY) {
-  //console.log(data);
+var date_list = [];
+var price_list = [];
+function parsedata(data) {
+  console.log(data);
   //var parse = d3.time.format("%b %Y").parse;
   //console.log(parse);
   //js date objects
 
   // Nest stock values by symbol.
-  symbols = d3.nest()
-      .key(function(d) { return d.symbol; })
-      .entries(stocks = data);
+  symbols = 'AAPL';
+  for (var i=0; i < data.length; i++) {
+    date_list.append((data[i]['date']));
+    price_list.append(data[i]['close']);
+  }
+
+  //symbols = d3.nest()
+      //.key(function(d) { return d.symbol; })
+      //.entries(stocks = data);
 
   // Parse dates and numbers. We assume values are sorted by date.
   // Also compute the maximum price per symbol, needed for the y-domain.
+
+  /*
   symbols.forEach(function(s) {
+
     s.values.forEach(function(d) { d.date = parse(d.date); d.price = +d.price; });
     s.maxPrice = d3.max(s.values, function(d) { return d.price; });
     s.sumPrice = d3.sum(s.values, function(d) { return d.price; });
   });
 
+
   // Sort by maximum price, descending.
   symbols.sort(function(a, b) { return b.maxPrice - a.maxPrice; });
+  */
 
   var g = svg.selectAll("g")
       .data(symbols)
     .enter().append("g")
       .attr("class", "symbol");
-});
+};
 
+var inputData = parsedata(AAPL_DAY);
 //function to draw a line graph using d3
 function lines() {
   x = d3.time.scale().range([0, w - 60]);
@@ -78,8 +92,8 @@ function lines() {
 
   // Compute the minimum and maximum date across symbols.
   x.domain([
-    d3.min(symbols, function(d) { return d.values[0].date; }),
-    d3.max(symbols, function(d) { return d.values[d.values.length - 1].date; })
+    d3.min(date_list, function(d) { return d.values[0].date; }),
+    d3.max(date_list, function(d) { return d.values[d.values.length - 1].date; })
   ]);
 
   var g = svg.selectAll(".symbol")
