@@ -97,3 +97,9 @@ function toggleCompareChecked(ticker) {
   ticker = ticker.toUpperCase();
   COMPARE_STOCKS[ticker].isChecked = !COMPARE_STOCKS[ticker].isChecked;
 }
+
+function addToCompareStocks(ticker) {
+  COMPARE_STOCKS[ticker] = {
+    isChecked: true
+  }
+}

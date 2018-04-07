@@ -53,13 +53,18 @@ function getGraphData(tickers, timeRange) {
 //////////////////////////////
 
 // search bar data
+
 $('.ui.search').search({
   source: getSearchContent(),
   searchFields: [
     'title',
     'description'
   ],
-  fullTextSearch: false
+  fullTextSearch: false,
+  onSelect: function(result, response) {
+    var ticker = result.title;
+    addToCompareStocks(ticker);
+  }
 });
 
 // compare stocks
