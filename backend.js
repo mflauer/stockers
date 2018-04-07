@@ -96,11 +96,11 @@ function formatDate(date, withMin=false) {
     str += ' 09:30:00';
   }
 
-  return str
+  return str;
 }
 
 var portfolioValue = 1000.00;
 
 // picker values
-var portfolioStocks = [] 
-var compareStocks = []
+var portfolioStocks = [];
+var compareStocks = [];
