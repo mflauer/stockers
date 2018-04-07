@@ -71,23 +71,29 @@ $('.selector>.item').click(function(e) {
 // add data to search bar
 $('.ui.search').search({ source: SEARCH_CONTENT });
 
-for (var stockIndex in compareStocks) {
-  var stockObject = compareStocks[stockIndex];
-  var tileLabel = stockObject.ticker.toUpperCase();
-  var checkedClass = stockObject.isChecked ? 'check ' : '';
-  var stockTile = '<div class="item">\
-                  <button type="button" class="mini circular ui icon button compare-check-button">\
-                    <i class="' + checkedClass + 'icon"></i>\
-                  </button>\
-                  <a>' + stockObject.ticker + '</a>\
-                </div>'
+var compareTickers = getCompareTickers();
+for (var tickerIndex in compareTickers) {
+  var ticker = compareTickers[tickerIndex];
+  var checkedClass = getCompareChecked(ticker) ? 'check ' : '';
+
+  var stockTile = '<div class="item ' + ticker + '">\
+                    <button type="button" class="mini circular ui icon button compare-check-button">\
+                      <i class="' + checkedClass + 'icon"></i>\
+                    </button>\
+                    <a>' + ticker.toUpperCase() + '</a>\
+                  </div>'
+
   $('#compare-stocks').append(stockTile)
 }
 
 $(".compare-check-button").each((index, button) => {
-  console.log(button)
   $(button).click(() => {
-    var ticker = $(button).next().text();
-    
+    var ticker = $(button).parent().attr('class').slice(5);
+    toggleCompareChecked(ticker);
+
+    // update the frontend to reflect the backend change
+    var buttonIcon = $(button).children('i')[0];
+    $(buttonIcon).toggleClass('check');
+    $(button).blur();
   })
 })

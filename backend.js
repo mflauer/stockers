@@ -75,9 +75,11 @@ function getCompareTickers() {
 }
 
 function getCompareChecked(ticker) {
-  return COMPARE_STOCKS[ticker].isChecked
+  var lcTicker = ticker.toLowerCase();
+  return COMPARE_STOCKS[lcTicker].isChecked
 }
 
 function toggleCompareChecked(ticker) {
-  COMPARE_STOCKS[ticker] = !COMPARE_STOCKS[ticker];
+  var lcTicker = ticker.toLowerCase();
+  COMPARE_STOCKS[lcTicker].isChecked = !COMPARE_STOCKS[lcTicker].isChecked;
 }
