@@ -62,28 +62,15 @@ for (var i in compareTickers) {
   var isChecked = getCompareChecked(ticker);
 
   // company item
-  var checkedClass = isChecked ? 'check ' : '';
-  var stockTile = '<div id="' + ticker + '-item" class="item">\
-                    <button type="button" class="mini circular ui icon button compare-check-button">\
-                      <i class="' + checkedClass + 'icon"></i>\
-                    </button>\
-                    <a>' + ticker.toUpperCase() + '</a>\
-                  </div>';
-  $('#compare-stocks').append(stockTile);
+  $('#compare-stocks').append(createStockItem(ticker, isChecked));
    
   // company table row
   var data = getData(ticker);
+  var price = '$1000.00';
+  var change = '2.5%';
   var pe_ratio = data['pe_ratio'];
   var mkt_cap = data['mkt_cap'];
-  var hideClass = isChecked ? '' : 'hide';
-  var stockTableRow = '<tr id="' + ticker + '-compare-row" class="' + hideClass + '">\
-                        <td>' + ticker.toUpperCase() + '</td>\
-                        <td class="right aligned">$1000</td>\
-                        <td class="right aligned">2.5%</td>\
-                        <td class="right aligned">' + mkt_cap + '</td>\
-                        <td class="right aligned">' + pe_ratio + '</td>\
-                      </tr>';
-  $('#compare-table>tbody').append(stockTableRow);
+  $('#compare-table').append(createTableRow(ticker, !isChecked, price, change, mkt_cap, pe_ratio));
 }
 
 
@@ -108,12 +95,11 @@ $('.selector>.item').click(function(e) {
   }
 });
 
-// show and hide from compare
-$(".compare-check-button").each((index, button) => {
-  $(button).click(() => {
-    toggleCompareChecked($(button).parent().attr('id').split('-')[0]);
-    $($(button).children('i')[0]).toggleClass('check');
-    $(button).blur();
-    $('#compare-table>tbody>#'+ticker).toggleClass('hidden-row');
-  })
-})
+// show and hide from compareTickers
+$(".compare-check-button").click(function() {
+  var ticker = $(this).parent().attr('id').split('-')[0];
+  toggleCompareChecked(ticker);
+  $($(this).children('i')[0]).toggleClass('check');
+  $(`#${ticker}-compare-row`).toggleClass('hide');
+  $(this).blur();
+});

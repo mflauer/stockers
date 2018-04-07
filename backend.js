@@ -40,10 +40,10 @@ const STOCK_DATA = {
 };
 
 function getData(ticker) {
-  if (ticker in DATA) {
+  if (ticker in STOCK_DATA) {
     return STOCK_DATA[ticker];
   } else {
-    return STOCK_DATA[Object.keys(DATA)[Math.floor(Math.random() * 4)]];
+    return STOCK_DATA[Object.keys(STOCK_DATA)[Math.floor(Math.random() * 4)]];
   }
 }
 

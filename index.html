@@ -90,7 +90,7 @@
             <a class="item">1Y</a>
           </div>
           <div>Compare plot</div>
-          <table id="compare-table" class="ui table">
+          <table class="ui table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -100,7 +100,7 @@
                 <th class="right aligned">P/E</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="compare-table">
               <!-- stocks in compare screen dynamically added here -->
             </tbody>
           </table>
@@ -119,7 +119,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- Load Data -->
@@ -136,6 +135,7 @@
   <script src="data/goog_day.js"></script>
   <script src="data/goog_week.js"></script>
   <script src="backend.js"></script>
+  <script src="templates.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
