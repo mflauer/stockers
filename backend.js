@@ -44,51 +44,15 @@ const TIME_RANGE_INTERVAL = {
   '5Y': { n: 260, interval: 'week' },
 }
 
-function getData(tickers, timeRange) {
-  var plotData = {};
-  var time = TIME_RANGE_INTERVAL[timeRange];
-
-  for (var t in tickers) {
-    var data = DATA[tickers[t]][time.interval].slice(0, time.n);
-
-    if (time.interval == 'min') {
-      if (t == 0) {
-        plotData["dates"] = data.map(x => x.map(y => Date.parse(y['date']))).reverse();
-      }
-      data = data.map(x => x.map(y => parseFloat(y['close']))).reverse();
-    } else {
-      if (t == 0) {
-        plotData["dates"] = data.map(x => Date.parse(x['date'])).reverse();
-      }
-      data = data.map(x => parseFloat(x['close'])).reverse();
-    }
-
-    plotData[tickers[t]] = data;
+function getData(ticker) {
+  if (ticker in DATA) {
+    return DATA[ticker];
+  } else {
+    return DATA[Object.keys(DATA)[Math.floor(Math.random() * 4)]];
   }
-
-  return plotData;
 }
 
-function formatDate(date, withMin=false) {
-  var d = new Date(date),
-      year = d.getFullYear(),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate();
-
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  var str = [year, month, day].join('-');
-
-  if (withMin) {
-    str += ' 09:30:00';
-  }
-
-  return str;
-}
-
+// user data
 var portfolioValue = 1000.00;
-
-// ticker values
 var portfolioStocks = ['aapl'];
 var compareStocks = ['goog'];
