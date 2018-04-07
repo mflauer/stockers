@@ -1,4 +1,4 @@
-// Stock data API key (https://www. .co/)
+// Stock data API key (https://www.alphavantage.co/)
 const API_KEY = 'MIRLW3E1H4871KNW';
 
 const SEARCH_CONTENT = [
@@ -9,28 +9,28 @@ const SEARCH_CONTENT = [
 ];
 
 const DATA = {
-  'aapl': {
+  'AAPL': {
     'min': AAPL_MIN,
     'day': AAPL_DAY,
     'week': AAPL_WEEK,
     'pe_ratio': '16.47',
     'mkt_cap': '854.36B',
   },
-  'amzn': {
+  'AMZN': {
     'min': AMZN_MIN,
     'day': AMZN_DAY,
     'week': AMZN_WEEK,
     'pe_ratio': '307.02',
     'mkt_cap': '680.28B',
   },
-  'fb': {
+  'FB': {
     'min': FB_MIN,
     'day': FB_DAY,
     'week': FB_WEEK,
     'pe_ratio': '25.51',
     'mkt_cap': '456.67B',
   },
-  'goog': {
+  'GOOG': {
     'min': GOOG_MIN,
     'day': GOOG_DAY,
     'week': GOOG_WEEK,
@@ -62,7 +62,7 @@ function getData(ticker) {
 
 // portfolio data
 var PORTFOLIO_VALUE = 1000.00;
-var PORTFOLIO_STOCKS = ['aapl'];
+var PORTFOLIO_STOCKS = ['AAPL'];
 
 function getPortfolioTickers() {
   return PORTFOLIO_STOCKS;
@@ -70,10 +70,10 @@ function getPortfolioTickers() {
 
 // compare data
 var COMPARE_STOCKS = {
-  'goog': {
+  'GOOG': {
     isChecked: true,
   },
-  'aapl': {
+  'AAPL': {
     isChecked: false,
   },
 };
@@ -83,11 +83,10 @@ function getCompareTickers() {
 }
 
 function getCompareChecked(ticker) {
-  var lcTicker = ticker.toLowerCase();
-  return COMPARE_STOCKS[lcTicker].isChecked
+  return COMPARE_STOCKS[ticker.toUpperCase()].isChecked
 }
 
 function toggleCompareChecked(ticker) {
-  var lcTicker = ticker.toLowerCase();
-  COMPARE_STOCKS[lcTicker].isChecked = !COMPARE_STOCKS[lcTicker].isChecked;
+  ticker = ticker.toUpperCase();
+  COMPARE_STOCKS[ticker].isChecked = !COMPARE_STOCKS[ticker].isChecked;
 }
