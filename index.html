@@ -11,43 +11,98 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+<<<<<<< HEAD
   <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="main.js"></script>
+=======
+  <script src="stock.js"></script>
+>>>>>>> b4f98d95fd2b172606a439af3ac2077b0cbabe3c
 </head>
 
 <body>
-  <header>
-    <h1>StockViz</h1>
-    <div></div>
-  </header>
+  <div class="ui secondary pointing menu">
+    <div class="header item">
+      <h1>StockViz</h1>
+    </div>
+    <div class="right menu">
+      <a class="item">Logout</a>
+    </div>
+  </div>
 
-  <main>
-    <div id="portfolio-container" class="dashboard-section">
-      <h2>Portfolio</h2>
-      <div id="portfolio-left-bar" class="side-bar">
-        <div id="porfolio-value"></div>
-        <div id="my-stocks">
-          <h3>My Stocks</h3>
+  <div class="ui divided padded grid">
+    <div class="eight wide column">
+      <h2 class="ui center aligned header">Portfolio</h2>
+      <div class="ui grid">
+        <div class="four wide column">
+          <div class="ui huge header">$1,000.00</div>
+          <div class="ui vertical fluid menu">
+            <div class="header item">My Stocks</div>
+            <div class="item">Stock 1</div>
+            <div class="item">Stock 2</div>
+          </div>
+        </div>
+        <div class="twelve wide column">
+          <div id="portfolio-selector" class="ui text compact menu selector">
+            <a class="active item">1D</a>
+            <a class="item">5D</a>
+            <a class="item">1M</a>
+            <a class="item">3M</a>
+            <a class="item">6M</a>
+            <a class="item">1Y</a>
+            <a class="item">5Y</a>
+            <a class="item">MAX</a>
+          </div>
+          <div>Volume plot</div>
+          <div>Growth plot</div>
+          <div>Table</div>
         </div>
       </div>
-      <div id="portfolio-body">
-        <div id="volume-plot" class="portfolio-plot"></div>
-        <div id="growth-plot" class="portfolio-plot"></div>
-        <div class="details-table"></div>
+    </div>
+
+    <div class="eight wide column">
+      <h2 class="ui center aligned header">Compare</h2>
+      <div class="ui grid">
+        <div class="twelve wide column">
+          <div>Search</div>
+          <div id="compare-selector" class="ui text compact menu selector">
+            <a class="active item">1D</a>
+            <a class="item">5D</a>
+            <a class="item">1M</a>
+            <a class="item">3M</a>
+            <a class="item">6M</a>
+            <a class="item">1Y</a>
+            <a class="item">MAX</a>
+          </div>
+          <div>Compare plot</div>
+          <div>Table</div>
+        </div>
+        <div class="four wide column">
+          <div class="ui vertical fluid menu">
+            <a class="item">Stock 1</a>
+            <a class="item">Stock 2</a>
+            <div class="header item">Suggested Stocks</div>
+            <a class="item">Stock 3</a>
+            <a class="item">Stock 4</a>
+          </div>
+        </div>
       </div>
     </div>
-    <div id="compare-container" class="dashboard-section">
-      <h2>Compare</h2>
-      <div id="compare-body">
-        <div id="search"></div>
-        <div id="compare-plot"></div>
-        <div class="details-table"></div>
-      </div>
-      <div id="compare-right-bar" class="side-bar">
-        <div id="compare-stocks"></div>
-        <div id="suggested-stocks"></div>
-      </div>
-    </div>
-  </main>
+  </div>
+
+  <!-- Load Data -->
+  <script src="data/aapl_min.js"></script>
+  <script src="data/aapl_day.js"></script>
+  <script src="data/aapl_week.js"></script>
+  <script src="data/amzn_min.js"></script>
+  <script src="data/amzn_day.js"></script>
+  <script src="data/amzn_week.js"></script>
+  <script src="data/fb_min.js"></script>
+  <script src="data/fb_day.js"></script>
+  <script src="data/fb_week.js"></script>
+  <script src="data/goog_min.js"></script>
+  <script src="data/goog_day.js"></script>
+  <script src="data/goog_week.js"></script>
+  <script src="backend.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

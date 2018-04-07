@@ -1,40 +1,22 @@
-const API_KEY = 'MIRLW3E1H4871KNW';
+// graph start dates
+var portfolioGraphDate = compareGraphDate = getStartDate('1D');
 
-// example
-// `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=${API_KEY}`
+// table start times
+var portfolioTableDate, compareTableDate;
 
-//function to draw a line graph using d3
-function lines() {
-  x = d3.time.scale().range([0, w - 60]);
-  y = d3.scale.linear().range([h / 4 - 20, 0]);
+$('.selector>.item').click(function(e) {
+  var timeRangeElement = $(e.target);
 
-  // Compute the minimum and maximum date across symbols.
-  x.domain([
-    d3.min(symbols, function(d) { return d.values[0].date; }),
-    d3.max(symbols, function(d) { return d.values[d.values.length - 1].date; })
-  ]);
+  // remove 'active' class from other time range menu items
+  timeRangeElement.siblings().removeClass('active');
+  timeRangeElement.addClass('active');
 
-  var g = svg.selectAll(".symbol")
-      .attr("transform", function(d, i) { return "translate(0," + (i * h / 4 + 10) + ")"; });
+  var startDate = getStartDate(timeRangeElement.text())
 
-  g.each(function(d) {
-    var e = d3.select(this);
-
-    e.append("path")
-        .attr("class", "line");
-
-    e.append("circle")
-        .attr("r", 5)
-        .style("fill", function(d) { return color(d.key); })
-        .style("stroke", "#000")
-        .style("stroke-width", "2px");
-
-    e.append("text")
-        .attr("x", 12)
-        .attr("dy", ".31em")
-        .text(d.key);
-  });
-
-
-
-$('compare-plot').append(compare_graph);
+  var section = timeRangeElement.parent().attr('id').split('-')[0];
+  if (section == 'portfolio') {
+    portfolioGraphDate = startDate;
+  } else if (section == 'compare') {
+    compareGraphDate = startDate
+  }
+});
