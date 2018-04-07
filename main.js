@@ -74,26 +74,43 @@ $('.ui.search').search({ source: SEARCH_CONTENT });
 var compareTickers = getCompareTickers();
 for (var tickerIndex in compareTickers) {
   var ticker = compareTickers[tickerIndex];
-  var checkedClass = getCompareChecked(ticker) ? 'check ' : '';
+  var isChecked = getCompareChecked(ticker);
 
-  var stockTile = '<div class="item ' + ticker + '">\
+  var checkedClass = isChecked ? 'check ' : '';
+
+  var stockTile = '<div id="' + ticker + '" class="item">\
                     <button type="button" class="mini circular ui icon button compare-check-button">\
                       <i class="' + checkedClass + 'icon"></i>\
                     </button>\
                     <a>' + ticker.toUpperCase() + '</a>\
                   </div>'
 
-  $('#compare-stocks').append(stockTile)
+  $('#compare-stocks').append(stockTile);
+
+  var pe_ratio = DATA[ticker]['pe_ratio'];
+  var mkt_cap = DATA[ticker]['mkt_cap'];
+  var hiddenRowClass = isChecked ? '' : 'hidden-row' 
+  var stockTableRow = '<tr id="' + ticker + '" class="' + hiddenRowClass + '">\
+                        <td>Company</td>\
+                        <td class="right aligned">$1000</td>\
+                        <td class="right aligned">2.5%</td>\
+                        <td class="right aligned">' + mkt_cap + '</td>\
+                        <td class="right aligned">' + pe_ratio + '</td>\
+                      </tr>'
+
+  $('#compare-table>tbody').append(stockTableRow);
 }
 
 $(".compare-check-button").each((index, button) => {
   $(button).click(() => {
-    var ticker = $(button).parent().attr('class').slice(5);
+    var ticker = $(button).parent().attr('id');
     toggleCompareChecked(ticker);
 
-    // update the frontend to reflect the backend change
+    // update the frontend checkbox to reflect the backend change
     var buttonIcon = $(button).children('i')[0];
     $(buttonIcon).toggleClass('check');
     $(button).blur();
+
+    $('#compare-table>tbody>#'+ticker).toggleClass('hidden-row');
   })
 })

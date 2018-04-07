@@ -13,21 +13,29 @@ const DATA = {
     'min': AAPL_MIN,
     'day': AAPL_DAY,
     'week': AAPL_WEEK,
+    'pe_ratio': '16.47',
+    'mkt_cap': '854.36B',
   },
   'amzn': {
     'min': AMZN_MIN,
     'day': AMZN_DAY,
     'week': AMZN_WEEK,
+    'pe_ratio': '307.02',
+    'mkt_cap': '680.28B',
   },
   'fb': {
     'min': FB_MIN,
     'day': FB_DAY,
     'week': FB_WEEK,
+    'pe_ratio': '25.51',
+    'mkt_cap': '456.67B',
   },
   'goog': {
     'min': GOOG_MIN,
     'day': GOOG_DAY,
     'week': GOOG_WEEK,
+    'pe_ratio': '31.37',
+    'mkt_cap': '700.20B',
   },
 };
 
