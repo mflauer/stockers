@@ -57,7 +57,7 @@ var PORTFOLIO_VALUE = 1000.00;
 var PORTFOLIO_STOCKS = ['aapl'];
 
 function getPortfolioTickers() {
-  return PORTFOLIO_STOCKS;
+  return PORTFOLIO_STOCKS.sort();
 }
 
 // compare data
@@ -71,7 +71,7 @@ var COMPARE_STOCKS = {
 };
 
 function getCompareTickers() {
-  return Object.keys(COMPARE_STOCKS);
+  return Object.keys(COMPARE_STOCKS).sort();
 }
 
 function getCompareChecked(ticker) {
