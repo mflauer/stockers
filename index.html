@@ -49,7 +49,24 @@
           </div>
           <div>Volume plot</div>
           <div>Growth plot</div>
-          <div>Table</div>
+          <table class="ui table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Change</th>
+                <th>% of Portfolio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Company</td>
+                <td>$1000</td>
+                <td>2.5%</td>
+                <td>45%</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -58,7 +75,13 @@
       <h2 class="ui center aligned header">Compare</h2>
       <div class="ui grid">
         <div class="twelve wide column">
-          <div>Search</div>
+          <div class="ui search">
+            <div class="ui icon fluid input">
+              <input class="prompt" type="text" placeholder="Search stocks...">
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
           <div id="compare-selector" class="ui text compact menu selector">
             <a class="active item">1D</a>
             <a class="item">5D</a>
@@ -69,11 +92,35 @@
             <a class="item">MAX</a>
           </div>
           <div>Compare plot</div>
-          <div>Table</div>
+          <table class="ui table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Change</th>
+                <th>Mkt Cap</th>
+                <th>P/E</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Company</td>
+                <td>$1000</td>
+                <td>2.5%</td>
+                <td>1.7B</td>
+                <td>13.1</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="four wide column">
           <div class="ui vertical fluid menu">
-            <a class="item">Stock 1</a>
+            <div class="item container">
+              <button type="button" class="mini circular ui icon button">
+                <i class="check icon"></i>
+              </button>
+              <a>Stock 1</a>
+            </div>
             <a class="item">Stock 2</a>
             <div class="header item">Suggested Stocks</div>
             <a class="item">Stock 3</a>
@@ -82,6 +129,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <!-- Load Data -->
