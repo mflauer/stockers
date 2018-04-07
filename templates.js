@@ -1,7 +1,7 @@
 function createCompareItem(ticker) {
   $('#compare-stocks').append(`
     <div id="${ticker}-item" class="item">
-      <button type="button" class="mini circular ui icon button compare-check-button">
+      <button id="${ticker}-check" type="button" class="mini circular ui icon button">
         <i class="${backend.getCompareChecked(ticker) ? 'check ' : ''} icon"></i>
       </button>
       ${ticker.toUpperCase()}

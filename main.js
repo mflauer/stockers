@@ -50,6 +50,13 @@ function getGraphData(tickers, timeRange) {
 function addCompareStock(ticker) {
   createCompareItem(ticker);
   createCompareTableRow(ticker);
+
+  $(`#${ticker}-check`).click(function() {
+    backend.toggleCompareChecked(ticker);
+    $($(this).children('i')[0]).toggleClass('check');
+    $(`#${ticker}-compare-row`).toggleClass('hide');
+    $(this).blur();
+  });
 }
 
 
@@ -96,13 +103,4 @@ $('.selector>.item').click(function(e) {
   } else if (section == 'compare') {
     compareGraphData = getGraphData(backend.etCompareTickers(), timeRange);
   }
-});
-
-// show and hide from compareTickers
-$('.compare-check-button').click(function() {
-  var ticker = $(this).parent().attr('id').split('-')[0];
-  backend.toggleCompareChecked(ticker);
-  $($(this).children('i')[0]).toggleClass('check');
-  $(`#${ticker}-compare-row`).toggleClass('hide');
-  $(this).blur();
 });
