@@ -1,5 +1,5 @@
 // graph start dates
-var portfolioGraphDate, compareGraphDate;
+var portfolioGraphDate = compareGraphDate = getStartDate('1D');
 
 // table start times
 var portfolioTableDate, compareTableDate;
@@ -19,6 +19,4 @@ $('.selector>.item').click(function(e) {
   } else if (section == 'compare') {
     compareGraphDate = startDate
   }
-  console.log(portfolioGraphDate);
-  console.log(compareGraphDate);
 });
