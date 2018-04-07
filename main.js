@@ -52,6 +52,9 @@ function getGraphData(tickers, timeRange) {
 // Load page content
 //////////////////////////////
 
+// search bar data
+$('.ui.search').search({ source: SEARCH_CONTENT });
+
 // compare stocks
 var compareTickers = getCompareTickers();
 for (var i in compareTickers) {
@@ -104,9 +107,6 @@ $('.selector>.item').click(function(e) {
     compareGraphData = getGraphData(getCompareTickers(), timeRange);
   }
 });
-
-// add data to search bar
-$('.ui.search').search({ source: SEARCH_CONTENT });
 
 // show and hide from compare
 $(".compare-check-button").each((index, button) => {
