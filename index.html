@@ -90,7 +90,7 @@
             <a class="item">1Y</a>
           </div>
           <div>Compare plot</div>
-          <table class="ui table">
+          <table id="compare-table" class="ui table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -101,28 +101,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Company</td>
-                <td class="right aligned">$1000</td>
-                <td class="right aligned">2.5%</td>
-                <td class="right aligned">1.7B</td>
-                <td class="right aligned">13.1</td>
-              </tr>
+              <!-- stocks in compare screen dynamically added here -->
             </tbody>
           </table>
         </div>
         <div class="four wide column">
           <div class="ui vertical fluid menu">
-            <div class="item container">
-              <button type="button" class="mini circular ui icon button">
-                <i class="check icon"></i>
-              </button>
-              <a>Stock 1</a>
+            <div id="compare-stocks">
+              <!-- stocks in compare screen dynamically added here -->
             </div>
-            <a class="item">Stock 2</a>
             <div class="header item">Suggested Stocks</div>
-            <a class="item">Stock 3</a>
-            <a class="item">Stock 4</a>
+              <div id="suggested-stocks">
+                <a class="item">Stock 3</a>
+                <a class="item">Stock 4</a>
+              </div>
           </div>
         </div>
       </div>

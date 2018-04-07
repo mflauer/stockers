@@ -9,25 +9,33 @@ const SEARCH_CONTENT = [
 ];
 
 const DATA = {
-  'aapl': {
+  'AAPL': {
     'min': AAPL_MIN,
     'day': AAPL_DAY,
     'week': AAPL_WEEK,
+    'pe_ratio': '16.47',
+    'mkt_cap': '854.36B',
   },
-  'amzn': {
+  'AMZN': {
     'min': AMZN_MIN,
     'day': AMZN_DAY,
     'week': AMZN_WEEK,
+    'pe_ratio': '307.02',
+    'mkt_cap': '680.28B',
   },
-  'fb': {
+  'FB': {
     'min': FB_MIN,
     'day': FB_DAY,
     'week': FB_WEEK,
+    'pe_ratio': '25.51',
+    'mkt_cap': '456.67B',
   },
-  'goog': {
+  'GOOG': {
     'min': GOOG_MIN,
     'day': GOOG_DAY,
     'week': GOOG_WEEK,
+    'pe_ratio': '31.37',
+    'mkt_cap': '700.20B',
   },
 };
 
@@ -44,51 +52,41 @@ const TIME_RANGE_INTERVAL = {
   '5Y': { n: 260, interval: 'week' },
 }
 
-function getData(tickers, timeRange) {
-  var plotData = {};
-  var time = TIME_RANGE_INTERVAL[timeRange];
-
-  for (var t in tickers) {
-    var data = DATA[tickers[t]][time.interval].slice(0, time.n);
-
-    if (time.interval == 'min') {
-      if (t == 0) {
-        plotData["dates"] = data.map(x => x.map(y => Date.parse(y['date']))).reverse();
-      }
-      data = data.map(x => x.map(y => parseFloat(y['close']))).reverse();
-    } else {
-      if (t == 0) {
-        plotData["dates"] = data.map(x => Date.parse(x['date'])).reverse();
-      }
-      data = data.map(x => parseFloat(x['close'])).reverse();
-    }
-
-    plotData[tickers[t]] = data;
+function getData(ticker) {
+  if (ticker in DATA) {
+    return DATA[ticker];
+  } else {
+    return DATA[Object.keys(DATA)[Math.floor(Math.random() * 4)]];
   }
-
-  return plotData;
 }
 
-function formatDate(date, withMin=false) {
-  var d = new Date(date),
-      year = d.getFullYear(),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate();
+// portfolio data
+var PORTFOLIO_VALUE = 1000.00;
+var PORTFOLIO_STOCKS = ['AAPL'];
 
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  var str = [year, month, day].join('-');
-
-  if (withMin) {
-    str += ' 09:30:00';
-  }
-
-  return str;
+function getPortfolioTickers() {
+  return PORTFOLIO_STOCKS;
 }
 
-var portfolioValue = 1000.00;
+// compare data
+var COMPARE_STOCKS = {
+  'GOOG': {
+    isChecked: true,
+  },
+  'AAPL': {
+    isChecked: false,
+  },
+};
 
-// ticker values
-var portfolioStocks = ['aapl'];
-var compareStocks = ['goog'];
+function getCompareTickers() {
+  return Object.keys(COMPARE_STOCKS);
+}
+
+function getCompareChecked(ticker) {
+  return COMPARE_STOCKS[ticker.toUpperCase()].isChecked
+}
+
+function toggleCompareChecked(ticker) {
+  ticker = ticker.toUpperCase();
+  COMPARE_STOCKS[ticker].isChecked = !COMPARE_STOCKS[ticker].isChecked;
+}
