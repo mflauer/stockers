@@ -1,5 +1,5 @@
 // graph start dates
-var portfolioGraphData, compareTableData;
+var portfolioGraphData, compareGraphData;
 
 // table start times
 var portfolioTableDate, compareTableDate;
@@ -23,134 +23,106 @@ $('.selector>.item').click(function(e) {
 // example
 // `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=${API_KEY}`
 
-var m = [20, 20, 30, 20],
-    w = 960 - m[1] - m[3],
-    h = 500 - m[0] - m[2];
 
 var x,
     y;
 
 var color = d3.scale.category10();
 
-var svg = d3.select("compare-plot").append("svg")
-    .attr("width", w + m[1] + m[3])
-    .attr("height", h + m[0] + m[2])
-  .append("g")
-    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-var stocks,
-    symbols;
+var margin = {top: 40, right: 40, bottom: 40, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-// A line generator, for the dark stroke.
+var parse = d3.time.format("%b %Y").parse;
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .tickSize(-height);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .ticks(4)
+    .orient("right");
+
+var area = d3.svg.area()
+    .interpolate("monotone")
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return y(d.price); });
+
 var line = d3.svg.line()
-    .interpolate("basis")
+    .interpolate("monotone")
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.price); });
 
-// A line generator, for the dark stroke.
-var axis = d3.svg.line()
-    .interpolate("basis")
-    .x(function(d) { return x(d.date); })
-    .y(h);
+var svg = d3.select("#compare-graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// A area generator, for the dark stroke.
-var area = d3.svg.area()
-    .interpolate("basis")
-    .x(function(d) { return x(d.date); })
-    .y1(function(d) { return y(d.price); });
+svg.append("clipPath")
+    .attr("id", "clip")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height);
 
-var date_list = [];
-var price_list = [];
-function parsedata(data) {
-  //var parse = d3.time.format("%b %Y").parse;
-  //console.log(parse);
-  //js date objects
 
-  // Nest stock values by symbol.
-  symbols = 'AAPL';
-  for (var i=0; i < data.length; i++) {
-    date_list.append((data[i]['date']));
-    price_list.append(data[i]['close']);
-  }
+  x.domain([data[0].date, data[data.length - 1].date]);
+    y.domain([0, d3.max(data, function(d) { return d.price; })]).nice();
 
-  //symbols = d3.nest()
-      //.key(function(d) { return d.symbol; })
-      //.entries(stocks = data);
+    svg
+        .datum(data)
+        .on("click", click);
 
-  // Parse dates and numbers. We assume values are sorted by date.
-  // Also compute the maximum price per symbol, needed for the y-domain.
+    svg.append("path")
+        .attr("class", "area")
+        .attr("clip-path", "url(#clip)")
+        .attr("d", area);
 
-  /*
-  symbols.forEach(function(s) {
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 
-    s.values.forEach(function(d) { d.date = parse(d.date); d.price = +d.price; });
-    s.maxPrice = d3.max(s.values, function(d) { return d.price; });
-    s.sumPrice = d3.sum(s.values, function(d) { return d.price; });
+    svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(" + width + ",0)")
+        .call(yAxis);
+
+    svg.append("path")
+        .attr("class", "line")
+        .attr("clip-path", "url(#clip)")
+        .attr("d", line);
+
+    svg.append("text")
+        .attr("x", width - 6)
+        .attr("y", height - 6)
+        .style("text-anchor", "end")
+        .text(data[0].symbol);
+
+    // On click, update the x-axis.
+    function click() {
+      var n = data.length - 1,
+          i = Math.floor(Math.random() * n / 2),
+          j = i + Math.floor(Math.random() * n / 2) + 1;
+      x.domain([data[i].date, data[j].date]);
+      var t = svg.transition().duration(750);
+      t.select(".x.axis").call(xAxis);
+      t.select(".area").attr("d", area);
+      t.select(".line").attr("d", line);
+    }
   });
 
 
-  // Sort by maximum price, descending.
-  symbols.sort(function(a, b) { return b.maxPrice - a.maxPrice; });
-  */
 
-  var g = svg.selectAll("g")
-      .data(symbols)
-    .enter().append("g")
-      .attr("class", "symbol");
-};
+//data is in compareGraphData
 
-var inputData = parsedata(AAPL_DAY);
-//function to draw a line graph using d3
-function lines() {
-  x = d3.time.scale().range([0, w - 60]);
-  y = d3.scale.linear().range([h / 4 - 20, 0]);
-
-  // Compute the minimum and maximum date across symbols.
-  x.domain([
-    d3.min(date_list, function(d) { return d.values[0].date; }),
-    d3.max(date_list, function(d) { return d.values[d.values.length - 1].date; })
-  ]);
-
-  var g = svg.selectAll(".symbol")
-      .attr("transform", function(d, i) { return "translate(0," + (i * h / 4 + 10) + ")"; });
-
-  g.each(function(d) {
-    var e = d3.select(this);
-
-    e.append("path")
-        .attr("class", "line");
-
-    e.append("circle")
-        .attr("r", 5)
-        .style("fill", function(d) { return color(d.key); })
-        .style("stroke", "#000")
-        .style("stroke-width", "2px");
-
-    e.append("text")
-        .attr("x", 12)
-        .attr("dy", ".31em")
-        .text(d.key);
-  });
-
-  function draw(k) {
-  g.each(function(d) {
-    var e = d3.select(this);
-    y.domain([0, d.maxPrice]);
-
-    e.select("path")
-        .attr("d", function(d) { return line(d.values.slice(0, k + 1)); });
-
-    e.selectAll("circle, text")
-        .data(function(d) { return [d.values[k], d.values[k]]; })
-        .attr("transform", function(d) { return "translate(" + x(d.date) + "," + y(d.price) + ")"; });
-  });
-}
-
-var k = 1, n = symbols[0].values.length;
-d3.timer(function() {
-  draw(k);
-  if ((k += 2) >= n - 1) {
-    draw(n - 1);
-    return true;
-  }
-});
+dates = CompareGraphData['dates'];
