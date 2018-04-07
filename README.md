@@ -12,4 +12,6 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 - checkmark on search results (clicking these should remove them from the list)
 - colorcode stocks
 - plots
-- padding on hover in table
+- padding on hover in table?
+- extra line when first items in table are missing
+- icon in change column
