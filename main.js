@@ -54,8 +54,8 @@ function getGraphData(tickers, timeRange) {
 
 // search bar data
 $('.ui.search').search({
-  source : getSearchContent(),
-  searchFields   : [
+  source: getSearchContent(),
+  searchFields: [
     'title',
     'description'
   ],

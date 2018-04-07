@@ -2,14 +2,14 @@
 const API_KEY = 'MIRLW3E1H4871KNW';
 
 function getSearchContent() {
-  var searchContent = []
-  var keys = Object.keys(COMPANIES)
+  var searchContent = [];
+  var keys = Object.keys(COMPANIES);
   for (var i in keys) {
     var company = keys[i];
     searchContent.push({
       title: company,
       description: COMPANIES[company],
-    })
+    });
   }
   return searchContent;
 }
