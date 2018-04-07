@@ -1,6 +1,6 @@
 // graph data
-var portfolioGraphData = getGraphData(portfolioStocks, '1D'),
-    compareGraphData = getGraphData(compareStocks, '1D');
+var portfolioGraphData = getGraphData(getPortfolioTickers(), '1D'),
+    compareGraphData = getGraphData(getCompareTickers(), '1D');
 
 // table data
 var portfolioTableData, compareTableData;
