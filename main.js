@@ -1,6 +1,10 @@
+// stock tickers
+var portfolioTickers = backend.getPortfolioTickers(),
+    compareTickers = backend.getCompareTickers()
+
 // graph data
-var portfolioGraphData = getGraphData(backend.getPortfolioTickers(), '1D'),
-    compareGraphData = getGraphData(backend.getCompareTickers(), '1D');
+var portfolioGraphData = getGraphData(portfolioTickers, '1D'),
+    compareGraphData = getGraphData(compareTickers, '1D');
 
 // table data
 var portfolioTableData, compareTableData;
@@ -81,7 +85,7 @@ $('.ui.search').search({
 $('.ui.search').search('set value', '');
 
 // compare stocks
-backend.getCompareTickers().map(x => addCompareStock(x));
+compareTickers.map(x => addCompareStock(x));
 
 
 //////////////////////////////
@@ -99,8 +103,8 @@ $('.selector>.item').click(function(e) {
   var timeRange = timeRangeElement.text();
   var section = timeRangeElement.parent().attr('id').split('-')[0];
   if (section == 'portfolio') {
-    portfolioGraphData = getGraphData(backend.getPortfolioTickers(), timeRange);
+    portfolioGraphData = getGraphData('portfolio', timeRange);
   } else if (section == 'compare') {
-    compareGraphData = getGraphData(backend.etCompareTickers(), timeRange);
+    compareGraphData = getGraphData('compare', timeRange);
   }
 });
