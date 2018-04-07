@@ -1,4 +1,4 @@
-const COMPANIES = {
+const ALL_COMPANIES = {
   "PIH": "1347 Property Insurance Holdings, Inc.",
   "PIHPP": "1347 Property Insurance Holdings, Inc.",
   "TURN": "180 Degree Capital Corp.",
