@@ -8,7 +8,7 @@ const SEARCH_CONTENT = [
   {title: 'ddddd'},
 ];
 
-const DATA = {
+const STOCK_DATA = {
   'aapl': {
     'min': AAPL_MIN,
     'day': AAPL_DAY,
@@ -46,9 +46,9 @@ const TIME_RANGE_INTERVAL = {
 
 function getData(ticker) {
   if (ticker in DATA) {
-    return DATA[ticker];
+    return STOCK_DATA[ticker];
   } else {
-    return DATA[Object.keys(DATA)[Math.floor(Math.random() * 4)]];
+    return STOCK_DATA[Object.keys(DATA)[Math.floor(Math.random() * 4)]];
   }
 }
 
