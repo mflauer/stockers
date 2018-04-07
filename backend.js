@@ -31,61 +31,42 @@ const DATA = {
   },
 };
 
-const MS_PER_DAY = 1000*60*60*24;
-const DAY_PER_MONTH = 30;
-const DAY_PER_YEAR = 365;
-const CURRENT_DATE = new Date(2018, 3, 6, 15, 5, 0, 0).getTime(); //"2018-04-06 15:05:00";
-const EARLIEST_DATE = new Date("2000-01-14").getTime();
+const CURRENT_DATE = new Date(2018, 3, 6, 15, 5, 0, 0).getTime(); //'2018-04-06 15:05:00';
+const EARLIEST_DATE = new Date('2000-01-14').getTime();
 
 const TIME_RANGE_INTERVAL = {
-  '1D': 'min',
-  '5D': 'min',
-  '1M': 'day',
-  '3M': 'day',
-  '6M': 'day',
-  '1Y': 'week',
-  '5Y': 'week',
-  'MAX': 'week',
+  '1D': { n: 1, interval: 'min' },
+  '5D': { n: 5, interval: 'min' },
+  '1M': { n: 21, interval: 'day' },
+  '3M': { n: 63, interval: 'day' },
+  '6M': { n: 126, interval: 'day' },
+  '1Y': { n: 52, interval: 'week' },
+  '5Y': { n: 260, interval: 'week' },
 }
 
-function getStartDate(timeRange) {
-  var d,
-      withMin = TIME_RANGE_INTERVAL[timeRange] == 'min';
-  
-  switch (timeRange) {
-    case '1D':
-      d = CURRENT_DATE - MS_PER_DAY;
-      break;
-    case '5D':
-      d = CURRENT_DATE - 5*MS_PER_DAY;
-      break;
-    case '1M':
-      d = CURRENT_DATE - DAY_PER_MONTH*MS_PER_DAY;
-      break;
-    case '3M':
-      d = CURRENT_DATE - 3*DAY_PER_MONTH*MS_PER_DAY;
-      break;
-    case '6M':
-      d = CURRENT_DATE - 6*DAY_PER_MONTH*MS_PER_DAY;
-      break;
-    case '1Y':
-      d = CURRENT_DATE - DAY_PER_YEAR*MS_PER_DAY;
-      break;
-    case '5Y':
-      d = CURRENT_DATE - 5*DAY_PER_YEAR*MS_PER_DAY;
-      break;
-    case 'MAX':
-      d = EARLIEST_DATE;
-      break;
-    default:
-      console.log("Invalid time range.")
-      return;
+function getData(tickers, timeRange) {
+  var plotData = {};
+  var time = TIME_RANGE_INTERVAL[timeRange];
+
+  for (var t in tickers) {
+    var data = DATA[tickers[t]][time.interval].slice(0, time.n);
+
+    if (time.interval == 'min') {
+      if (t == 0) {
+        plotData["dates"] = data.map(x => x.map(y => Date.parse(y['date']))).reverse();
+      }
+      data = data.map(x => x.map(y => parseFloat(y['close']))).reverse();
+    } else {
+      if (t == 0) {
+        plotData["dates"] = data.map(x => Date.parse(x['date'])).reverse();
+      }
+      data = data.map(x => parseFloat(x['close'])).reverse();
+    }
+
+    plotData[tickers[t]] = data;
   }
 
-  return {
-    startDate: formatDate(d, withMin),
-    interval: TIME_RANGE_INTERVAL[timeRange],
-  };
+  return plotData;
 }
 
 function formatDate(date, withMin=false) {
@@ -108,6 +89,6 @@ function formatDate(date, withMin=false) {
 
 var portfolioValue = 1000.00;
 
-// picker values
-var portfolioStocks = [];
-var compareStocks = [];
+// ticker values
+var portfolioStocks = ['aapl'];
+var compareStocks = ['goog'];
