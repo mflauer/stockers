@@ -1,5 +1,6 @@
-const AAPL_DAY = {
-  "2018-04-06": {
+const AAPL_DAY = [
+  {
+    "date": "2018-04-06",
     "open": "170.9700",
     "high": "172.4800",
     "low": "168.6200",
@@ -9,7 +10,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-05": {
+  {
+    "date": "2018-04-05",
     "open": "172.5800",
     "high": "174.2304",
     "low": "172.0800",
@@ -19,7 +21,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-04": {
+  {
+    "date": "2018-04-04",
     "open": "164.8800",
     "high": "172.0100",
     "low": "164.7700",
@@ -29,7 +32,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-03": {
+  {
+    "date": "2018-04-03",
     "open": "167.6400",
     "high": "168.7455",
     "low": "164.8800",
@@ -39,7 +43,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-02": {
+  {
+    "date": "2018-04-02",
     "open": "167.8800",
     "high": "168.9400",
     "low": "164.4700",
@@ -49,7 +54,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-29": {
+  {
+    "date": "2018-03-29",
     "open": "167.8050",
     "high": "171.7500",
     "low": "166.9000",
@@ -59,7 +65,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-28": {
+  {
+    "date": "2018-03-28",
     "open": "167.2500",
     "high": "170.0200",
     "low": "165.1900",
@@ -69,7 +76,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-27": {
+  {
+    "date": "2018-03-27",
     "open": "173.6800",
     "high": "175.1500",
     "low": "166.9200",
@@ -79,7 +87,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-26": {
+  {
+    "date": "2018-03-26",
     "open": "168.0700",
     "high": "173.1000",
     "low": "166.4400",
@@ -89,7 +98,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-23": {
+  {
+    "date": "2018-03-23",
     "open": "168.3900",
     "high": "169.9200",
     "low": "164.9400",
@@ -99,7 +109,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-22": {
+  {
+    "date": "2018-03-22",
     "open": "170.0000",
     "high": "172.6800",
     "low": "168.6000",
@@ -109,7 +120,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-21": {
+  {
+    "date": "2018-03-21",
     "open": "175.0400",
     "high": "175.0900",
     "low": "171.2600",
@@ -119,7 +131,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-20": {
+  {
+    "date": "2018-03-20",
     "open": "175.2400",
     "high": "176.8000",
     "low": "174.9400",
@@ -129,7 +142,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-19": {
+  {
+    "date": "2018-03-19",
     "open": "177.3200",
     "high": "177.4700",
     "low": "173.6600",
@@ -139,7 +153,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-16": {
+  {
+    "date": "2018-03-16",
     "open": "178.6500",
     "high": "179.1200",
     "low": "177.6200",
@@ -149,7 +164,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-15": {
+  {
+    "date": "2018-03-15",
     "open": "178.5000",
     "high": "180.2400",
     "low": "178.0701",
@@ -159,7 +175,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-14": {
+  {
+    "date": "2018-03-14",
     "open": "180.3200",
     "high": "180.5200",
     "low": "177.8100",
@@ -169,7 +186,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-13": {
+  {
+    "date": "2018-03-13",
     "open": "182.5900",
     "high": "183.5000",
     "low": "179.2400",
@@ -179,7 +197,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-12": {
+  {
+    "date": "2018-03-12",
     "open": "180.2900",
     "high": "182.3900",
     "low": "180.2100",
@@ -189,7 +208,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-09": {
+  {
+    "date": "2018-03-09",
     "open": "177.9600",
     "high": "180.0000",
     "low": "177.3900",
@@ -199,7 +219,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-08": {
+  {
+    "date": "2018-03-08",
     "open": "175.4800",
     "high": "177.1200",
     "low": "175.0700",
@@ -209,7 +230,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-07": {
+  {
+    "date": "2018-03-07",
     "open": "174.9400",
     "high": "175.8500",
     "low": "174.2700",
@@ -219,7 +241,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-06": {
+  {
+    "date": "2018-03-06",
     "open": "177.9100",
     "high": "178.2500",
     "low": "176.1300",
@@ -229,7 +252,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-05": {
+  {
+    "date": "2018-03-05",
     "open": "175.2100",
     "high": "177.7400",
     "low": "174.5200",
@@ -239,7 +263,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-02": {
+  {
+    "date": "2018-03-02",
     "open": "172.8000",
     "high": "176.3000",
     "low": "172.4500",
@@ -249,7 +274,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-01": {
+  {
+    "date": "2018-03-01",
     "open": "178.5400",
     "high": "179.7750",
     "low": "172.6600",
@@ -259,7 +285,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-28": {
+  {
+    "date": "2018-02-28",
     "open": "179.2600",
     "high": "180.6150",
     "low": "178.0500",
@@ -269,7 +296,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-27": {
+  {
+    "date": "2018-02-27",
     "open": "179.1000",
     "high": "180.4800",
     "low": "178.1600",
@@ -279,7 +307,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-26": {
+  {
+    "date": "2018-02-26",
     "open": "176.3500",
     "high": "179.3900",
     "low": "176.2100",
@@ -289,7 +318,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-23": {
+  {
+    "date": "2018-02-23",
     "open": "173.6700",
     "high": "175.6500",
     "low": "173.5400",
@@ -299,7 +329,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-22": {
+  {
+    "date": "2018-02-22",
     "open": "171.8000",
     "high": "173.9500",
     "low": "171.7100",
@@ -309,7 +340,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-21": {
+  {
+    "date": "2018-02-21",
     "open": "172.8300",
     "high": "174.1200",
     "low": "171.0100",
@@ -319,7 +351,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-20": {
+  {
+    "date": "2018-02-20",
     "open": "172.0500",
     "high": "174.2600",
     "low": "171.4200",
@@ -329,7 +362,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-16": {
+  {
+    "date": "2018-02-16",
     "open": "172.3600",
     "high": "174.8200",
     "low": "171.7700",
@@ -339,7 +373,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-15": {
+  {
+    "date": "2018-02-15",
     "open": "169.7900",
     "high": "173.0900",
     "low": "169.0000",
@@ -349,7 +384,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-14": {
+  {
+    "date": "2018-02-14",
     "open": "163.0450",
     "high": "167.5400",
     "low": "162.8800",
@@ -359,7 +395,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-13": {
+  {
+    "date": "2018-02-13",
     "open": "161.9500",
     "high": "164.7500",
     "low": "161.6500",
@@ -369,7 +406,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-12": {
+  {
+    "date": "2018-02-12",
     "open": "158.5000",
     "high": "163.8900",
     "low": "157.5100",
@@ -379,7 +417,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-09": {
+  {
+    "date": "2018-02-09",
     "open": "157.0700",
     "high": "157.8900",
     "low": "150.2400",
@@ -389,7 +428,8 @@ const AAPL_DAY = {
     "dividend amount": "0.6300",
     "split coefficient": "1.0000"
   },
-  "2018-02-08": {
+  {
+    "date": "2018-02-08",
     "open": "160.2900",
     "high": "161.0000",
     "low": "155.0300",
@@ -399,7 +439,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-07": {
+  {
+    "date": "2018-02-07",
     "open": "163.0850",
     "high": "163.4000",
     "low": "159.0685",
@@ -409,7 +450,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-06": {
+  {
+    "date": "2018-02-06",
     "open": "154.8300",
     "high": "163.7200",
     "low": "154.0000",
@@ -419,7 +461,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-05": {
+  {
+    "date": "2018-02-05",
     "open": "159.1000",
     "high": "163.8800",
     "low": "156.0000",
@@ -429,7 +472,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-02": {
+  {
+    "date": "2018-02-02",
     "open": "166.0000",
     "high": "166.8000",
     "low": "160.1000",
@@ -439,7 +483,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-01": {
+  {
+    "date": "2018-02-01",
     "open": "167.1650",
     "high": "168.6200",
     "low": "166.7600",
@@ -449,7 +494,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-31": {
+  {
+    "date": "2018-01-31",
     "open": "166.8700",
     "high": "168.4417",
     "low": "166.5000",
@@ -459,7 +505,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-30": {
+  {
+    "date": "2018-01-30",
     "open": "165.5250",
     "high": "167.3700",
     "low": "164.7000",
@@ -469,7 +516,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-29": {
+  {
+    "date": "2018-01-29",
     "open": "170.1600",
     "high": "170.1600",
     "low": "167.0700",
@@ -479,7 +527,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-26": {
+  {
+    "date": "2018-01-26",
     "open": "172.0000",
     "high": "172.0000",
     "low": "170.0600",
@@ -489,7 +538,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-25": {
+  {
+    "date": "2018-01-25",
     "open": "174.5050",
     "high": "174.9500",
     "low": "170.5300",
@@ -499,7 +549,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-24": {
+  {
+    "date": "2018-01-24",
     "open": "177.2500",
     "high": "177.3000",
     "low": "173.2000",
@@ -509,7 +560,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-23": {
+  {
+    "date": "2018-01-23",
     "open": "177.3000",
     "high": "179.4400",
     "low": "176.8200",
@@ -519,7 +571,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-22": {
+  {
+    "date": "2018-01-22",
     "open": "177.3000",
     "high": "177.7800",
     "low": "176.6016",
@@ -529,7 +582,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-19": {
+  {
+    "date": "2018-01-19",
     "open": "178.6100",
     "high": "179.5800",
     "low": "177.4100",
@@ -539,7 +593,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-18": {
+  {
+    "date": "2018-01-18",
     "open": "179.3700",
     "high": "180.1000",
     "low": "178.2500",
@@ -549,7 +604,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-17": {
+  {
+    "date": "2018-01-17",
     "open": "176.1500",
     "high": "179.2500",
     "low": "175.0700",
@@ -559,7 +615,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-16": {
+  {
+    "date": "2018-01-16",
     "open": "177.9000",
     "high": "179.3900",
     "low": "176.1400",
@@ -569,7 +626,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-12": {
+  {
+    "date": "2018-01-12",
     "open": "176.1800",
     "high": "177.3600",
     "low": "175.6500",
@@ -579,7 +637,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-11": {
+  {
+    "date": "2018-01-11",
     "open": "174.5900",
     "high": "175.4886",
     "low": "174.4900",
@@ -589,7 +648,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-10": {
+  {
+    "date": "2018-01-10",
     "open": "173.1600",
     "high": "174.3000",
     "low": "173.0000",
@@ -599,7 +659,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-09": {
+  {
+    "date": "2018-01-09",
     "open": "174.5500",
     "high": "175.0600",
     "low": "173.4100",
@@ -609,7 +670,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-08": {
+  {
+    "date": "2018-01-08",
     "open": "174.3500",
     "high": "175.6100",
     "low": "173.9300",
@@ -619,7 +681,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-05": {
+  {
+    "date": "2018-01-05",
     "open": "173.4400",
     "high": "175.3700",
     "low": "173.0500",
@@ -629,7 +692,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-04": {
+  {
+    "date": "2018-01-04",
     "open": "172.5400",
     "high": "173.4700",
     "low": "172.0800",
@@ -639,7 +703,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-03": {
+  {
+    "date": "2018-01-03",
     "open": "172.5300",
     "high": "174.5500",
     "low": "171.9600",
@@ -649,7 +714,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-02": {
+  {
+    "date": "2018-01-02",
     "open": "170.1600",
     "high": "172.3000",
     "low": "169.2600",
@@ -659,7 +725,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-29": {
+  {
+    "date": "2017-12-29",
     "open": "170.5200",
     "high": "170.5900",
     "low": "169.2200",
@@ -669,7 +736,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-28": {
+  {
+    "date": "2017-12-28",
     "open": "171.0000",
     "high": "171.8500",
     "low": "170.4800",
@@ -679,7 +747,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-27": {
+  {
+    "date": "2017-12-27",
     "open": "170.1000",
     "high": "170.7800",
     "low": "169.7100",
@@ -689,7 +758,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-26": {
+  {
+    "date": "2017-12-26",
     "open": "170.8000",
     "high": "171.4700",
     "low": "169.6790",
@@ -699,7 +769,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-22": {
+  {
+    "date": "2017-12-22",
     "open": "174.6800",
     "high": "175.4240",
     "low": "174.5000",
@@ -709,7 +780,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-21": {
+  {
+    "date": "2017-12-21",
     "open": "174.1700",
     "high": "176.0200",
     "low": "174.1000",
@@ -719,7 +791,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-20": {
+  {
+    "date": "2017-12-20",
     "open": "174.8700",
     "high": "175.4200",
     "low": "173.2500",
@@ -729,7 +802,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-19": {
+  {
+    "date": "2017-12-19",
     "open": "175.0300",
     "high": "175.3900",
     "low": "174.0900",
@@ -739,7 +813,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-18": {
+  {
+    "date": "2017-12-18",
     "open": "174.8800",
     "high": "177.2000",
     "low": "174.8600",
@@ -749,7 +824,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-15": {
+  {
+    "date": "2017-12-15",
     "open": "173.6300",
     "high": "174.1700",
     "low": "172.4600",
@@ -759,7 +835,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-14": {
+  {
+    "date": "2017-12-14",
     "open": "172.4000",
     "high": "173.1300",
     "low": "171.6500",
@@ -769,7 +846,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-13": {
+  {
+    "date": "2017-12-13",
     "open": "172.5000",
     "high": "173.5400",
     "low": "172.0000",
@@ -779,7 +857,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-12": {
+  {
+    "date": "2017-12-12",
     "open": "172.1500",
     "high": "172.3900",
     "low": "171.4610",
@@ -789,7 +868,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-11": {
+  {
+    "date": "2017-12-11",
     "open": "169.2000",
     "high": "172.8900",
     "low": "168.7900",
@@ -799,7 +879,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-08": {
+  {
+    "date": "2017-12-08",
     "open": "170.4900",
     "high": "171.0000",
     "low": "168.8200",
@@ -809,7 +890,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-07": {
+  {
+    "date": "2017-12-07",
     "open": "169.0300",
     "high": "170.4400",
     "low": "168.9100",
@@ -819,7 +901,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-06": {
+  {
+    "date": "2017-12-06",
     "open": "167.5000",
     "high": "170.2047",
     "low": "166.4600",
@@ -829,7 +912,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-05": {
+  {
+    "date": "2017-12-05",
     "open": "169.0600",
     "high": "171.5200",
     "low": "168.4000",
@@ -839,7 +923,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-04": {
+  {
+    "date": "2017-12-04",
     "open": "172.4800",
     "high": "172.6200",
     "low": "169.6300",
@@ -849,7 +934,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-01": {
+  {
+    "date": "2017-12-01",
     "open": "169.9500",
     "high": "171.6700",
     "low": "168.5000",
@@ -859,7 +945,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-30": {
+  {
+    "date": "2017-11-30",
     "open": "170.4300",
     "high": "172.1400",
     "low": "168.4400",
@@ -869,7 +956,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-29": {
+  {
+    "date": "2017-11-29",
     "open": "172.6300",
     "high": "172.9200",
     "low": "167.1600",
@@ -879,7 +967,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-28": {
+  {
+    "date": "2017-11-28",
     "open": "174.3000",
     "high": "174.8700",
     "low": "171.8600",
@@ -889,7 +978,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-27": {
+  {
+    "date": "2017-11-27",
     "open": "175.0500",
     "high": "175.0800",
     "low": "173.3400",
@@ -899,7 +989,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-24": {
+  {
+    "date": "2017-11-24",
     "open": "175.1000",
     "high": "175.5000",
     "low": "174.6459",
@@ -909,7 +1000,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-22": {
+  {
+    "date": "2017-11-22",
     "open": "173.3600",
     "high": "175.0000",
     "low": "173.0500",
@@ -919,7 +1011,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-21": {
+  {
+    "date": "2017-11-21",
     "open": "170.7800",
     "high": "173.7000",
     "low": "170.7800",
@@ -929,7 +1022,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-20": {
+  {
+    "date": "2017-11-20",
     "open": "170.2900",
     "high": "170.5600",
     "low": "169.5600",
@@ -939,7 +1033,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-17": {
+  {
+    "date": "2017-11-17",
     "open": "171.0400",
     "high": "171.3900",
     "low": "169.6400",
@@ -949,7 +1044,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-16": {
+  {
+    "date": "2017-11-16",
     "open": "171.1800",
     "high": "171.8700",
     "low": "170.3000",
@@ -959,7 +1055,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-15": {
+  {
+    "date": "2017-11-15",
     "open": "169.9700",
     "high": "170.3197",
     "low": "168.3800",
@@ -969,7 +1066,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-14": {
+  {
+    "date": "2017-11-14",
     "open": "173.0400",
     "high": "173.4800",
     "low": "171.1800",
@@ -979,7 +1077,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-13": {
+  {
+    "date": "2017-11-13",
     "open": "173.5000",
     "high": "174.5000",
     "low": "173.4000",
@@ -989,7 +1088,8 @@ const AAPL_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-10": {
+  {
+    "date": "2017-11-10",
     "open": "175.1100",
     "high": "175.3800",
     "low": "174.2700",
@@ -999,4 +1099,4 @@ const AAPL_DAY = {
     "dividend amount": "0.6300",
     "split coefficient": "1.0000"
   },
-};
+];

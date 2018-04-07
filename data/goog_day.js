@@ -1,5 +1,6 @@
-const GOOG_DAY = {
-  "2018-04-06": {
+const GOOG_DAY = [
+  {
+    "date": "2018-04-06",
     "open": "1020.0000",
     "high": "1031.4200",
     "low": "1004.4400",
@@ -9,7 +10,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-05": {
+  {
+    "date": "2018-04-05",
     "open": "1041.3300",
     "high": "1042.7900",
     "low": "1020.1300",
@@ -19,7 +21,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-04": {
+  {
+    "date": "2018-04-04",
     "open": "993.4100",
     "high": "1028.7200",
     "low": "993.0000",
@@ -29,7 +32,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-03": {
+  {
+    "date": "2018-04-03",
     "open": "1013.9100",
     "high": "1020.9900",
     "low": "994.0700",
@@ -39,7 +43,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-02": {
+  {
+    "date": "2018-04-02",
     "open": "1022.8200",
     "high": "1034.8000",
     "low": "990.3700",
@@ -49,7 +54,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-29": {
+  {
+    "date": "2018-03-29",
     "open": "1011.6300",
     "high": "1043.0000",
     "low": "1002.9000",
@@ -59,7 +65,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-28": {
+  {
+    "date": "2018-03-28",
     "open": "998.0000",
     "high": "1024.2300",
     "low": "980.6400",
@@ -69,7 +76,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-27": {
+  {
+    "date": "2018-03-27",
     "open": "1063.0000",
     "high": "1064.8400",
     "low": "996.9200",
@@ -79,7 +87,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-26": {
+  {
+    "date": "2018-03-26",
     "open": "1046.0000",
     "high": "1055.6300",
     "low": "1008.4000",
@@ -89,7 +98,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-23": {
+  {
+    "date": "2018-03-23",
     "open": "1047.0300",
     "high": "1063.3600",
     "low": "1021.2200",
@@ -99,7 +109,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-22": {
+  {
+    "date": "2018-03-22",
     "open": "1081.8800",
     "high": "1082.9000",
     "low": "1045.9100",
@@ -109,7 +120,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-21": {
+  {
+    "date": "2018-03-21",
     "open": "1092.7400",
     "high": "1106.3000",
     "low": "1085.1500",
@@ -119,7 +131,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-20": {
+  {
+    "date": "2018-03-20",
     "open": "1099.0000",
     "high": "1105.2000",
     "low": "1083.4600",
@@ -129,7 +142,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-19": {
+  {
+    "date": "2018-03-19",
     "open": "1120.0100",
     "high": "1121.9900",
     "low": "1089.0100",
@@ -139,7 +153,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-16": {
+  {
+    "date": "2018-03-16",
     "open": "1154.1400",
     "high": "1155.8800",
     "low": "1131.9600",
@@ -149,7 +164,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-15": {
+  {
+    "date": "2018-03-15",
     "open": "1149.9600",
     "high": "1161.0800",
     "low": "1134.5400",
@@ -159,7 +175,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-14": {
+  {
+    "date": "2018-03-14",
     "open": "1145.2100",
     "high": "1158.5900",
     "low": "1141.4400",
@@ -169,7 +186,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-13": {
+  {
+    "date": "2018-03-13",
     "open": "1170.0000",
     "high": "1176.7600",
     "low": "1133.3300",
@@ -179,7 +197,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-12": {
+  {
+    "date": "2018-03-12",
     "open": "1163.8500",
     "high": "1177.0500",
     "low": "1157.4200",
@@ -189,7 +208,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-09": {
+  {
+    "date": "2018-03-09",
     "open": "1136.0000",
     "high": "1160.8000",
     "low": "1132.4600",
@@ -199,7 +219,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-08": {
+  {
+    "date": "2018-03-08",
     "open": "1115.3200",
     "high": "1127.6000",
     "low": "1112.8000",
@@ -209,7 +230,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-07": {
+  {
+    "date": "2018-03-07",
     "open": "1089.1900",
     "high": "1112.2200",
     "low": "1085.4800",
@@ -219,7 +241,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-06": {
+  {
+    "date": "2018-03-06",
     "open": "1099.2200",
     "high": "1101.8500",
     "low": "1089.7800",
@@ -229,7 +252,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-05": {
+  {
+    "date": "2018-03-05",
     "open": "1075.1400",
     "high": "1097.1000",
     "low": "1069.0000",
@@ -239,7 +263,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-02": {
+  {
+    "date": "2018-03-02",
     "open": "1053.0800",
     "high": "1082.0000",
     "low": "1048.1200",
@@ -249,7 +274,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-01": {
+  {
+    "date": "2018-03-01",
     "open": "1107.8700",
     "high": "1110.1200",
     "low": "1067.0000",
@@ -259,7 +285,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-28": {
+  {
+    "date": "2018-02-28",
     "open": "1123.0300",
     "high": "1127.5300",
     "low": "1103.2400",
@@ -269,7 +296,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-27": {
+  {
+    "date": "2018-02-27",
     "open": "1141.2400",
     "high": "1144.0400",
     "low": "1118.0000",
@@ -279,7 +307,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-26": {
+  {
+    "date": "2018-02-26",
     "open": "1127.8000",
     "high": "1143.9600",
     "low": "1126.6900",
@@ -289,7 +318,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-23": {
+  {
+    "date": "2018-02-23",
     "open": "1112.6400",
     "high": "1127.2800",
     "low": "1104.7100",
@@ -299,7 +329,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-22": {
+  {
+    "date": "2018-02-22",
     "open": "1116.1900",
     "high": "1122.8200",
     "low": "1102.5900",
@@ -309,7 +340,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-21": {
+  {
+    "date": "2018-02-21",
     "open": "1106.4700",
     "high": "1133.9700",
     "low": "1106.3300",
@@ -319,7 +351,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-20": {
+  {
+    "date": "2018-02-20",
     "open": "1090.5700",
     "high": "1113.9500",
     "low": "1088.5200",
@@ -329,7 +362,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-16": {
+  {
+    "date": "2018-02-16",
     "open": "1088.4100",
     "high": "1104.6700",
     "low": "1088.3100",
@@ -339,7 +373,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-15": {
+  {
+    "date": "2018-02-15",
     "open": "1079.0700",
     "high": "1091.4800",
     "low": "1064.3400",
@@ -349,7 +384,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-14": {
+  {
+    "date": "2018-02-14",
     "open": "1048.9500",
     "high": "1071.7200",
     "low": "1046.7500",
@@ -359,7 +395,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-13": {
+  {
+    "date": "2018-02-13",
     "open": "1045.0000",
     "high": "1058.3700",
     "low": "1044.0900",
@@ -369,7 +406,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-12": {
+  {
+    "date": "2018-02-12",
     "open": "1048.0000",
     "high": "1061.5000",
     "low": "1040.9300",
@@ -379,7 +417,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-09": {
+  {
+    "date": "2018-02-09",
     "open": "1017.2500",
     "high": "1043.9700",
     "low": "992.5600",
@@ -389,7 +428,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-08": {
+  {
+    "date": "2018-02-08",
     "open": "1055.4100",
     "high": "1058.6200",
     "low": "1000.6600",
@@ -399,7 +439,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-07": {
+  {
+    "date": "2018-02-07",
     "open": "1081.5400",
     "high": "1081.7800",
     "low": "1048.2600",
@@ -409,7 +450,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-06": {
+  {
+    "date": "2018-02-06",
     "open": "1027.1800",
     "high": "1081.7100",
     "low": "1023.1400",
@@ -419,7 +461,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-05": {
+  {
+    "date": "2018-02-05",
     "open": "1090.6000",
     "high": "1110.0000",
     "low": "1052.0300",
@@ -429,7 +472,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-02": {
+  {
+    "date": "2018-02-02",
     "open": "1122.0000",
     "high": "1123.0700",
     "low": "1107.2800",
@@ -439,7 +483,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-01": {
+  {
+    "date": "2018-02-01",
     "open": "1162.6100",
     "high": "1174.0000",
     "low": "1157.5200",
@@ -449,7 +494,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-31": {
+  {
+    "date": "2018-01-31",
     "open": "1170.5700",
     "high": "1173.0000",
     "low": "1159.1300",
@@ -459,7 +505,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-30": {
+  {
+    "date": "2018-01-30",
     "open": "1167.8300",
     "high": "1176.5200",
     "low": "1163.5200",
@@ -469,7 +516,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-29": {
+  {
+    "date": "2018-01-29",
     "open": "1176.4800",
     "high": "1186.8900",
     "low": "1171.9800",
@@ -479,7 +527,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-26": {
+  {
+    "date": "2018-01-26",
     "open": "1175.0800",
     "high": "1175.8400",
     "low": "1158.1100",
@@ -489,7 +538,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-25": {
+  {
+    "date": "2018-01-25",
     "open": "1172.5300",
     "high": "1175.9400",
     "low": "1162.7600",
@@ -499,7 +549,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-24": {
+  {
+    "date": "2018-01-24",
     "open": "1177.3300",
     "high": "1179.8600",
     "low": "1161.0500",
@@ -509,7 +560,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-23": {
+  {
+    "date": "2018-01-23",
     "open": "1159.8500",
     "high": "1171.6300",
     "low": "1158.7500",
@@ -519,7 +571,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-22": {
+  {
+    "date": "2018-01-22",
     "open": "1137.4900",
     "high": "1159.8800",
     "low": "1135.1100",
@@ -529,7 +582,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-19": {
+  {
+    "date": "2018-01-19",
     "open": "1131.8300",
     "high": "1137.8600",
     "low": "1128.3000",
@@ -539,7 +593,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-18": {
+  {
+    "date": "2018-01-18",
     "open": "1131.4100",
     "high": "1132.5100",
     "low": "1117.5000",
@@ -549,7 +604,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-17": {
+  {
+    "date": "2018-01-17",
     "open": "1126.2200",
     "high": "1132.6000",
     "low": "1117.0100",
@@ -559,7 +615,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-16": {
+  {
+    "date": "2018-01-16",
     "open": "1132.5100",
     "high": "1139.9100",
     "low": "1117.8300",
@@ -569,7 +626,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-12": {
+  {
+    "date": "2018-01-12",
     "open": "1102.4100",
     "high": "1124.2900",
     "low": "1101.1500",
@@ -579,7 +637,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-11": {
+  {
+    "date": "2018-01-11",
     "open": "1106.3000",
     "high": "1106.5300",
     "low": "1099.5900",
@@ -589,7 +648,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-10": {
+  {
+    "date": "2018-01-10",
     "open": "1097.1000",
     "high": "1104.6000",
     "low": "1096.1100",
@@ -599,7 +659,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-09": {
+  {
+    "date": "2018-01-09",
     "open": "1109.4000",
     "high": "1110.5700",
     "low": "1101.2300",
@@ -609,7 +670,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-08": {
+  {
+    "date": "2018-01-08",
     "open": "1102.2300",
     "high": "1111.2700",
     "low": "1101.6200",
@@ -619,7 +681,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-05": {
+  {
+    "date": "2018-01-05",
     "open": "1094.0000",
     "high": "1104.2500",
     "low": "1092.0000",
@@ -629,7 +692,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-04": {
+  {
+    "date": "2018-01-04",
     "open": "1088.0000",
     "high": "1093.5700",
     "low": "1084.0000",
@@ -639,7 +703,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-03": {
+  {
+    "date": "2018-01-03",
     "open": "1064.3100",
     "high": "1086.2900",
     "low": "1063.2100",
@@ -649,7 +714,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-02": {
+  {
+    "date": "2018-01-02",
     "open": "1048.3400",
     "high": "1066.9400",
     "low": "1045.2300",
@@ -659,7 +725,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-29": {
+  {
+    "date": "2017-12-29",
     "open": "1046.7200",
     "high": "1049.7000",
     "low": "1044.9000",
@@ -669,7 +736,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-28": {
+  {
+    "date": "2017-12-28",
     "open": "1051.6000",
     "high": "1054.7500",
     "low": "1044.7700",
@@ -679,7 +747,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-27": {
+  {
+    "date": "2017-12-27",
     "open": "1057.3900",
     "high": "1058.3700",
     "low": "1048.0500",
@@ -689,7 +758,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-26": {
+  {
+    "date": "2017-12-26",
     "open": "1058.0700",
     "high": "1060.1200",
     "low": "1050.2000",
@@ -699,7 +769,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-22": {
+  {
+    "date": "2017-12-22",
     "open": "1061.1100",
     "high": "1064.2000",
     "low": "1059.4400",
@@ -709,7 +780,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-21": {
+  {
+    "date": "2017-12-21",
     "open": "1064.9500",
     "high": "1069.3300",
     "low": "1061.7900",
@@ -719,7 +791,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-20": {
+  {
+    "date": "2017-12-20",
     "open": "1071.7800",
     "high": "1073.3800",
     "low": "1061.5200",
@@ -729,7 +802,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-19": {
+  {
+    "date": "2017-12-19",
     "open": "1075.2000",
     "high": "1076.8400",
     "low": "1063.5500",
@@ -739,7 +813,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-18": {
+  {
+    "date": "2017-12-18",
     "open": "1066.0800",
     "high": "1078.4900",
     "low": "1062.0000",
@@ -749,7 +824,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-15": {
+  {
+    "date": "2017-12-15",
     "open": "1054.6100",
     "high": "1067.6200",
     "low": "1049.5000",
@@ -759,7 +835,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-14": {
+  {
+    "date": "2017-12-14",
     "open": "1045.0000",
     "high": "1058.5000",
     "low": "1043.1100",
@@ -769,7 +846,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-13": {
+  {
+    "date": "2017-12-13",
     "open": "1046.1200",
     "high": "1046.6600",
     "low": "1038.3800",
@@ -779,7 +857,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-12": {
+  {
+    "date": "2017-12-12",
     "open": "1039.6300",
     "high": "1050.3100",
     "low": "1033.6900",
@@ -789,7 +868,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-11": {
+  {
+    "date": "2017-12-11",
     "open": "1035.5000",
     "high": "1043.8000",
     "low": "1032.0500",
@@ -799,7 +879,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-08": {
+  {
+    "date": "2017-12-08",
     "open": "1037.4900",
     "high": "1042.0500",
     "low": "1032.5200",
@@ -809,7 +890,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-07": {
+  {
+    "date": "2017-12-07",
     "open": "1020.4300",
     "high": "1034.2400",
     "low": "1018.0700",
@@ -819,7 +901,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-06": {
+  {
+    "date": "2017-12-06",
     "open": "1001.5000",
     "high": "1024.9700",
     "low": "1001.1400",
@@ -829,7 +912,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-05": {
+  {
+    "date": "2017-12-05",
     "open": "995.9400",
     "high": "1020.6100",
     "low": "988.2800",
@@ -839,7 +923,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-04": {
+  {
+    "date": "2017-12-04",
     "open": "1012.6600",
     "high": "1016.1000",
     "low": "995.5700",
@@ -849,7 +934,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-01": {
+  {
+    "date": "2017-12-01",
     "open": "1015.8000",
     "high": "1022.4900",
     "low": "1002.0200",
@@ -859,7 +945,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-30": {
+  {
+    "date": "2017-11-30",
     "open": "1022.3700",
     "high": "1028.4900",
     "low": "1015.0000",
@@ -869,7 +956,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-29": {
+  {
+    "date": "2017-11-29",
     "open": "1042.6800",
     "high": "1044.0800",
     "low": "1015.6500",
@@ -879,7 +967,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-28": {
+  {
+    "date": "2017-11-28",
     "open": "1055.0900",
     "high": "1062.3800",
     "low": "1040.0000",
@@ -889,7 +978,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-27": {
+  {
+    "date": "2017-11-27",
     "open": "1040.0000",
     "high": "1055.4600",
     "low": "1038.4400",
@@ -899,7 +989,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-24": {
+  {
+    "date": "2017-11-24",
     "open": "1035.8700",
     "high": "1043.1800",
     "low": "1035.0000",
@@ -909,7 +1000,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-22": {
+  {
+    "date": "2017-11-22",
     "open": "1035.0000",
     "high": "1039.7060",
     "low": "1031.4300",
@@ -919,7 +1011,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-21": {
+  {
+    "date": "2017-11-21",
     "open": "1023.3100",
     "high": "1035.1100",
     "low": "1022.6550",
@@ -929,7 +1022,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-20": {
+  {
+    "date": "2017-11-20",
     "open": "1020.2600",
     "high": "1022.6100",
     "low": "1017.5000",
@@ -939,7 +1033,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-17": {
+  {
+    "date": "2017-11-17",
     "open": "1034.0100",
     "high": "1034.4200",
     "low": "1017.7500",
@@ -949,7 +1044,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-16": {
+  {
+    "date": "2017-11-16",
     "open": "1022.5200",
     "high": "1035.9200",
     "low": "1022.5200",
@@ -959,7 +1055,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-15": {
+  {
+    "date": "2017-11-15",
     "open": "1019.2100",
     "high": "1024.0900",
     "low": "1015.4200",
@@ -969,7 +1066,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-14": {
+  {
+    "date": "2017-11-14",
     "open": "1022.5900",
     "high": "1026.8100",
     "low": "1014.1500",
@@ -979,7 +1077,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-13": {
+  {
+    "date": "2017-11-13",
     "open": "1023.4200",
     "high": "1031.5800",
     "low": "1022.5700",
@@ -989,7 +1088,8 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-10": {
+  {
+    "date": "2017-11-10",
     "open": "1026.4600",
     "high": "1030.7600",
     "low": "1025.2800",
@@ -999,4 +1099,4 @@ const GOOG_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-};
+];

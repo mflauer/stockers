@@ -1,5 +1,6 @@
-const AMZN_DAY = {
-  "2018-04-06": {
+const AMZN_DAY = [
+  {
+    "date": "2018-04-06",
     "open": "1429.9700",
     "high": "1452.5020",
     "low": "1403.3400",
@@ -9,7 +10,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-05": {
+  {
+    "date": "2018-04-05",
     "open": "1441.9900",
     "high": "1459.5600",
     "low": "1427.0700",
@@ -19,7 +21,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-04": {
+  {
+    "date": "2018-04-04",
     "open": "1358.2400",
     "high": "1415.3900",
     "low": "1352.8800",
@@ -29,7 +32,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-03": {
+  {
+    "date": "2018-04-03",
     "open": "1391.3800",
     "high": "1414.0000",
     "low": "1355.3300",
@@ -39,7 +43,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-04-02": {
+  {
+    "date": "2018-04-02",
     "open": "1417.6200",
     "high": "1421.3600",
     "low": "1355.0000",
@@ -49,7 +54,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-29": {
+  {
+    "date": "2018-03-29",
     "open": "1406.0000",
     "high": "1455.4700",
     "low": "1365.2000",
@@ -59,7 +65,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-28": {
+  {
+    "date": "2018-03-28",
     "open": "1447.0000",
     "high": "1455.9000",
     "low": "1386.1700",
@@ -69,7 +76,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-27": {
+  {
+    "date": "2018-03-27",
     "open": "1572.4000",
     "high": "1575.9600",
     "low": "1482.3200",
@@ -79,7 +87,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-26": {
+  {
+    "date": "2018-03-26",
     "open": "1530.0000",
     "high": "1556.9900",
     "low": "1499.2500",
@@ -89,7 +98,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-23": {
+  {
+    "date": "2018-03-23",
     "open": "1539.0100",
     "high": "1549.0200",
     "low": "1495.3600",
@@ -99,7 +109,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-22": {
+  {
+    "date": "2018-03-22",
     "open": "1565.4700",
     "high": "1573.8500",
     "low": "1542.4000",
@@ -109,7 +120,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-21": {
+  {
+    "date": "2018-03-21",
     "open": "1586.4500",
     "high": "1590.0000",
     "low": "1563.1700",
@@ -119,7 +131,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-20": {
+  {
+    "date": "2018-03-20",
     "open": "1550.3400",
     "high": "1587.0000",
     "low": "1545.4100",
@@ -129,7 +142,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-19": {
+  {
+    "date": "2018-03-19",
     "open": "1554.5300",
     "high": "1561.6600",
     "low": "1525.3500",
@@ -139,7 +153,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-16": {
+  {
+    "date": "2018-03-16",
     "open": "1583.4500",
     "high": "1589.4400",
     "low": "1567.5000",
@@ -149,7 +164,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-15": {
+  {
+    "date": "2018-03-15",
     "open": "1595.0000",
     "high": "1596.9100",
     "low": "1578.1100",
@@ -159,7 +175,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-14": {
+  {
+    "date": "2018-03-14",
     "open": "1597.0000",
     "high": "1606.4400",
     "low": "1590.8900",
@@ -169,7 +186,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-13": {
+  {
+    "date": "2018-03-13",
     "open": "1615.9600",
     "high": "1617.5400",
     "low": "1578.0100",
@@ -179,7 +197,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-12": {
+  {
+    "date": "2018-03-12",
     "open": "1592.6000",
     "high": "1605.3300",
     "low": "1586.7000",
@@ -189,7 +208,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-09": {
+  {
+    "date": "2018-03-09",
     "open": "1563.5000",
     "high": "1578.9400",
     "low": "1559.0800",
@@ -199,7 +219,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-08": {
+  {
+    "date": "2018-03-08",
     "open": "1550.0000",
     "high": "1554.8800",
     "low": "1545.2500",
@@ -209,7 +230,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-07": {
+  {
+    "date": "2018-03-07",
     "open": "1526.5200",
     "high": "1545.9000",
     "low": "1522.5100",
@@ -219,7 +241,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-06": {
+  {
+    "date": "2018-03-06",
     "open": "1533.2000",
     "high": "1542.1300",
     "low": "1528.0000",
@@ -229,7 +252,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-05": {
+  {
+    "date": "2018-03-05",
     "open": "1494.2400",
     "high": "1525.3800",
     "low": "1481.0000",
@@ -239,7 +263,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-02": {
+  {
+    "date": "2018-03-02",
     "open": "1469.1000",
     "high": "1501.0500",
     "low": "1455.0100",
@@ -249,7 +274,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-03-01": {
+  {
+    "date": "2018-03-01",
     "open": "1513.6000",
     "high": "1518.4900",
     "low": "1465.0000",
@@ -259,7 +285,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-28": {
+  {
+    "date": "2018-02-28",
     "open": "1519.5100",
     "high": "1528.7000",
     "low": "1512.0000",
@@ -269,7 +296,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-27": {
+  {
+    "date": "2018-02-27",
     "open": "1524.5000",
     "high": "1526.7800",
     "low": "1507.2100",
@@ -279,7 +307,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-26": {
+  {
+    "date": "2018-02-26",
     "open": "1509.2000",
     "high": "1522.8400",
     "low": "1507.0000",
@@ -289,7 +318,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-23": {
+  {
+    "date": "2018-02-23",
     "open": "1495.3400",
     "high": "1500.0000",
     "low": "1486.5000",
@@ -299,7 +329,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-22": {
+  {
+    "date": "2018-02-22",
     "open": "1495.3600",
     "high": "1502.5400",
     "low": "1475.7600",
@@ -309,7 +340,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-21": {
+  {
+    "date": "2018-02-21",
     "open": "1485.0000",
     "high": "1503.4900",
     "low": "1478.9200",
@@ -319,7 +351,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-20": {
+  {
+    "date": "2018-02-20",
     "open": "1446.4900",
     "high": "1488.7700",
     "low": "1446.4900",
@@ -329,7 +362,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-16": {
+  {
+    "date": "2018-02-16",
     "open": "1457.3700",
     "high": "1465.8000",
     "low": "1446.5600",
@@ -339,7 +373,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-15": {
+  {
+    "date": "2018-02-15",
     "open": "1466.8900",
     "high": "1468.9400",
     "low": "1436.8400",
@@ -349,7 +384,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-14": {
+  {
+    "date": "2018-02-14",
     "open": "1406.2500",
     "high": "1452.0600",
     "low": "1403.3600",
@@ -359,7 +395,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-13": {
+  {
+    "date": "2018-02-13",
     "open": "1385.9300",
     "high": "1419.7200",
     "low": "1383.5300",
@@ -369,7 +406,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-12": {
+  {
+    "date": "2018-02-12",
     "open": "1364.6700",
     "high": "1393.8100",
     "low": "1344.0100",
@@ -379,7 +417,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-09": {
+  {
+    "date": "2018-02-09",
     "open": "1373.4900",
     "high": "1383.5000",
     "low": "1265.9300",
@@ -389,7 +428,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-08": {
+  {
+    "date": "2018-02-08",
     "open": "1429.6700",
     "high": "1433.7500",
     "low": "1349.9400",
@@ -399,7 +439,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-07": {
+  {
+    "date": "2018-02-07",
     "open": "1449.0000",
     "high": "1460.9900",
     "low": "1415.1500",
@@ -409,7 +450,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-06": {
+  {
+    "date": "2018-02-06",
     "open": "1361.4600",
     "high": "1443.9900",
     "low": "1351.7900",
@@ -419,7 +461,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-05": {
+  {
+    "date": "2018-02-05",
     "open": "1402.6200",
     "high": "1458.9800",
     "low": "1320.7200",
@@ -429,7 +472,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-02": {
+  {
+    "date": "2018-02-02",
     "open": "1477.3900",
     "high": "1498.0000",
     "low": "1414.0000",
@@ -439,7 +483,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-02-01": {
+  {
+    "date": "2018-02-01",
     "open": "1445.0000",
     "high": "1459.8800",
     "low": "1385.1400",
@@ -449,7 +494,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-31": {
+  {
+    "date": "2018-01-31",
     "open": "1451.3000",
     "high": "1472.5800",
     "low": "1450.0400",
@@ -459,7 +505,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-30": {
+  {
+    "date": "2018-01-30",
     "open": "1403.1700",
     "high": "1439.2500",
     "low": "1392.0000",
@@ -469,7 +516,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-29": {
+  {
+    "date": "2018-01-29",
     "open": "1409.1800",
     "high": "1431.3900",
     "low": "1400.4400",
@@ -479,7 +527,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-26": {
+  {
+    "date": "2018-01-26",
     "open": "1392.0100",
     "high": "1402.5300",
     "low": "1380.9100",
@@ -489,7 +538,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-25": {
+  {
+    "date": "2018-01-25",
     "open": "1368.0000",
     "high": "1378.3400",
     "low": "1357.6200",
@@ -499,7 +549,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-24": {
+  {
+    "date": "2018-01-24",
     "open": "1374.8200",
     "high": "1388.1600",
     "low": "1338.0000",
@@ -509,7 +560,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-23": {
+  {
+    "date": "2018-01-23",
     "open": "1338.0900",
     "high": "1364.9000",
     "low": "1337.3400",
@@ -519,7 +571,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-22": {
+  {
+    "date": "2018-01-22",
     "open": "1297.1700",
     "high": "1327.4500",
     "low": "1296.6600",
@@ -529,7 +582,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-19": {
+  {
+    "date": "2018-01-19",
     "open": "1312.0000",
     "high": "1313.0000",
     "low": "1292.9900",
@@ -539,7 +593,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-18": {
+  {
+    "date": "2018-01-18",
     "open": "1293.9500",
     "high": "1304.6000",
     "low": "1284.0200",
@@ -549,7 +604,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-17": {
+  {
+    "date": "2018-01-17",
     "open": "1312.2400",
     "high": "1314.0000",
     "low": "1280.8800",
@@ -559,7 +615,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-16": {
+  {
+    "date": "2018-01-16",
     "open": "1323.0000",
     "high": "1339.9400",
     "low": "1292.3000",
@@ -569,7 +626,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-12": {
+  {
+    "date": "2018-01-12",
     "open": "1273.3900",
     "high": "1305.7600",
     "low": "1273.3900",
@@ -579,7 +637,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-11": {
+  {
+    "date": "2018-01-11",
     "open": "1259.7400",
     "high": "1276.7700",
     "low": "1256.4600",
@@ -589,7 +648,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-10": {
+  {
+    "date": "2018-01-10",
     "open": "1245.1500",
     "high": "1254.3300",
     "low": "1237.2300",
@@ -599,7 +659,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-09": {
+  {
+    "date": "2018-01-09",
     "open": "1256.9000",
     "high": "1259.3300",
     "low": "1241.7600",
@@ -609,7 +670,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-08": {
+  {
+    "date": "2018-01-08",
     "open": "1236.0000",
     "high": "1253.0800",
     "low": "1232.0300",
@@ -619,7 +681,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-05": {
+  {
+    "date": "2018-01-05",
     "open": "1217.5100",
     "high": "1229.1400",
     "low": "1210.0000",
@@ -629,7 +692,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-04": {
+  {
+    "date": "2018-01-04",
     "open": "1205.0000",
     "high": "1215.8700",
     "low": "1204.6600",
@@ -639,7 +703,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-03": {
+  {
+    "date": "2018-01-03",
     "open": "1188.3000",
     "high": "1205.4900",
     "low": "1188.3000",
@@ -649,7 +714,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2018-01-02": {
+  {
+    "date": "2018-01-02",
     "open": "1172.0000",
     "high": "1190.0000",
     "low": "1170.5100",
@@ -659,7 +725,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-29": {
+  {
+    "date": "2017-12-29",
     "open": "1182.3500",
     "high": "1184.0000",
     "low": "1167.5000",
@@ -669,7 +736,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-28": {
+  {
+    "date": "2017-12-28",
     "open": "1189.0000",
     "high": "1190.1000",
     "low": "1184.3800",
@@ -679,7 +747,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-27": {
+  {
+    "date": "2017-12-27",
     "open": "1179.9100",
     "high": "1187.2900",
     "low": "1175.6100",
@@ -689,7 +758,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-26": {
+  {
+    "date": "2017-12-26",
     "open": "1168.3600",
     "high": "1178.3200",
     "low": "1160.5500",
@@ -699,7 +769,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-22": {
+  {
+    "date": "2017-12-22",
     "open": "1172.0800",
     "high": "1174.6200",
     "low": "1167.8300",
@@ -709,7 +780,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-21": {
+  {
+    "date": "2017-12-21",
     "open": "1175.9000",
     "high": "1179.1700",
     "low": "1167.6400",
@@ -719,7 +791,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-20": {
+  {
+    "date": "2017-12-20",
     "open": "1190.5000",
     "high": "1191.0000",
     "low": "1176.0000",
@@ -729,7 +802,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-19": {
+  {
+    "date": "2017-12-19",
     "open": "1189.1500",
     "high": "1192.9700",
     "low": "1179.1400",
@@ -739,7 +813,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-18": {
+  {
+    "date": "2017-12-18",
     "open": "1187.3700",
     "high": "1194.7800",
     "low": "1180.9100",
@@ -749,7 +824,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-15": {
+  {
+    "date": "2017-12-15",
     "open": "1179.0300",
     "high": "1182.7500",
     "low": "1169.3300",
@@ -759,7 +835,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-14": {
+  {
+    "date": "2017-12-14",
     "open": "1163.7100",
     "high": "1177.9300",
     "low": "1162.4500",
@@ -769,7 +846,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-13": {
+  {
+    "date": "2017-12-13",
     "open": "1170.0000",
     "high": "1170.8700",
     "low": "1160.2700",
@@ -779,7 +857,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-12": {
+  {
+    "date": "2017-12-12",
     "open": "1166.5100",
     "high": "1173.6000",
     "low": "1161.6100",
@@ -789,7 +868,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-11": {
+  {
+    "date": "2017-12-11",
     "open": "1164.6000",
     "high": "1169.9000",
     "low": "1157.0000",
@@ -799,7 +879,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-08": {
+  {
+    "date": "2017-12-08",
     "open": "1170.4000",
     "high": "1172.7900",
     "low": "1157.1000",
@@ -809,7 +890,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-07": {
+  {
+    "date": "2017-12-07",
     "open": "1156.5900",
     "high": "1163.1900",
     "low": "1151.0000",
@@ -819,7 +901,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-06": {
+  {
+    "date": "2017-12-06",
     "open": "1137.9900",
     "high": "1155.8900",
     "low": "1136.0800",
@@ -829,7 +912,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-05": {
+  {
+    "date": "2017-12-05",
     "open": "1128.2600",
     "high": "1159.2700",
     "low": "1124.7400",
@@ -839,7 +923,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-04": {
+  {
+    "date": "2017-12-04",
     "open": "1173.8500",
     "high": "1175.2000",
     "low": "1128.0000",
@@ -849,7 +934,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-12-01": {
+  {
+    "date": "2017-12-01",
     "open": "1172.0500",
     "high": "1179.6500",
     "low": "1152.0000",
@@ -859,7 +945,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-30": {
+  {
+    "date": "2017-11-30",
     "open": "1167.1000",
     "high": "1178.5700",
     "low": "1160.0000",
@@ -869,7 +956,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-29": {
+  {
+    "date": "2017-11-29",
     "open": "1194.8000",
     "high": "1194.8000",
     "low": "1145.1900",
@@ -879,7 +967,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-28": {
+  {
+    "date": "2017-11-28",
     "open": "1204.8800",
     "high": "1205.3400",
     "low": "1188.5200",
@@ -889,7 +978,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-27": {
+  {
+    "date": "2017-11-27",
     "open": "1202.6600",
     "high": "1213.4100",
     "low": "1191.1500",
@@ -899,7 +989,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-24": {
+  {
+    "date": "2017-11-24",
     "open": "1160.7000",
     "high": "1186.8400",
     "low": "1160.7000",
@@ -909,7 +1000,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-22": {
+  {
+    "date": "2017-11-22",
     "open": "1141.0000",
     "high": "1160.2700",
     "low": "1141.0000",
@@ -919,7 +1011,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-21": {
+  {
+    "date": "2017-11-21",
     "open": "1132.8600",
     "high": "1140.0000",
     "low": "1128.2000",
@@ -929,7 +1022,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-20": {
+  {
+    "date": "2017-11-20",
     "open": "1129.7700",
     "high": "1133.4200",
     "low": "1122.5500",
@@ -939,7 +1033,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-17": {
+  {
+    "date": "2017-11-17",
     "open": "1138.2800",
     "high": "1138.8000",
     "low": "1125.8100",
@@ -949,7 +1044,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-16": {
+  {
+    "date": "2017-11-16",
     "open": "1130.1600",
     "high": "1138.1600",
     "low": "1130.0500",
@@ -959,7 +1055,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-15": {
+  {
+    "date": "2017-11-15",
     "open": "1127.0100",
     "high": "1131.7500",
     "low": "1121.6300",
@@ -969,7 +1066,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-14": {
+  {
+    "date": "2017-11-14",
     "open": "1130.1100",
     "high": "1138.0000",
     "low": "1123.8900",
@@ -979,7 +1077,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-13": {
+  {
+    "date": "2017-11-13",
     "open": "1123.0000",
     "high": "1139.9000",
     "low": "1122.3400",
@@ -989,7 +1088,8 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-  "2017-11-10": {
+  {
+    "date": "2017-11-10",
     "open": "1126.1000",
     "high": "1131.7500",
     "low": "1124.0600",
@@ -999,4 +1099,4 @@ const AMZN_DAY = {
     "dividend amount": "0.0000",
     "split coefficient": "1.0000"
   },
-};
+];
