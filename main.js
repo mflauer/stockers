@@ -20,7 +20,21 @@ $('.selector>.item').click(function(e) {
   }
 });
 
+// add the values you can search for to the search bar
 $('.ui.search').search({
     source: SEARCH_CONTENT
   })
 ;
+
+
+for (var stockObject in compareStocks) {
+  var tileLabel = stockObject.ticker.toUpperCase();
+  var checkedClass = stockObject.isChecked ? ' checked' : '';
+  var stockTile = '<div class="item container">\
+                  <button type="button" class="mini circular ui icon button ">\
+                    <i class="check icon' + checkedClass + '"></i>\
+                  </button>\
+                  <a>' + stockObject.ticker + '</a>\
+                </div>'
+  $('#compare-stocks').append(stockTile)
+}
