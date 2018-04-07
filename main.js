@@ -1,9 +1,25 @@
 // graph start dates
-//var portfolioGraphDate = compareGraphDate = getStartDate('1D');
+var portfolioGraphData, compareTableData;
 
 // table start times
 var portfolioTableDate, compareTableDate;
 
+
+$('.selector>.item').click(function(e) {
+  var timeRangeElement = $(e.target);
+
+  // remove 'active' class from other time range menu items
+  timeRangeElement.siblings().removeClass('active');
+  timeRangeElement.addClass('active');
+
+  var timeRange = timeRangeElement.text();
+  var section = timeRangeElement.parent().attr('id').split('-')[0];
+  if (section == 'portfolio') {
+    portfolioGraphData = getData(portfolioStocks, timeRange);
+  } else if (section == 'compare') {
+    compareGraphData = getData(compareStocks, timeRange);
+  }
+});
 // example
 // `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=${API_KEY}`
 
@@ -46,7 +62,6 @@ var area = d3.svg.area()
 var date_list = [];
 var price_list = [];
 function parsedata(data) {
-  console.log(data);
   //var parse = d3.time.format("%b %Y").parse;
   //console.log(parse);
   //js date objects
@@ -138,25 +153,4 @@ d3.timer(function() {
     draw(n - 1);
     return true;
   }
-});
-}
-
-
-$('.selector>.item').click(function(e) {
-  var timeRangeElement = $(e.target);
-
-  // remove 'active' class from other time range menu items
-  timeRangeElement.siblings().removeClass('active');
-  timeRangeElement.addClass('active');
-
-  var startDate = getStartDate(timeRangeElement.text())
-
-  var section = timeRangeElement.parent().attr('id').split('-')[0];
-  if (section == 'portfolio') {
-    portfolioGraphDate = startDate;
-  } else if (section == 'compare') {
-    compareGraphDate = startDate
-  }
-
-
 });
