@@ -20,3 +20,8 @@ $('.selector>.item').click(function(e) {
     compareGraphDate = startDate
   }
 });
+
+$('.ui.search').search({
+    source: SEARCH_CONTENT
+  })
+;
