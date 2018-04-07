@@ -49,9 +49,46 @@ function getGraphData(tickers, timeRange) {
 
 
 //////////////////////////////
+// Load page content
+//////////////////////////////
+
+// compare stocks
+var compareTickers = getCompareTickers();
+for (var i in compareTickers) {
+  var ticker = compareTickers[i];
+  var isChecked = getCompareChecked(ticker);
+
+  // company item
+  var checkedClass = isChecked ? 'check ' : '';
+  var stockTile = '<div id="' + ticker + '-item" class="item">\
+                    <button type="button" class="mini circular ui icon button compare-check-button">\
+                      <i class="' + checkedClass + 'icon"></i>\
+                    </button>\
+                    <a>' + ticker.toUpperCase() + '</a>\
+                  </div>';
+  $('#compare-stocks').append(stockTile);
+   
+  // company table row
+  var data = getData(ticker);
+  var pe_ratio = data['pe_ratio'];
+  var mkt_cap = data['mkt_cap'];
+  var hideClass = isChecked ? '' : 'hide';
+  var stockTableRow = '<tr id="' + ticker + '-compare-row" class="' + hideClass + '">\
+                        <td>' + ticker.toUpperCase() + '</td>\
+                        <td class="right aligned">$1000</td>\
+                        <td class="right aligned">2.5%</td>\
+                        <td class="right aligned">' + mkt_cap + '</td>\
+                        <td class="right aligned">' + pe_ratio + '</td>\
+                      </tr>';
+  $('#compare-table>tbody').append(stockTableRow);
+}
+
+
+//////////////////////////////
 // UI
 //////////////////////////////
 
+// time range selectors
 $('.selector>.item').click(function(e) {
   var timeRangeElement = $(e.target);
 
@@ -71,46 +108,12 @@ $('.selector>.item').click(function(e) {
 // add data to search bar
 $('.ui.search').search({ source: SEARCH_CONTENT });
 
-var compareTickers = getCompareTickers();
-for (var tickerIndex in compareTickers) {
-  var ticker = compareTickers[tickerIndex];
-  var isChecked = getCompareChecked(ticker);
-
-  var checkedClass = isChecked ? 'check ' : '';
-
-  var stockTile = '<div id="' + ticker + '" class="item">\
-                    <button type="button" class="mini circular ui icon button compare-check-button">\
-                      <i class="' + checkedClass + 'icon"></i>\
-                    </button>\
-                    <a>' + ticker.toUpperCase() + '</a>\
-                  </div>'
-
-  $('#compare-stocks').append(stockTile);
-
-  var pe_ratio = DATA[ticker]['pe_ratio'];
-  var mkt_cap = DATA[ticker]['mkt_cap'];
-  var hiddenRowClass = isChecked ? '' : 'hidden-row' 
-  var stockTableRow = '<tr id="' + ticker + '" class="' + hiddenRowClass + '">\
-                        <td>Company</td>\
-                        <td class="right aligned">$1000</td>\
-                        <td class="right aligned">2.5%</td>\
-                        <td class="right aligned">' + mkt_cap + '</td>\
-                        <td class="right aligned">' + pe_ratio + '</td>\
-                      </tr>'
-
-  $('#compare-table>tbody').append(stockTableRow);
-}
-
+// show and hide from compare
 $(".compare-check-button").each((index, button) => {
   $(button).click(() => {
-    var ticker = $(button).parent().attr('id');
-    toggleCompareChecked(ticker);
-
-    // update the frontend checkbox to reflect the backend change
-    var buttonIcon = $(button).children('i')[0];
-    $(buttonIcon).toggleClass('check');
+    toggleCompareChecked($(button).parent().attr('id').split('-')[0]);
+    $($(button).children('i')[0]).toggleClass('check');
     $(button).blur();
-
     $('#compare-table>tbody>#'+ticker).toggleClass('hidden-row');
   })
 })
