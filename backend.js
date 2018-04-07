@@ -8,7 +8,7 @@ const SEARCH_CONTENT = [
   {title: 'ddddd'},
 ];
 
-const DATA = {
+const STOCK_DATA = {
   'AAPL': {
     'min': AAPL_MIN,
     'day': AAPL_DAY,
@@ -39,8 +39,13 @@ const DATA = {
   },
 };
 
-const CURRENT_DATE = new Date(2018, 3, 6, 15, 5, 0, 0).getTime(); //'2018-04-06 15:05:00';
-const EARLIEST_DATE = new Date('2000-01-14').getTime();
+function getData(ticker) {
+  if (ticker in DATA) {
+    return STOCK_DATA[ticker];
+  } else {
+    return STOCK_DATA[Object.keys(DATA)[Math.floor(Math.random() * 4)]];
+  }
+}
 
 const TIME_RANGE_INTERVAL = {
   '1D': { n: 1, interval: 'min' },
@@ -52,12 +57,8 @@ const TIME_RANGE_INTERVAL = {
   '5Y': { n: 260, interval: 'week' },
 }
 
-function getData(ticker) {
-  if (ticker in DATA) {
-    return DATA[ticker];
-  } else {
-    return DATA[Object.keys(DATA)[Math.floor(Math.random() * 4)]];
-  }
+function getTime(timeRange) {
+  return TIME_RANGE_INTERVAL[timeRange];
 }
 
 // portfolio data
@@ -65,7 +66,7 @@ var PORTFOLIO_VALUE = 1000.00;
 var PORTFOLIO_STOCKS = ['AAPL'];
 
 function getPortfolioTickers() {
-  return PORTFOLIO_STOCKS;
+  return PORTFOLIO_STOCKS.sort();
 }
 
 // compare data
@@ -79,7 +80,7 @@ var COMPARE_STOCKS = {
 };
 
 function getCompareTickers() {
-  return Object.keys(COMPARE_STOCKS);
+  return Object.keys(COMPARE_STOCKS).sort();
 }
 
 function getCompareChecked(ticker) {

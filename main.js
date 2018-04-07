@@ -24,7 +24,7 @@ function formatDate(date) {
 
 function getGraphData(tickers, timeRange) {
   var plotData = {};
-  var time = TIME_RANGE_INTERVAL[timeRange];
+  var time = getTime(timeRange);
 
   for (var t in tickers) {
     var data = getData(tickers[t])[time.interval].slice(0, time.n);
@@ -51,6 +51,9 @@ function getGraphData(tickers, timeRange) {
 //////////////////////////////
 // Load page content
 //////////////////////////////
+
+// search bar data
+$('.ui.search').search({ source: SEARCH_CONTENT });
 
 // compare stocks
 var compareTickers = getCompareTickers();
@@ -104,9 +107,6 @@ $('.selector>.item').click(function(e) {
     compareGraphData = getGraphData(getCompareTickers(), timeRange);
   }
 });
-
-// add data to search bar
-$('.ui.search').search({ source: SEARCH_CONTENT });
 
 // show and hide from compare
 $(".compare-check-button").each((index, button) => {
