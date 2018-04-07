@@ -1,12 +1,18 @@
 // Stock data API key (https://www.alphavantage.co/)
 const API_KEY = 'MIRLW3E1H4871KNW';
 
-const SEARCH_CONTENT = [
-  {title: 'aaaaa'},
-  {title: 'bbbbb'},
-  {title: 'ccccc'},
-  {title: 'ddddd'},
-];
+function getSearchContent() {
+  var searchContent = []
+  var keys = Object.keys(COMPANIES)
+  for (var i in keys) {
+    var company = keys[i];
+    searchContent.push({
+      title: company,
+      description: COMPANIES[company],
+    })
+  }
+  return searchContent;
+}
 
 const STOCK_DATA = {
   'AAPL': {
@@ -40,10 +46,10 @@ const STOCK_DATA = {
 };
 
 function getData(ticker) {
-  if (ticker in DATA) {
+  if (ticker in STOCK_DATA) {
     return STOCK_DATA[ticker];
   } else {
-    return STOCK_DATA[Object.keys(DATA)[Math.floor(Math.random() * 4)]];
+    return STOCK_DATA[Object.keys(STOCK_DATA)[Math.floor(Math.random() * 4)]];
   }
 }
 
