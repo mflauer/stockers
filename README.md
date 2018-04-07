@@ -10,6 +10,5 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 - clear search after click
 - alphabetize new stocks when added to compare
 - checkmark on search results (clicking these should remove them from the list)
-- set width of columns in tables
 - colorcode stocks
 - plots
