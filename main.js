@@ -1,6 +1,6 @@
 // graph data
-var portfolioGraphData = getGraphData(portfolioStocks, '1D'),
-    compareGraphData = getGraphData(compareStocks, '1D');
+var portfolioGraphData = getGraphData(getPortfolioTickers(), '1D'),
+    compareGraphData = getGraphData(getCompareTickers(), '1D');
 
 // table data
 var portfolioTableData, compareTableData;
@@ -62,9 +62,9 @@ $('.selector>.item').click(function(e) {
   var timeRange = timeRangeElement.text();
   var section = timeRangeElement.parent().attr('id').split('-')[0];
   if (section == 'portfolio') {
-    portfolioGraphData = getGraphData(portfolioStocks, timeRange);
+    portfolioGraphData = getGraphData(getPortfolioTickers(), timeRange);
   } else if (section == 'compare') {
-    compareGraphData = getGraphData(compareStocks, timeRange);
+    compareGraphData = getGraphData(getCompareTickers(), timeRange);
   }
 });
 

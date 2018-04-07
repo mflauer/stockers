@@ -52,7 +52,38 @@ function getData(ticker) {
   }
 }
 
-// user data
-var portfolioValue = 1000.00;
-var portfolioStocks = ['aapl'];
-var compareStocks = [{ ticker: 'goog', isChecked: true }];
+// portfolio data
+var PORTFOLIO_VALUE = 1000.00;
+var PORTFOLIO_STOCKS = ['aapl'];
+
+function getPortfolioTickers() {
+  return PORTFOLIO_STOCKS;
+}
+
+// compare data
+var COMPARE_STOCKS = {
+  'goog': {
+    isChecked: true,
+  },
+  'aapl': {
+    isChecked: false,
+  },
+};
+
+function getCompareTickers() {
+  return Object.keys(COMPARE_STOCKS);
+}
+
+function getCompareChecked() {
+  var stocks;
+  for (var ticker in COMPARE_STOCKS) {
+    stocks[ticker] = COMPARE_STOCKS[ticker].isChecked
+  }
+  return stocks;
+}
+
+function toggleChecked(ticker) {
+  COMPARE_STOCKS[ticker] = !COMPARE_STOCKS[ticker];
+}
+
+
