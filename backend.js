@@ -55,4 +55,4 @@ function getData(ticker) {
 // user data
 var portfolioValue = 1000.00;
 var portfolioStocks = ['aapl'];
-var compareStocks = ['goog'];
+var compareStocks = [{ ticker: 'goog', isChecked: true }];
