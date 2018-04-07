@@ -4,7 +4,7 @@ function createCompareItem(ticker) {
       <button type="button" class="mini circular ui icon button compare-check-button">
         <i class="${backend.getCompareChecked(ticker) ? 'check ' : ''} icon"></i>
       </button>
-      <a>${ticker.toUpperCase()}</a>
+      ${ticker.toUpperCase()}
     </div>
   `);
 }
