@@ -19,3 +19,8 @@ $('.selector>.item').click(function(e) {
     compareGraphData = getData(compareStocks, timeRange);
   }
 });
+
+$('.ui.search').search({
+    source: SEARCH_CONTENT
+  })
+;
