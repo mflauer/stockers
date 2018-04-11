@@ -1,6 +1,6 @@
 function createCheckButton(ticker, location='compare') {
   return `
-    <button id="${ticker}-check-${location}" type="button" class="mini circular ui icon button">
+    <button id="${ticker}-check-${location}" type="button" class="mini circular ui icon middle button">
       <i class="${backend.getCompareChecked(ticker) ? 'check ' : ''} icon"></i>
     </button>
   `;
@@ -10,7 +10,9 @@ function createCompareItem(ticker) {
   $('#compare-stocks').append(`
     <a id="${ticker}-item" class="item">
       ${createCheckButton(ticker)}
-      ${ticker.toUpperCase()}
+      <div class="middle inline">
+        ${ticker.toUpperCase()}
+      </div>
     </a>
   `);
 }

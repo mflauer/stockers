@@ -98,7 +98,7 @@ dom.search.search({
       results.first().addClass('active');
       results.each(function(i, value) {
         var content = $(value).children().first();
-        var searchContent = content.children().wrapAll('<div class="inline"></div>');
+        var searchContent = content.children().wrapAll('<div class="middle inline"></div>');
         var ticker = searchContent.first().text();
         content.prepend(createCheckButton(ticker, 'search'));
         createCheckClickListener(ticker, 'search');
