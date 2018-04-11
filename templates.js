@@ -1,6 +1,6 @@
-function createCheckButton(ticker) {
+function createCheckButton(ticker, location='compare') {
   return `
-    <button id="${ticker}-check" type="button" class="mini circular ui icon button">
+    <button id="${ticker}-check-${location}" type="button" class="mini circular ui icon button">
       <i class="${backend.getCompareChecked(ticker) ? 'check ' : ''} icon"></i>
     </button>
   `;

@@ -11,7 +11,6 @@ var portfolioTableData, compareTableData;
 //////////////////////////////
 dom = {};
 dom.search = $('#search');
-dom.searchInput = $('#search-input');
 
 
 //////////////////////////////
@@ -55,15 +54,24 @@ function getGraphData(tickers, timeRange) {
   return plotData;
 }
 
-function addCompareStock(ticker) {
-  createCompareItem(ticker);
-  createCompareTableRow(ticker);
+function createCheckClickListener(ticker, location) {
+  if (location == 'compare') {
+    createCompareItem(ticker);
+    createCompareTableRow(ticker);
+  }
 
-  $(`#${ticker}-check`).click(function() {
+  $(`#${ticker}-check-${location}`).click(function() {
     backend.toggleCompareChecked(ticker);
-    $($(this).children('i')[0]).toggleClass('check');
-    $(`#${ticker}-compare-row`).toggleClass('hide');
     $(this).blur();
+    $(`[id^='${ticker}-check']`).each(function(i, value) {
+      $(value).children('i').first().toggleClass('check');
+    });
+    $(`#${ticker}-compare-row`).toggleClass('hide');
+    
+    if (location != 'compare' && !backend.getCompareTickers().includes(ticker)) {
+      backend.addToCompareStocks(ticker);
+      createCheckClickListener(ticker, 'compare')
+    }
   });
 }
 
@@ -82,11 +90,7 @@ dom.search.search({
   fullTextSearch: false,
   onSelect: function(result, response) {
     var ticker = result.title;
-    if (!backend.getCompareTickers().includes(ticker)) {
-      backend.addToCompareStocks(ticker);
-      addCompareStock(ticker);
-      dom.searchInput.select();
-    }
+    // TODO open company page
     return false;
   },
   onSearchQuery: function() {
@@ -97,15 +101,16 @@ dom.search.search({
         var content = $(value).children().first();
         var searchContent = content.children().wrapAll('<div class="inline"></div>');
         var ticker = searchContent.first().text();
-        content.prepend(createCheckButton(ticker));
-      })
+        content.prepend(createCheckButton(ticker, 'search'));
+        createCheckClickListener(ticker, 'search');
+      });
     }
-  }
+  },
 });
 
 
 // compare stocks
-backend.getCompareTickers().map(x => addCompareStock(x));
+backend.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
 
 
 //////////////////////////////
