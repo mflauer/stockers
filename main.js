@@ -91,7 +91,6 @@ dom.search.search({
   onSelect: function(result, response) {
     var ticker = result.title;
     // TODO open company page
-    return false;
   },
   onSearchQuery: function() {
     var results = $('.results').children();
