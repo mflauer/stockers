@@ -86,12 +86,16 @@ class Backend {
   }
 
   getCompareChecked(ticker) {
-    return this.COMPARE_STOCKS[ticker.toUpperCase()].isChecked
+    if (ticker in this.COMPARE_STOCKS) {
+      return this.COMPARE_STOCKS[ticker.toUpperCase()].isChecked;
+    }
+    return false;
   }
 
   toggleCompareChecked(ticker) {
-    ticker = ticker.toUpperCase();
-    this.COMPARE_STOCKS[ticker].isChecked = !this.COMPARE_STOCKS[ticker].isChecked;
+    if (ticker in this.COMPARE_STOCKS) {
+      this.COMPARE_STOCKS[ticker].isChecked = !this.COMPARE_STOCKS[ticker].isChecked;
+    }
   }
 
   addToCompareStocks(ticker) {

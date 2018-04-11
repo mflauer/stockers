@@ -88,8 +88,21 @@ dom.search.search({
       dom.searchInput.select();
     }
     return false;
+  },
+  onSearchQuery: function() {
+    var results = $('.results').children();
+    if (!results.first().hasClass('empty')) {
+      results.first().addClass('active');
+      results.each(function(i, value) {
+        var content = $(value).children().first();
+        var searchContent = content.children().wrapAll('<div class="inline"></div>');
+        var ticker = searchContent.first().text();
+        content.prepend(createCheckButton(ticker));
+      })
+    }
   }
 });
+
 
 // compare stocks
 backend.getCompareTickers().map(x => addCompareStock(x));
