@@ -92,10 +92,6 @@ $('.ui.search').search({
         var searchContent = content.children().wrapAll('<div class="inline"></div>');
         var ticker = searchContent.first().text();
         content.prepend(createCheckButton(ticker));
-
-        // var searchContentWrapper = content.append('<div>' + searchContent.html() + '</div>');
-        // console.log(searchContentWrapper.html())
-        // searchContentWrapper.prepend(searchContent);
       })
     }
   }
