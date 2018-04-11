@@ -78,8 +78,10 @@ $('.ui.search').search({
   fullTextSearch: false,
   onSelect: function(result, response) {
     var ticker = result.title;
-    backend.addToCompareStocks(ticker);
-    addCompareStock(ticker);
+    if (!compareTickers.include(ticker)) {
+      backend.addToCompareStocks(ticker);
+      addCompareStock(ticker);
+    }
   }
 });
 $('.ui.search').search('set value', '');
