@@ -82,9 +82,27 @@ $('.ui.search').search({
       backend.addToCompareStocks(ticker);
       addCompareStock(ticker);
     }
+  },
+  onSearchQuery: function() {
+    var results = $('.results').children();
+    if (!results.first().hasClass('empty')) {
+      results.first().addClass('active');
+      results.each(function(i, value) {
+        var content = $(value).children().first();
+        var searchContent = content.children().wrapAll('<div class="inline"></div>');
+        var ticker = searchContent.first().text();
+        content.prepend(createCheckButton(ticker));
+
+        // var searchContentWrapper = content.append('<div>' + searchContent.html() + '</div>');
+        // console.log(searchContentWrapper.html())
+        // searchContentWrapper.prepend(searchContent);
+      })
+    }
   }
 });
+
 $('.ui.search').search('set value', '');
+
 
 // compare stocks
 compareTickers.map(x => addCompareStock(x));
