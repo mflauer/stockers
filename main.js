@@ -78,7 +78,7 @@ $('.ui.search').search({
   fullTextSearch: false,
   onSelect: function(result, response) {
     var ticker = result.title;
-    if (!compareTickers.include(ticker)) {
+    if (!compareTickers.includes(ticker)) {
       backend.addToCompareStocks(ticker);
       addCompareStock(ticker);
     }
