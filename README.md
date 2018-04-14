@@ -9,5 +9,6 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 ## TODO (!! are priority)
 - !! colorcode stocks
 - !! plots
+- ! fix check on compare button in company screen
 - alphabetize new stocks when added to compare
 - extra line when first item in table is missing
