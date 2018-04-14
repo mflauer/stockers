@@ -60,7 +60,8 @@ function createCheckClickListener(ticker, location) {
     createCompareTableRow(ticker);
   }
 
-  $(`#${ticker}-check-${location}`).click(function() {
+  $(`#${ticker}-check-${location}`).click(function(e) {
+    e.stopPropagation();
     backend.toggleCompareChecked(ticker);
     $(this).blur();
     $(`[id^='${ticker}-check']`).each(function(i, value) {
@@ -73,6 +74,10 @@ function createCheckClickListener(ticker, location) {
       createCheckClickListener(ticker, 'compare')
     }
   });
+}
+
+function populateCompanyModal(ticker) {
+  $('.ui.modal .header').prepend(ticker);
 }
 
 
@@ -90,7 +95,8 @@ dom.search.search({
   fullTextSearch: false,
   onSelect: function(result, response) {
     var ticker = result.title;
-    // TODO open company page
+    populateCompanyModal(ticker);
+    $('.ui.modal').modal('show');
   },
   onSearchQuery: function() {
     var results = $('.results').children();
@@ -104,8 +110,9 @@ dom.search.search({
         createCheckClickListener(ticker, 'search');
       });
     }
-  },
+  }
 });
+
 
 
 // compare stocks
