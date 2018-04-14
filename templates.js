@@ -25,7 +25,7 @@ function createCompareItem(ticker) {
     <a id="${ticker}-item" class="item">
       ${createCheckButton(ticker)}
       <div class="middle inline">
-        ${ticker.toUpperCase()}
+        ${ticker}
       </div>
     </a>
   `);
@@ -35,7 +35,7 @@ function createCompareTableRow(ticker) {
   var data = backend.getData(ticker);
   $('#compare-table').append(`
     <tr id="${ticker}-compare-row" class="${backend.getCompareChecked(ticker) ? '' : 'hide'}">
-      <td>${ticker.toUpperCase()}</td>
+      <td>${ticker}</td>
       <td class="right aligned">$1000.00</td>
       <td class="right aligned">2.5%</td>
       <td class="right aligned">${data['mkt_cap']}</td>

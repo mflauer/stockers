@@ -11,6 +11,7 @@ var portfolioTableData, compareTableData;
 //////////////////////////////
 dom = {};
 dom.search = $('#search');
+dom.companyPage = $('#company-page');
 
 
 //////////////////////////////
@@ -58,6 +59,9 @@ function createCheckClickListener(ticker, location) {
   if (location == 'compare') {
     createCompareItem(ticker);
     createCompareTableRow(ticker);
+    $(`#${ticker}-item`).click(function(e) {
+      loadCompanyPage(ticker);
+    })
   }
 
   $(`#${ticker}-check-${location}`).click(function(e) {
@@ -76,6 +80,12 @@ function createCheckClickListener(ticker, location) {
   });
 }
 
+function loadCompanyPage(ticker) {
+  createCompanyHeader(ticker);
+  dom.companyPage.modal('show');
+  createCheckClickListener(ticker, 'button');
+}
+
 
 //////////////////////////////
 // Load page content
@@ -91,9 +101,7 @@ dom.search.search({
   fullTextSearch: false,
   onSelect: function(result, response) {
     var ticker = result.title;
-    createCompanyHeader(ticker);
-    $('#company-page').modal('show');
-    createCheckClickListener(ticker, 'button');
+    loadCompanyPage(ticker);
   },
   onSearchQuery: function() {
     var results = $('.results').children();
