@@ -11,4 +11,3 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 - !! plots
 - alphabetize new stocks when added to compare
 - extra line when first item in table is missing
-- icon in change column (wtf larry?)

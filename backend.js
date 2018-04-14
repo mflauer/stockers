@@ -77,6 +77,10 @@ class Backend {
     return this.TIME_RANGE_INTERVAL[timeRange];
   }
 
+  getCompany(ticker) {
+    return this.COMPANIES[ticker];
+  }
+
   getPortfolioTickers() {
     return this.PORTFOLIO_STOCKS.sort();
   }

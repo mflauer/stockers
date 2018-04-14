@@ -6,6 +6,20 @@ function createCheckButton(ticker, location='compare') {
   `;
 }
 
+function createCompanyHeader(ticker) {
+  $('#company-page>.header').html(`
+    <div class="ui right floated basic button">
+      Buy
+    </div>
+    <div class="ui right floated basic button">
+      ${createCheckButton(ticker, 'button')}
+      Compare
+    </div>
+    ${ticker}
+    <div class="sub header">${backend.getCompany(ticker)}</div>
+  `);
+}
+
 function createCompareItem(ticker) {
   $('#compare-stocks').append(`
     <a id="${ticker}-item" class="item">

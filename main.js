@@ -76,10 +76,6 @@ function createCheckClickListener(ticker, location) {
   });
 }
 
-function populateCompanyModal(ticker) {
-  $('.ui.modal .header').prepend(ticker);
-}
-
 
 //////////////////////////////
 // Load page content
@@ -95,8 +91,9 @@ dom.search.search({
   fullTextSearch: false,
   onSelect: function(result, response) {
     var ticker = result.title;
-    populateCompanyModal(ticker);
-    $('.ui.modal').modal('show');
+    createCompanyHeader(ticker);
+    $('#company-page').modal('show');
+    createCheckClickListener(ticker, 'button');
   },
   onSearchQuery: function() {
     var results = $('.results').children();
