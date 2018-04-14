@@ -59,8 +59,9 @@ function createCheckClickListener(ticker, location) {
   if (location == 'compare') {
     createCompareItem(ticker);
     createCompareTableRow(ticker);
-    $(`#${ticker}-item`).click(function(e) {
+    $(`#${ticker}-item, #${ticker}-table`).click(function(e) {
       loadCompanyPage(ticker);
+      return false;
     })
   }
 

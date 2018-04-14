@@ -35,7 +35,7 @@ function createCompareTableRow(ticker) {
   var data = backend.getData(ticker);
   $('#compare-table').append(`
     <tr id="${ticker}-compare-row" class="${backend.getCompareChecked(ticker) ? '' : 'hide'}">
-      <td>${ticker}</td>
+      <td id="${ticker}-table"><a href="#">${ticker}</a></td>
       <td class="right aligned">$1000.00</td>
       <td class="right aligned">2.5%</td>
       <td class="right aligned">${data['mkt_cap']}</td>
