@@ -1,6 +1,6 @@
-function createCheckButton(ticker, location='compare') {
+function createCheckButton(ticker, location='compare', color='') {
   return `
-    <button id="${ticker}-check-${location}" type="button" class="mini circular ui icon middle button">
+    <button id="${ticker}-check-${location}" type="button" class="mini basic circular ui icon ${color} middle button">
       <i class="${backend.getCompareChecked(ticker) ? 'check ' : ''} icon"></i>
     </button>
   `;
@@ -11,8 +11,8 @@ function createCompanyHeader(ticker) {
     <div class="ui right floated basic button">
       Buy
     </div>
-    <div class="ui right floated basic button">
-      ${createCheckButton(ticker, 'button')}
+    <div id="${ticker}-check-button" class="ui huge right floated basic button">
+      ${createCheckButton(ticker, 'company')}
       Compare
     </div>
     ${ticker}
@@ -20,10 +20,10 @@ function createCompanyHeader(ticker) {
   `);
 }
 
-function createCompareItem(ticker) {
+function createCompareItem(ticker, color='') {
   $('#compare-stocks').append(`
-    <a id="${ticker}-item" class="item">
-      ${createCheckButton(ticker)}
+    <a id="${ticker}-item" class="compare-button ui basic fluid ${color} left button">
+      ${createCheckButton(ticker, 'compare', color)}
       <div class="middle inline">
         ${ticker}
       </div>

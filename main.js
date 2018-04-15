@@ -5,12 +5,27 @@ var portfolioGraphData = getGraphData(backend.getPortfolioTickers(), '1D'),
 // table data
 var portfolioTableData, compareTableData;
 
+// colors
+const COLORS = [
+  'red',
+  'orange',
+  'yellow',
+  'olive',
+  'green',
+  'teal',
+  'blue',
+  'violet',
+  'purple',
+  'pink',
+  'brown',
+];
+var currentColor = 0;
 
 //////////////////////////////
 // DOM ELEMENTS
 //////////////////////////////
 dom = {};
-dom.search = $('#search');
+dom.search = $('#search-input');
 dom.companyPage = $('#company-page');
 
 
@@ -57,8 +72,13 @@ function getGraphData(tickers, timeRange) {
 
 function createCheckClickListener(ticker, location) {
   if (location == 'compare') {
-    createCompareItem(ticker);
+    createCompareItem(ticker, COLORS[currentColor]);
     createCompareTableRow(ticker);
+    currentColor += 1;
+    if (currentColor == COLORS.length) {
+      currentColor = 0;
+    }
+
     $(`#${ticker}-item, #${ticker}-table`).click(function(e) {
       loadCompanyPage(ticker);
       return false;
@@ -66,9 +86,10 @@ function createCheckClickListener(ticker, location) {
   }
 
   $(`#${ticker}-check-${location}`).click(function(e) {
-    e.stopPropagation();
-    backend.toggleCompareChecked(ticker);
     $(this).blur();
+    e.stopPropagation();
+
+    backend.toggleCompareChecked(ticker);
     $(`[id^='${ticker}-check']`).each(function(i, value) {
       $(value).children('i').first().toggleClass('check');
     });
@@ -78,12 +99,17 @@ function createCheckClickListener(ticker, location) {
       backend.addToCompareStocks(ticker);
       createCheckClickListener(ticker, 'compare')
     }
+
+    if (location == 'search') {
+      dom.search.focus();
+    }
   });
 }
 
 function loadCompanyPage(ticker) {
   createCompanyHeader(ticker);
   dom.companyPage.modal('show');
+  createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
 }
 
@@ -93,7 +119,7 @@ function loadCompanyPage(ticker) {
 //////////////////////////////
 
 // search bar data
-dom.search.search({
+$('#search').search({
   source: backend.getSearchContent(),
   searchFields: [
     'title',

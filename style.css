@@ -4,8 +4,14 @@ table {
 .hide {
   display: none; }
 
+.left {
+  text-align: left !important; }
+
 .middle {
   vertical-align: middle !important; }
 
 .inline {
   display: inline-block !important; }
+
+.compare-button {
+  margin-bottom: 5px !important; }
