@@ -9,3 +9,13 @@ table {
 
 .inline {
   display: inline-block !important; }
+
+path.line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+}
+
+#volume {
+  stroke: blue;
+}

@@ -69,7 +69,7 @@ function createCheckClickListener(ticker, location) {
       $(value).children('i').first().toggleClass('check');
     });
     $(`#${ticker}-compare-row`).toggleClass('hide');
-    
+
     if (location != 'compare' && !backend.getCompareTickers().includes(ticker)) {
       backend.addToCompareStocks(ticker);
       createCheckClickListener(ticker, 'compare')
@@ -140,50 +140,12 @@ $('.selector>.item').click(function(e) {
     compareGraphData = getGraphData('compare', timeRange);
   }
 });
-<<<<<<< HEAD
 // example
 // `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=${API_KEY}`
 
 //var color = d3.scale.category10();
 
-var margin = {top: 40, right: 40, bottom: 40, left: 40},
-    width = 500 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-
-var x = d3.scaleTime()
-    .range([0, width]);
-
-var y = d3.scaleLinear()
-    .range([height, 0]);
-/*
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .tickSize(-height);
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .ticks(4)
-    .orient("left");
-
-var area = d3.area()
-    .x(function(d) { return x(d.date); })
-    .y0(height)
-    .y1(function(d) { return y(d.price); });
-*/
-
-
-var line = d3.line()
-    .x(function(d, i) { return x(dates[i]); })
-    .y(function(d,i) { return y(prices[i]); })
-    .curve(d3.curveMonotoneX);
-
-var svg = d3.select("#compare-graph").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+//compare graph
 
 function getDates(array) {
   var date_list = [];
@@ -193,45 +155,198 @@ function getDates(array) {
   return date_list;
 }
 
-var dates = getDates(compareGraphData['dates'][0]);
-var prices = compareGraphData['goog'][0];
+var dates = getDates(compareGraphData['dates']);
+var prices = compareGraphData['GOOG'];
+
+
+console.log(dates);
 console.log(prices);
+console.log(compareGraphData);
 
 
-  x.domain([dates[0], dates[dates.length - 1]]);
-  y.domain([0, Math.max(prices)]);
-  /*
-  x.domain([dates, dates.length - 1]);
-  y.domain([0, d3.max(prices, function(d) { return d.price; })]);
-  */
+var margin = {top: 40, right: 40, bottom: 40, left: 40},
+    width = 500 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-    svg.append("text")
-        .attr("x", width - 6)
-        .attr("y", height - 6)
-        .style("text-anchor", "end")
-        .text("GOOG");
+var n = dates.length;
+
+console.log(n);
+console.log(prices[n-1][0]);
+console.log(dates[n-1]);
+console.log(prices[0]);
+
+var dataset = d3.range(20).map(function(d) { return {"y": d3.randomUniform(1)() } })
+console.log(dataset);
+
+var x = d3.scaleTime()
+    .domain([0, 20])
+    .range([0, width]);
+
+var y = d3.scaleLinear()
+    .domain([0,1])
+    .range([height, 0]);
+
+var line = d3.line()
+    .x(function(d, i) { return x(i); })
+    .y(function(d) { return y(d.y); })
+    .curve(d3.curveMonotoneX);
+
+var compare = d3.select("#compare-graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+compare.append("text")
+    .attr("x", width - 6)
+    .attr("y", height - 6)
+    .style("text-anchor", "end")
+    .text("GOOG");
 
         // Add the X Axis
-    svg.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x)
-                .tickFormat(d3.timeFormat("%Y-%m-%d")))
-        .selectAll("text")
-          .style("text-anchor", "end")
-          .attr("dx", "-.8em")
-          .attr("dy", ".15em")
-          .attr("transform", "rotate(-65)");
+compare.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x)
+            .tickFormat(d3.timeFormat("%Y-%m-%d")))
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("transform", "rotate(-65)");
 
-    svg.append("path")
-          .data(prices) // 10. Binds data to the line
-          .attr("class", "line") // Assign a class for styling
-          .attr("d", line);
+      // Add the Y Axis
 
-    // Add the Y Axis
-    svg.append("g")
-        .attr("class", "axis")
-        .call(d3.axisLeft(y));
+compare.append("g")
+    .attr("class", "y axis")
+    .call(d3.axisLeft(y));
+
+compare.append("path")
+    .datum(dataset) // 10. Binds data to the line
+    .attr("class", "line") // Assign a class for styling
+    .attr("d", line);
+
+compare.selectAll(".dot")
+    .data(dataset)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d, i) { return x(i) })
+    .attr("cy", function(d) { return y(d.y) })
+    .attr("r", 5);
+
+//growth graph
+
+var x = d3.scaleTime()
+    .domain([0, 20])
+    .range([0, width]);
+
+var y = d3.scaleLinear()
+    .domain([0,1])
+    .range([height, 0]);
+
+var line = d3.line()
+    .x(function(d, i) { return x(i); })
+    .y(function(d) { return y(d.y); })
+    .curve(d3.curveMonotoneX);
+
+var growth = d3.select("#growth").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+growth.append("text")
+    .attr("x", width - 6)
+    .attr("y", height - 6)
+    .style("text-anchor", "end")
+    .text("GOOG");
+
+        // Add the X Axis
+growth.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x)
+            .tickFormat(d3.timeFormat("%Y-%m-%d")))
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("transform", "rotate(-65)");
+
+      // Add the Y Axis
+
+growth.append("g")
+    .attr("class", "y axis")
+    .call(d3.axisLeft(y));
+growth.append("path")
+    .datum(dataset) // 10. Binds data to the line
+    .attr("class", "line") // Assign a class for styling
+    .attr("d", line);
+
+growth.selectAll(".dot")
+    .data(dataset)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d, i) { return x(i) })
+    .attr("cy", function(d) { return y(d.y) })
+    .attr("r", 5);
+
+//volume graph
+
+var x = d3.scaleTime()
+    .domain([0, 20])
+    .range([0, width]);
+
+var y = d3.scaleLinear()
+    .domain([0,1])
+    .range([height, 0]);
+
+var line = d3.line()
+    .x(function(d, i) { return x(i); })
+    .y(function(d) { return y(d.y); })
+    .curve(d3.curveMonotoneX);
+
+var volume = d3.select("#volume").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+volume.append("text")
+    .attr("x", width - 6)
+    .attr("y", height - 6)
+    .style("text-anchor", "end")
+    .text("GOOG");
+
+        // Add the X Axis
+volume.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x)
+            .tickFormat(d3.timeFormat("%Y-%m-%d")))
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("transform", "rotate(-65)");
+
+      // Add the Y Axis
+
+volume.append("g")
+    .attr("class", "y axis")
+    .call(d3.axisLeft(y));
+volume.append("path")
+    .datum(dataset) // 10. Binds data to the line
+    .attr("class", "line") // Assign a class for styling
+    .attr("d", line);
+
+volume.selectAll(".dot")
+    .data(dataset)
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d, i) { return x(i) })
+    .attr("cy", function(d) { return y(d.y) })
+    .attr("r", 5);
 
 
 
@@ -239,5 +354,3 @@ console.log(prices);
 //data is in compareGraphData
 
 $('.ui.search').search({ source: SEARCH_CONTENT });
-=======
->>>>>>> 55648dfd8852cdb26480cee8976d0603705b239b
