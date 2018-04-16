@@ -306,6 +306,8 @@ var line = d3.line()
     .y(function(d) { return y(d.y); })
     .curve(d3.curveMonotoneX);
 
+var stack = d3.stack();
+
 var volume = d3.select("#volume").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
