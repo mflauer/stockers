@@ -21,6 +21,7 @@ const COLORS = [
 ];
 var currentColor = 0;
 
+
 //////////////////////////////
 // DOM ELEMENTS
 //////////////////////////////
@@ -102,6 +103,15 @@ function createCheckClickListener(ticker, location) {
 
     if (location == 'search') {
       dom.search.focus();
+    }
+
+    if (location == 'company' || location == 'button') {
+      var button = $('#compare-button');
+      if (button.text().trim() == 'Compare') {
+        button.text('Compared');
+      } else {
+        button.text('Compare');
+      }
     }
   });
 }

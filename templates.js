@@ -11,9 +11,11 @@ function createCompanyHeader(ticker) {
     <div class="ui right floated basic button">
       Buy
     </div>
-    <div id="${ticker}-check-button" class="ui huge right floated basic button">
+    <div id="${ticker}-check-button" class="ui right floated basic button">
       ${createCheckButton(ticker, 'company')}
-      Compare
+      <div id="compare-button" class="middle inline">
+        Compare${backend.getCompareChecked(ticker) ? 'd ' : ''}
+      </div>
     </div>
     ${ticker}
     <div class="sub header">${backend.getCompany(ticker)}</div>
