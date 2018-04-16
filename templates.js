@@ -1,30 +1,29 @@
 function createCheckButton(ticker, location='compare', color='') {
+  var checked = backend.getCompareChecked(ticker);
+  if (location == 'company' && checked) {
+    color = 'positive';
+  }
   return `
-    <button id="${ticker}-check-${location}" type="button" class="mini basic circular ui icon ${color} middle button">
-      <i class="${backend.getCompareChecked(ticker) ? 'check ' : ''} icon"></i>
+    <button id="${ticker}-check-${location}" type="button" class="mini circular ui icon ${color} middle button">
+      <i class="${checked ? 'check ' : ''} icon"></i>
     </button>
   `;
 }
 
-function createCompanyHeader(ticker) {
-  $('#company-page>.header').html(`
-    <div class="ui right floated basic button">
-      Buy
-    </div>
-    <div id="${ticker}-check-button" class="ui right floated basic button">
-      ${createCheckButton(ticker, 'company')}
-      <div id="compare-button" class="middle inline">
-        Compare${backend.getCompareChecked(ticker) ? 'd ' : ''}
-      </div>
-    </div>
-    ${ticker}
-    <div class="sub header">${backend.getCompany(ticker)}</div>
-  `);
+function createCompanyHeader(dom, ticker) {
+  dom.companyTicker.text(ticker);
+  dom.companyName.text(backend.getCompany(ticker));
+  dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
+  if (backend.getCompareChecked(ticker)) {
+    dom.compareButton.addClass('positive');
+  } else {
+    dom.compareButton.removeClass('positive');
+  }
 }
 
-function createCompareItem(ticker, color='') {
-  $('#compare-stocks').append(`
-    <a id="${ticker}-item" class="compare-button ui basic fluid ${color} left button">
+function createCompareItem(dom, ticker, color='') {
+  dom.compareStocks.append(`
+    <a id="${ticker}-item" class="compare-item ui basic fluid ${color} left button">
       ${createCheckButton(ticker, 'compare', color)}
       <div class="middle inline">
         ${ticker}
@@ -33,9 +32,9 @@ function createCompareItem(ticker, color='') {
   `);
 }
 
-function createCompareTableRow(ticker) {
+function createCompareTableRow(dom, ticker) {
   var data = backend.getData(ticker);
-  $('#compare-table').append(`
+  dom.compareTable.append(`
     <tr id="${ticker}-compare-row" class="${backend.getCompareChecked(ticker) ? '' : 'hide'}">
       <td id="${ticker}-table"><a href="#">${ticker}</a></td>
       <td class="right aligned">$1000.00</td>

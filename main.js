@@ -27,7 +27,12 @@ var currentColor = 0;
 //////////////////////////////
 dom = {};
 dom.search = $('#search-input');
+dom.compareStocks = $('#compare-stocks');
+dom.compareTable = $('#compare-table');
 dom.companyPage = $('#company-page');
+dom.companyTicker = $('#company-ticker');
+dom.companyName = $('#company-name');
+dom.compareButton = $('#compare-button')
 
 
 //////////////////////////////
@@ -73,8 +78,8 @@ function getGraphData(tickers, timeRange) {
 
 function createCheckClickListener(ticker, location) {
   if (location == 'compare') {
-    createCompareItem(ticker, COLORS[currentColor]);
-    createCompareTableRow(ticker);
+    createCompareItem(dom, ticker, COLORS[currentColor]);
+    createCompareTableRow(dom, ticker);
     currentColor += 1;
     if (currentColor == COLORS.length) {
       currentColor = 0;
@@ -86,7 +91,14 @@ function createCheckClickListener(ticker, location) {
     })
   }
 
-  $(`#${ticker}-check-${location}`).click(function(e) {
+  if (location == 'button') {
+    var element = dom.compareButton;
+    element.off('click');
+  } else {
+    var element = $(`#${ticker}-check-${location}`);
+  }
+
+  element.click(function(e) {
     $(this).blur();
     e.stopPropagation();
 
@@ -106,18 +118,14 @@ function createCheckClickListener(ticker, location) {
     }
 
     if (location == 'company' || location == 'button') {
-      var button = $('#compare-button');
-      if (button.text().trim() == 'Compare') {
-        button.text('Compared');
-      } else {
-        button.text('Compare');
-      }
+      dom.compareButton.toggleClass('positive');
+      $(`#${ticker}-check-company`).toggleClass('positive');
     }
   });
 }
 
 function loadCompanyPage(ticker) {
-  createCompanyHeader(ticker);
+  createCompanyHeader(dom, ticker);
   dom.companyPage.modal('show');
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
