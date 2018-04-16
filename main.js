@@ -126,7 +126,10 @@ function createCheckClickListener(ticker, location) {
 
 function loadCompanyPage(ticker) {
   createCompanyHeader(dom, ticker);
-  dom.companyPage.modal('show');
+  dom.companyPage
+    .modal({ autofocus: false })
+    .modal('show')
+  ;
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
 }
