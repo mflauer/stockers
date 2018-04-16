@@ -2,7 +2,7 @@ table {
   border: none !important; }
 
 .hide {
-  display: none; }
+  display: none !important; }
 
 .left {
   text-align: left !important; }
@@ -14,4 +14,17 @@ table {
   display: inline-block !important; }
 
 .compare-item {
-  margin-bottom: 5px !important; }
+  margin-bottom: 5px !important;
+  position: relative; }
+
+#modal-buy-button {
+  padding-top: 18px;
+  padding-bottom: 18px;
+  margin-left: 8px; }
+
+.remove {
+  position: absolute;
+  top: 5px;
+  right: 0px; }
+
+/*# sourceMappingURL=style.css.map */

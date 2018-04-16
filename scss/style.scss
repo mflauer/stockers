@@ -3,7 +3,7 @@ table {
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
 
 .left {
@@ -20,4 +20,17 @@ table {
 
 .compare-item {
   margin-bottom: 5px !important;
+  position: relative;
+}
+
+#modal-buy-button {
+  padding-top: 18px;
+  padding-bottom: 18px;
+  margin-left: 8px;
+}
+
+.remove {
+  position: absolute;
+  top: 5px;
+  right: 0px;
 }

@@ -134,6 +134,12 @@ function loadCompanyPage(ticker) {
   createCheckClickListener(ticker, 'button');
 }
 
+$('#edit-button').click(function(e) {
+  $('.remove').each(function(i, value) {
+    $(value).removeClass('hide');
+  })
+})
+
 
 //////////////////////////////
 // Load page content
