@@ -1,10 +1,17 @@
 // graph data
-var portfolioGraphData = getGraphData(portfolioStocks, '1D'),
-    compareGraphData = getGraphData(compareStocks, '1D');
+var portfolioGraphData = getGraphData(backend.getPortfolioTickers(), '1D'),
+    compareGraphData = getGraphData(backend.getCompareTickers(), '1D');
 
 // table start times
 var portfolioTableDate, compareTableDate;
 
+
+
+//////////////////////////////
+// DOM ELEMENTS
+//////////////////////////////
+dom = {};
+dom.search = $('#search');
 
 
 //////////////////////////////
@@ -25,19 +32,19 @@ function formatDate(date) {
 
 function getGraphData(tickers, timeRange) {
   var plotData = {};
-  var time = TIME_RANGE_INTERVAL[timeRange];
+  var time = backend.getTime(timeRange);
 
   for (var t in tickers) {
-    var data = getData(tickers[t])[time.interval].slice(0, time.n);
+    var data = backend.getData(tickers[t])[time.interval].slice(0, time.n);
 
     if (time.interval == 'min') {
       if (t == 0) {
-        plotData["dates"] = data.map(x => x.map(y => Date.parse(y['date']))).reverse();
+        plotData['dates'] = data.map(x => x.map(y => Date.parse(y['date']))).reverse();
       }
       data = data.map(x => x.map(y => parseFloat(y['close']))).reverse();
     } else {
       if (t == 0) {
-        plotData["dates"] = data.map(x => Date.parse(x['date'])).reverse();
+        plotData['dates'] = data.map(x => Date.parse(x['date'])).reverse();
       }
       data = data.map(x => parseFloat(x['close'])).reverse();
     }
@@ -48,11 +55,76 @@ function getGraphData(tickers, timeRange) {
   return plotData;
 }
 
+function createCheckClickListener(ticker, location) {
+  if (location == 'compare') {
+    createCompareItem(ticker);
+    createCompareTableRow(ticker);
+  }
+
+  $(`#${ticker}-check-${location}`).click(function(e) {
+    e.stopPropagation();
+    backend.toggleCompareChecked(ticker);
+    $(this).blur();
+    $(`[id^='${ticker}-check']`).each(function(i, value) {
+      $(value).children('i').first().toggleClass('check');
+    });
+    $(`#${ticker}-compare-row`).toggleClass('hide');
+    
+    if (location != 'compare' && !backend.getCompareTickers().includes(ticker)) {
+      backend.addToCompareStocks(ticker);
+      createCheckClickListener(ticker, 'compare')
+    }
+  });
+}
+
+function populateCompanyModal(ticker) {
+  $('.ui.modal .header').prepend(ticker);
+}
+
+
+//////////////////////////////
+// Load page content
+//////////////////////////////
+
+// search bar data
+dom.search.search({
+  source: backend.getSearchContent(),
+  searchFields: [
+    'title',
+    'description'
+  ],
+  fullTextSearch: false,
+  onSelect: function(result, response) {
+    var ticker = result.title;
+    populateCompanyModal(ticker);
+    $('.ui.modal').modal('show');
+  },
+  onSearchQuery: function() {
+    var results = $('.results').children();
+    if (!results.first().hasClass('empty')) {
+      results.first().addClass('active');
+      results.each(function(i, value) {
+        var content = $(value).children().first();
+        var searchContent = content.children().wrapAll('<div class="middle inline"></div>');
+        var ticker = searchContent.first().text();
+        content.prepend(createCheckButton(ticker, 'search'));
+        createCheckClickListener(ticker, 'search');
+      });
+    }
+  }
+});
+
+
+
+// compare stocks
+backend.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
+
 
 //////////////////////////////
 // UI
 //////////////////////////////
 
+// time range selectors
 $('.selector>.item').click(function(e) {
   var timeRangeElement = $(e.target);
 
@@ -63,11 +135,12 @@ $('.selector>.item').click(function(e) {
   var timeRange = timeRangeElement.text();
   var section = timeRangeElement.parent().attr('id').split('-')[0];
   if (section == 'portfolio') {
-    portfolioGraphData = getGraphData(portfolioStocks, timeRange);
+    portfolioGraphData = getGraphData('portfolio', timeRange);
   } else if (section == 'compare') {
-    compareGraphData = getGraphData(compareStocks, timeRange);
+    compareGraphData = getGraphData('compare', timeRange);
   }
 });
+<<<<<<< HEAD
 // example
 // `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=${API_KEY}`
 
@@ -166,3 +239,5 @@ console.log(prices);
 //data is in compareGraphData
 
 $('.ui.search').search({ source: SEARCH_CONTENT });
+=======
+>>>>>>> 55648dfd8852cdb26480cee8976d0603705b239b
