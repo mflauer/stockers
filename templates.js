@@ -1,5 +1,5 @@
 function createCheckButton(ticker, location='compare', color='') {
-  var checked = backend.getCompareChecked(ticker);
+  var checked = data.getCompareChecked(ticker);
   if (location == 'company' && checked) {
     color = 'positive';
   }
@@ -32,19 +32,19 @@ function createCompareItem(dom, ticker, color='', suggested=false) {
 }
 
 function createCompareTableRow(dom, ticker, timeRange) {
-  var change = backend.getChange(ticker, timeRange);
+  var change = data.getChange(ticker, timeRange);
   dom.compareTable.append(`
-    <tr id="${ticker}-compare-row" class="${backend.getCompareChecked(ticker) ? '' : 'hide'}">
+    <tr id="${ticker}-compare-row" class="${data.getCompareChecked(ticker) ? '' : 'hide'}">
       <td id="${ticker}-table"><a href="#">${ticker}</a></td>
-      <td class="right aligned">$${backend.getPrice(ticker)}</td>
+      <td class="right aligned">$${data.getPrice(ticker)}</td>
       <td class="right aligned">
         <div class="${change >= 0 ? 'green' : 'red'}">
           <i class="caret ${change >= 0 ? 'up' : 'down'} icon"></i>
           <span id="${ticker}-compare-change">${change}</span>%
         </div>
       </td>
-      <td class="right aligned">${backend.getMktCap(ticker)}</td>
-      <td class="right aligned">${backend.getPERatio(ticker)}</td>
+      <td class="right aligned">${data.getMktCap(ticker)}</td>
+      <td class="right aligned">${data.getPERatio(ticker)}</td>
     </tr>
   `);
 }
