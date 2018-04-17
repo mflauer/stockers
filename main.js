@@ -27,6 +27,8 @@ var currentColor = 0;
 //////////////////////////////
 dom = {};
 dom.search = $('#search-input');
+dom.editButton = $('#edit-button');
+dom.doneButton = $('#done-button');
 dom.compareStocks = $('#compare-stocks');
 dom.compareTable = $('#compare-table');
 dom.companyPage = $('#company-page');
@@ -39,6 +41,7 @@ dom.compareButton = $('#compare-button')
 // HELPER FUNCTIONS
 //////////////////////////////
 
+// TODO currently unused
 function formatDate(date) {
   var d = new Date(date),
       year = d.getFullYear(),
@@ -51,6 +54,7 @@ function formatDate(date) {
   return str = [year, month, day].join('-');
 }
 
+// load graph data
 function getGraphData(tickers, timeRange) {
   var plotData = {};
   var time = backend.getTime(timeRange);
@@ -76,6 +80,7 @@ function getGraphData(tickers, timeRange) {
   return plotData;
 }
 
+// creates click event listener for check mark buttons
 function createCheckClickListener(ticker, location) {
   if (location == 'compare') {
     createCompareItem(dom, ticker, COLORS[currentColor]);
@@ -85,7 +90,7 @@ function createCheckClickListener(ticker, location) {
       currentColor = 0;
     }
 
-    $(`#${ticker}-item, #${ticker}-table`).click(function(e) {
+    $(`#${ticker}-item, #${ticker}-table`).click(function() {
       loadCompanyPage(ticker);
       return false;
     })
@@ -124,21 +129,15 @@ function createCheckClickListener(ticker, location) {
   });
 }
 
+// populates company page content
 function loadCompanyPage(ticker) {
   createCompanyHeader(dom, ticker);
   dom.companyPage
     .modal({ autofocus: false })
-    .modal('show')
-  ;
+    .modal('show');
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
 }
-
-$('#edit-button').click(function(e) {
-  $('.remove').each(function(i, value) {
-    $(value).removeClass('hide');
-  })
-})
 
 
 //////////////////////////////
@@ -172,8 +171,6 @@ $('#search').search({
   }
 });
 
-
-
 // compare stocks
 backend.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
 
@@ -181,6 +178,28 @@ backend.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
 //////////////////////////////
 // UI
 //////////////////////////////
+
+// edit button
+dom.editButton.click(function() {
+  dom.editButton.addClass('hide');
+  dom.doneButton.removeClass('hide');
+  $('.close').each(function(i, value) {
+    var element = $(value);
+    element.removeClass('hide');
+    element.parent().addClass('jiggle');
+  });
+});
+
+// done button
+dom.doneButton.click(function() {
+  dom.editButton.removeClass('hide');
+  dom.doneButton.addClass('hide');
+  $('.close').each(function(i, value) {
+    var element = $(value);
+    element.addClass('hide');
+    element.parent().removeClass('jiggle');
+  });
+});
 
 // time range selectors
 $('.selector>.item').click(function(e) {

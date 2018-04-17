@@ -7,6 +7,9 @@ table {
 .left {
   text-align: left !important; }
 
+.right {
+  text-align: right !important; }
+
 .middle {
   vertical-align: middle !important; }
 
@@ -17,14 +20,29 @@ table {
   margin-bottom: 5px !important;
   position: relative; }
 
-#modal-buy-button {
-  padding-top: 18px;
-  padding-bottom: 18px;
-  margin-left: 8px; }
-
-.remove {
+.close {
   position: absolute;
   top: 5px;
-  right: 0px; }
+  right: 5px;
+  margin-right: 0px !important; }
 
-/*# sourceMappingURL=style.css.map */
+.ui.button:hover .icon.button {
+  opacity: 1; }
+
+#compare-stocks {
+  margin-top: 5px; }
+
+#company-header {
+  padding: 1.5rem; }
+
+#buy-button {
+  padding: 1.1em 1.5em; }
+
+.jiggle {
+  animation: jiggle .2s infinite; }
+
+@keyframes jiggle {
+  0% {
+    transform: rotate(-1deg); }
+  50% {
+    transform: rotate(1deg); } }

@@ -4,9 +4,9 @@ function createCheckButton(ticker, location='compare', color='') {
     color = 'positive';
   }
   return `
-    <button id="${ticker}-check-${location}" type="button" class="mini circular ui icon ${color} middle button">
+    <div id="${ticker}-check-${location}" class="mini circular ui icon ${color} middle button">
       <i class="${checked ? 'check ' : ''} icon"></i>
-    </button>
+    </div>
   `;
 }
 
@@ -23,14 +23,13 @@ function createCompanyHeader(dom, ticker) {
 
 function createCompareItem(dom, ticker, color='') {
   dom.compareStocks.append(`
-    <a id="${ticker}-item" class="compare-item ui basic fluid ${color} left button">
+    <div id="${ticker}-item" class="compare-item ui basic fluid ${color} left button">
       ${createCheckButton(ticker, 'compare', color)}
-      <i class="remove icon hide"></i>
+      <i class="close link icon hide"></i>
       <div class="middle inline">
         ${ticker}
       </div>
-
-    </a>
+    </div>
   `);
 }
 
