@@ -72,32 +72,32 @@ function formatDate(date) {
 // load graph data
 function getGraphData(section) {
   if (section == 'portfolio') {
-    var tickers = backend.getPortfolioTickers();
+    var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
   } else {
-    var tickers = backend.getCompareTickers();
+    var tickers = data.getCompareTickers();
     var timeRange = compareTimeRange;
   }
 
   var plotData = {};
-  var time = backend.getTime(timeRange);
+  var time = data.getTime(timeRange);
 
   for (var t in tickers) {
-    var data = backend.getData(tickers[t])[time.interval].slice(0, time.n);
+    var stockData = data.getStockData(tickers[t])[time.interval].slice(0, time.n);
 
     if (time.interval == 'min') {
       if (t == 0) {
-        plotData['dates'] = data.map(x => x.map(y => Date.parse(y['date']))).reverse();
+        plotData['dates'] = stockData.map(x => x.map(y => Date.parse(y['date']))).reverse();
       }
-      data = data.map(x => x.map(y => parseFloat(y['close']))).reverse();
+      stockData = stockData.map(x => x.map(y => parseFloat(y['close']))).reverse();
     } else {
       if (t == 0) {
-        plotData['dates'] = data.map(x => Date.parse(x['date'])).reverse();
+        plotData['dates'] = stockData.map(x => Date.parse(x['date'])).reverse();
       }
-      data = data.map(x => parseFloat(x['close'])).reverse();
+      stockData = stockData.map(x => parseFloat(x['close'])).reverse();
     }
 
-    plotData[tickers[t]] = data;
+    plotData[tickers[t]] = stockData;
   }
 
   return plotData;
@@ -120,7 +120,7 @@ function createCheckClickListener(ticker, location) {
     });
 
     $(`#${tickerString}-remove`).click(function() {
-      backend.removeCompareStock(ticker);
+      data.removeCompareStock(ticker);
       $(`#${tickerString}-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
     });
@@ -143,18 +143,18 @@ function createCheckClickListener(ticker, location) {
     $(this).blur();
     e.stopPropagation();
 
-    backend.toggleCompareChecked(ticker);
+    data.toggleCompareChecked(ticker);
     $(`[id^='${tickerString}-check']`).each(function(i, value) {
       $(value).children('i').first().toggleClass('check');
     });
     $(`#${tickerString}-compare-row`).toggleClass('hide');
 
-    if (backend.getSuggestedTickers().includes(ticker)) {
+    if (data.getSuggestedTickers().includes(ticker)) {
       $(`#${tickerString}-item`).remove();
     }
     
-    if (location != 'compare' && !backend.getCompareTickers().includes(ticker)) {
-      backend.addToCompareStocks(ticker);
+    if (location != 'compare' && !data.getCompareTickers().includes(ticker)) {
+      data.addToCompareStocks(ticker);
       createCheckClickListener(ticker, 'compare')
     }
 
@@ -170,9 +170,9 @@ function createCheckClickListener(ticker, location) {
 // populates company page content
 function loadCompanyPage(ticker) {
   dom.companyTicker.text(ticker);
-  dom.companyName.text(backend.getCompany(ticker));
+  dom.companyName.text(data.getCompany(ticker));
   dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
-  if (backend.getCompareChecked(ticker)) {
+  if (data.getCompareChecked(ticker)) {
     dom.compareButton.addClass('positive');
   } else {
     dom.compareButton.removeClass('positive');
@@ -203,7 +203,7 @@ function loadCompanyPage(ticker) {
 
 // search bar data
 dom.search.search({
-  source: backend.getSearchContent(),
+  source: data.getSearchContent(),
   searchFields: [
     'title',
     'description'
@@ -229,8 +229,8 @@ dom.search.search({
 });
 
 // compare stocks
-backend.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
-backend.getSuggestedTickers().map(x => createCheckClickListener(x, 'suggested'));
+data.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
+data.getSuggestedTickers().map(x => createCheckClickListener(x, 'suggested'));
 
 
 //////////////////////////////
@@ -284,7 +284,7 @@ $('.selector>.item').click(function(e) {
     $('[id$="-compare-change"]').each(function(i, value) {
       var element = $(value);
       var ticker = element.attr('id').split('-')[0];
-      var change = backend.getChange(ticker, compareTimeRange);
+      var change = data.getChange(ticker, compareTimeRange);
       element.text(change);
       element.siblings().removeClass('up down').addClass(change >= 0 ? 'up' : 'down');
       element.parent().removeClass('green red').addClass(change >= 0 ? 'green' : 'red');

@@ -1,4 +1,4 @@
-class Backend {
+class Data {
   constructor() {
     // Stock data API key (https://www.alphavantage.co/)
     // this.API_KEY = 'MIRLW3E1H4871KNW';
@@ -70,7 +70,7 @@ class Backend {
     return this.TIME_RANGE_INTERVAL[timeRange];
   }
 
-  getData(ticker) {
+  getStockData(ticker) {
     if (ticker in this.STOCK_DATA) {
       return this.STOCK_DATA[ticker];
     } else {
@@ -79,29 +79,29 @@ class Backend {
   }
 
   getPrice(ticker) {
-    return parseFloat(this.getData(ticker)['min'][0][0]['close']).toFixed(2);
+    return parseFloat(this.getStockData(ticker)['min'][0][0]['close']).toFixed(2);
   }
 
   getChange(ticker, timeRange) {
     var time = this.getTime(timeRange);
-    var data = this.getData(ticker);
-    var price = parseFloat(data['min'][0][0]['close']).toFixed(2);
+    var stockData = this.getStockData(ticker);
+    var price = parseFloat(stockData['min'][0][0]['close']).toFixed(2);
 
     if (time.interval == 'min') {
-      var open = parseFloat(data[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);
+      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);
     } else {
-      var open = parseFloat(data[time.interval][time.n - 1]['adjusted close']).toFixed(2);
+      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']).toFixed(2);
     }
 
     return (100 * ((price / open) - 1)).toFixed(2);
   }
 
   getMktCap(ticker) {
-    return this.getData(ticker)['mkt_cap'];
+    return this.getStockData(ticker)['mkt_cap'];
   }
 
   getPERatio(ticker) {
-    return this.getData(ticker)['pe_ratio'];
+    return this.getStockData(ticker)['pe_ratio'];
   }
 
   getCompany(ticker) {
@@ -148,4 +148,4 @@ class Backend {
   }
 }
 
-backend = new Backend();
+data = new Data();
