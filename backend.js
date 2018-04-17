@@ -2,7 +2,7 @@ class Backend {
   constructor() {
     // Stock data API key (https://www.alphavantage.co/)
     // this.API_KEY = 'MIRLW3E1H4871KNW';
-    
+
     this.COMPANIES = ALL_COMPANIES;
     this.STOCK_DATA = {
       'AAPL': {
