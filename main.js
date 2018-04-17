@@ -67,6 +67,7 @@ dom.companyDivYield = $('#div-yield');
 
 dom.buyPage = $('#buy-page');
 dom.buyCompanyTicker = $('#buy-company-ticker');
+dom.buyShares = $('#buy-shares');
 dom.buyPrice = $('#buy-price');
 dom.totalPrice = $('#total-price');
 dom.cancelBuy = $('#cancel-buy');
@@ -220,27 +221,7 @@ function loadCompanyPage() {
   dom.companyPERatio.text(data.getPERatio(companyTicker));
   dom.companyDivYield.text(data.getDivYield(companyTicker));
 
-  dom.companyPage
-    .modal({
-      autofocus: false,
-      allowMultiple: false,
-    })
-    .modal('attach events', dom.cancelBuy)
-    .modal('show');
-
-  dom.buyPage
-    .modal({
-      autofocus: false,
-      allowMultiple: false,
-    })
-    .modal('attach events', dom.companyBuyButton)
-
-  dom.companyBuyButton.click(function() {
-    dom.buyCompanyTicker.text(ticker);
-    var price = data.getPrice(ticker);
-    dom.buyPrice.text(price);
-    dom.totalPrice.text((0 * price).toFixed(2));
-  });
+  dom.companyPage.modal('show');
 }
 
 
@@ -347,4 +328,39 @@ $('.selector>.item').click(function(e) {
     dom.companyHigh.text(stats.high);
     dom.companyLow.text(stats.low);
   }
+});
+
+// company page
+dom.companyPage
+  .modal({
+    autofocus: false,
+    allowMultiple: false,
+  })
+  .modal('attach events', dom.cancelBuy);
+
+// buy page
+dom.buyPage
+  .modal({
+    autofocus: false,
+    allowMultiple: false,
+  })
+  .modal('attach events', dom.companyBuyButton);
+
+// load buy page
+dom.companyBuyButton.click(function() {
+  dom.buyCompanyTicker.text(companyTicker);
+  var price = data.getPrice(companyTicker);
+  dom.buyPrice.text(price);
+  dom.totalPrice.text('0.00');
+});
+
+// input shares to buy
+dom.buyShares.on('input', function(e) {
+  dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
+  dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).formatMoney());
+});
+
+// select input on focus
+dom.buyShares.focus(function() {
+  dom.buyShares.select();
 });

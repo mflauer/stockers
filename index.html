@@ -126,24 +126,20 @@
   </div>
 
   <div id="company-page" class="ui long modal">
-    <div id="company-header" class="ui header">
-      <div id="company-buy-button" class="ui right floated basic button">
-        Buy
-      </div>
-      <div id="compare-button" class="compare-button ui right floated compact basic button">
-        <div></div>
-        <div class="middle inline">
-          Compare
+    <div class="content">
+      <div class="ui grid">
+        <div class="sixteen wide right aligned column">
+          <div id="compare-button" class="compare-button ui right compact basic baseline button">
+            <div></div>
+            <div class="baseline inline">
+              Compare
+            </div>
+          </div>
+          <div id="company-buy-button" class="ui right basic baseline button">
+            Buy
+          </div>
         </div>
       </div>
-      <div id='company-ticker'>
-        <!-- Company ticker -->
-      </div>
-      <div id='company-name' class="sub header">
-        <!-- Company name -->
-      </div>
-    </div>
-    <div class="content">
       <div id="company-selector" class="ui text compact menu selector">
         <a class="active item">1D</a>
         <a class="item">5D</a>
@@ -153,7 +149,10 @@
         <a class="item">1Y</a>
       </div>
       <div style="height: 300px; width: 100%; border: 1px solid black;">Plot</div>
-      <div class="ui divider"></div>
+      <div class="ui large header">
+        <div id="company-ticker"></div>
+        <div id="company-name" class="sub header"></div>
+      </div>
       <p id="blurb"></p>
       <div class="ui divider"></div>
       <table class="ui basic fixed table">
@@ -215,7 +214,7 @@
     </div>
     <div class="content">
       <div class="ui grid">
-        <div class="ten wide middle column">Shares</div>
+        <div class="ten wide baseline column">Shares</div>
         <div id="buy-shares-container" class="six wide right aligned column">
           <div class="ui fluid input">
             <input id="buy-shares" class="right" type="text" placeholder="0">

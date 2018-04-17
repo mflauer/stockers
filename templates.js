@@ -4,7 +4,7 @@ function createCheckButton(ticker, location='compare', color='') {
     color = 'positive';
   }
   return `
-    <div id="${ticker}-check-${location}" class="mini circular ui icon ${color} middle button">
+    <div id="${ticker}-check-${location}" class="mini circular ui icon ${color} button">
       <i class="${checked ? 'check ' : ''} icon"></i>
     </div>
   `;
@@ -24,7 +24,7 @@ function createCompareItem(dom, ticker, color='', suggested=false) {
     <div id="${ticker}-item" class="compare-item ui basic fluid ${color} left button">
       ${createCheckButton(ticker, location, color)}
       ${icon}
-      <div class="middle inline">
+      <div class="baseline inline">
         ${ticker}
       </div>
     </div>

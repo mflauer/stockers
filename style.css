@@ -10,6 +10,9 @@ table {
 .right {
   text-align: right !important; }
 
+.baseline {
+  vertical-align: baseline !important; }
+
 .middle {
   vertical-align: middle !important; }
 
@@ -37,9 +40,6 @@ table {
 
 #compare-stocks {
   margin-top: 5px; }
-
-#company-header {
-  padding: 1.5rem; }
 
 #company-buy-button {
   padding: 1.1em 1.5em; }
