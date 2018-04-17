@@ -11,6 +11,7 @@ class Data {
         'week': AAPL_WEEK,
         'pe_ratio': '16.47',
         'mkt_cap': '854.36B',
+        'blurb': 'Apple Inc. is an American multinational technology company headquartered in Cupertino, California, that designs, develops, and sells consumer electronics, computer software, and online services.',
       },
       'AMZN': {
         'min': AMZN_MIN,
@@ -18,6 +19,7 @@ class Data {
         'week': AMZN_WEEK,
         'pe_ratio': '307.02',
         'mkt_cap': '680.28B',
+        'blurb': 'Amazon.com, Inc., doing business as Amazon, is an American electronic commerce and cloud computing company based in Seattle, Washington that was founded by Jeff Bezos on July 5, 1994.',
       },
       'FB': {
         'min': FB_MIN,
@@ -25,6 +27,7 @@ class Data {
         'week': FB_WEEK,
         'pe_ratio': '25.51',
         'mkt_cap': '456.67B',
+        'blurb': 'Facebook is an American online social media and social networking service company based in Menlo Park, California.',
       },
       'GOOG': {
         'min': GOOG_MIN,
@@ -32,6 +35,7 @@ class Data {
         'week': GOOG_WEEK,
         'pe_ratio': '31.37',
         'mkt_cap': '700.20B',
+        'blurb': 'Google LLC is an American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware.',
       },
     };
     this.TIME_RANGE_INTERVAL = {
