@@ -17,7 +17,8 @@
 <body>
   <div class="ui secondary pointing menu">
     <div class="header item">
-      <h1>StockViz</h1>
+      <img class="ui image small" src="assets/text-logo.svg"
+           onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
     </div>
     <div class="right menu">
       <a class="item">Logout</a>
@@ -126,7 +127,7 @@
 
   <div id="company-page" class="ui long modal">
     <div id="company-header" class="ui header">
-      <div id="buy-button" class="ui right floated basic button">
+      <div id="company-buy-button" class="ui right floated basic button">
         Buy
       </div>
       <div id="compare-button" class="compare-button ui right floated compact basic button">
@@ -143,7 +144,68 @@
       </div>
     </div>
     <div class="content">
+      <div id="company-selector" class="ui text compact menu selector">
+        <a class="active item">1D</a>
+        <a class="item">5D</a>
+        <a class="item">1M</a>
+        <a class="item">3M</a>
+        <a class="item">6M</a>
+        <a class="item">1Y</a>
+      </div>
       <div style="height: 300px; width: 100%; border: 1px solid black;">Plot</div>
+      <div class="ui divider"></div>
+      <p id="blurb"></p>
+      <div class="ui divider"></div>
+      <table class="ui basic fixed table">
+        <tbody>
+          <tr>
+            <th>CEO</th>
+            <td id="ceo"></td>
+            <th>Open</th>
+            <td>$<span id="open"></span></td>
+            <th>Market Cap</th>
+            <td id="mkt-cap"></td>
+          </tr>
+          <tr>
+            <th>Year Founded</th>
+            <td id="founded"></td>
+            <th>High</th>
+            <td>$<span id="high"></span></td>
+            <th>P/E Ratio</th>
+            <td id="pe-ratio">/td>
+          </tr>
+          <tr>
+            <th>Headquarters</th>
+            <td id="headquarters"></td>
+            <th>Low</th>
+            <td>$<span id="low"></span></td>
+            <th>Dividend Yield</th>
+            <td id="div-yield"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="ui divider"></div>
+      <div class="ui header">News</div>
+      <div class="ui three column grid">
+        <div class="column">
+          <div class="ui segment">
+            <img style="width: 100%" src="assets/logo.svg"/>
+            <h5 class="ui header">Article 1</h5>
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui segment">
+            <img style="width: 100%" src="assets/logo.svg"/>
+            <h5 class="ui header">Article 2</h5>
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui segment">
+            <img style="width: 100%" src="assets/logo.svg"/>
+            <h5 class="ui header">Article 3</h5>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -152,10 +214,24 @@
       Buy <span id="buy-company-ticker"></span>
     </div>
     <div class="content">
-      <div style="height: 300px; width: 100%; border: 1px solid black;">Content</div>
+      <div class="ui grid">
+        <div class="ten wide middle column">Shares</div>
+        <div class="six wide right aligned column">
+          <div class="ui fluid input">
+            <input id="buy-shares" type="text" placeholder="0">
+          </div>
+        </div>
+        <div class="ten wide column">Market Price</div>
+        <div class="six wide right aligned column">$<span id="buy-price"></span></div>
+      </div>
+      <div class="ui divider"></div>
+      <div class="ui grid">
+        <div class="ten wide column">Total</div>
+        <div class="six wide right aligned column">$<span id="total-price"></span></div>
+      </div>
     </div>
     <div class="actions">
-      <div class="ui basic cancel button">Cancel</div>
+      <div id="cancel-buy" class="ui basic cancel button">Cancel</div>
       <div class="ui basic positive button">Buy</div>
     </div>
   </div>

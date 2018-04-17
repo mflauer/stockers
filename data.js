@@ -11,6 +11,11 @@ class Data {
         'week': AAPL_WEEK,
         'pe_ratio': '16.47',
         'mkt_cap': '854.36B',
+        'div_yield': '1.56',
+        'blurb': 'Apple, Inc. engages in the design, manufacture, and marketing of mobile communication, media devices, personal computers, and portable digital music players. It operates through the following geographical segments: Americas, Europe, Greater China, Japan, and Rest of Asia Pacific.',
+        'ceo': 'Tim Cook',
+        'founded': '1976',
+        'headquarters': 'Cupertino, CA',
       },
       'AMZN': {
         'min': AMZN_MIN,
@@ -18,6 +23,11 @@ class Data {
         'week': AMZN_WEEK,
         'pe_ratio': '307.02',
         'mkt_cap': '680.28B',
+        'div_yield': '0.00',
+        'blurb': 'Amazon.com, Inc. engages in the provision of online retail shopping services. It operates through the following segments: North America, International, and Amazon Web Services (AWS).',
+        'ceo': 'Jeffrey Bezos',
+        'founded': '1994',
+        'headquarters': 'Seattle, WA',
       },
       'FB': {
         'min': FB_MIN,
@@ -25,6 +35,11 @@ class Data {
         'week': FB_WEEK,
         'pe_ratio': '25.51',
         'mkt_cap': '456.67B',
+        'div_yield': '0.00',
+        'blurb': 'Facebook, Inc. engages in the development of social media applications for people to connect through mobile devices, personal computers, and other surfaces. It enables users to share opinions, ideas, photos, videos, and other activities online.',
+        'ceo': 'Mark Zuckerberg',
+        'founded': '2004',
+        'headquarters': 'Menlo Park, CA',
       },
       'GOOG': {
         'min': GOOG_MIN,
@@ -32,6 +47,11 @@ class Data {
         'week': GOOG_WEEK,
         'pe_ratio': '31.37',
         'mkt_cap': '700.20B',
+        'div_yield': '0.00',
+        'blurb': 'Alphabet Inc. Class C Capital Stock, also called Alphabet, is a holding company, which engages in the business of acquisition and operation of different companies.',
+        'ceo': 'Lawrence Page',
+        'founded': '2015',
+        'headquarters': 'Mountain View, CA',
       },
     };
     this.TIME_RANGE_INTERVAL = {
@@ -96,12 +116,53 @@ class Data {
     return (100 * ((price / open) - 1)).toFixed(2);
   }
 
+  getStats(ticker, timeRange) {
+    var time = this.getTime(timeRange);
+    var stockData = this.getStockData(ticker);
+    if (time.interval == 'min') {
+      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);
+      var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => x.map(y => parseFloat(y['close']))));
+      var high = Math.max(...closes).toFixed(2);
+      var low = Math.min(...closes).toFixed(2);
+    } else {
+      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']).toFixed(2);
+      var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['close'])));
+      var high = Math.max(...closes).toFixed(2);
+      var low = Math.min(...closes).toFixed(2);
+    }
+    return {
+      open : open,
+      high : high,
+      low : low,
+    };
+  }
+
   getMktCap(ticker) {
     return this.getStockData(ticker)['mkt_cap'];
   }
 
   getPERatio(ticker) {
     return this.getStockData(ticker)['pe_ratio'];
+  }
+
+  getDivYield(ticker) {
+    return this.getStockData(ticker)['div_yield'];
+  }
+
+  getBlurb(ticker) {
+    return this.getStockData(ticker)['blurb'];
+  }
+
+  getCEO(ticker) {
+    return this.getStockData(ticker)['ceo'];
+  }
+
+  getFounded(ticker) {
+    return this.getStockData(ticker)['founded'];
+  }
+
+  getHeadquarters(ticker) {
+    return this.getStockData(ticker)['headquarters'];
   }
 
   getCompany(ticker) {
