@@ -130,7 +130,7 @@ function getGraphData(section) {
 
 // creates click event listener for check mark buttons
 function createCheckClickListener(ticker, location) {
-  var tickerString = ticker.replace('.', '\\.');
+  var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
 
   if (location == 'compare') {
     createCompareItem(dom, ticker, COLORS[currentColor]);
