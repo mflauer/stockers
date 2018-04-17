@@ -155,29 +155,29 @@ function getDates(array) {
   return date_list;
 }
 
-function mapData(array) {
 
-}
 
 var dates = getDates(compareGraphData['dates']);
 var prices = compareGraphData['GOOG'];
-
-
-console.log(dates);
-console.log(prices);
-console.log(compareGraphData);
-
 
 var margin = {top: 40, right: 40, bottom: 40, left: 40},
     width = 500 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var n = dates.length;
+var n = prices[0].length;
 
+console.log(dates);
+console.log(prices[0].length);
+console.log(compareGraphData);
 console.log(n);
 console.log(prices[n-1][0]);
 console.log(dates[n-1]);
 console.log(prices[0]);
+
+function mapData(arrayP, arrayD) {
+  var n = arrayP.length;
+
+}
 
 var dataset = d3.range(20).map(function(d) { return {"y": d3.randomUniform(1)() } })
 console.log(dataset);
@@ -207,7 +207,7 @@ compare.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x)
-            .tickFormat(d3.timeFormat("%Y-%m-%d")))
+            .tickFormat(d3.timeFormat("%m-%d")))
 
       // Add the Y Axis
 
@@ -248,7 +248,7 @@ growth.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x)
-            .tickFormat(d3.timeFormat("%Y-%m-%d")))
+            .tickFormat(d3.timeFormat("%m-%d")))
 
       // Add the Y Axis
 
@@ -290,7 +290,7 @@ volume.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x)
-            .tickFormat(d3.timeFormat("%Y-%m-%d")))
+            .tickFormat(d3.timeFormat("%m-%d")))
 
       // Add the Y Axis
 
