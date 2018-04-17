@@ -29,6 +29,7 @@ dom = {};
 dom.search = $('#search-input');
 dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
+dom.editing = false;
 dom.compareStocks = $('#compare-stocks');
 dom.compareTable = $('#compare-table');
 dom.companyPage = $('#company-page');
@@ -93,7 +94,13 @@ function createCheckClickListener(ticker, location) {
     $(`#${ticker}-item, #${ticker}-table`).click(function() {
       loadCompanyPage(ticker);
       return false;
-    })
+    });
+
+    $(`#${ticker}-remove`).click(function() {
+      backend.removeCompareStock(ticker);
+      $(`#${ticker}-item`).remove();
+      $(`#${ticker}-compare-row`).remove();
+    });
   }
 
   if (location == 'button') {
@@ -180,7 +187,9 @@ backend.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
 //////////////////////////////
 
 // edit button
-dom.editButton.click(function() {
+dom.editButton.click(function(e) {
+  e.stopPropagation();
+  dom.editing = true;
   dom.editButton.addClass('hide');
   dom.doneButton.removeClass('hide');
   $('.close').each(function(i, value) {
@@ -190,11 +199,19 @@ dom.editButton.click(function() {
 
 // done button
 dom.doneButton.click(function() {
+  dom.editing = false;
   dom.editButton.removeClass('hide');
   dom.doneButton.addClass('hide');
   $('.close').each(function(i, value) {
     $(value).addClass('hide');
   });
+});
+
+// done editing if click anything
+$(document).click(function(e) {
+  if (dom.editing && !$(e.target).hasClass('close')) {
+    dom.doneButton.click();
+  }
 });
 
 // time range selectors

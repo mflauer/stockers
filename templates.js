@@ -25,7 +25,7 @@ function createCompareItem(dom, ticker, color='') {
   dom.compareStocks.append(`
     <div id="${ticker}-item" class="compare-item ui basic fluid ${color} left button">
       ${createCheckButton(ticker, 'compare', color)}
-      <i class="close link icon hide"></i>
+      <i id="${ticker}-remove" class="close link icon hide"></i>
       <div class="middle inline">
         ${ticker}
       </div>

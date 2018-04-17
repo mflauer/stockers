@@ -107,6 +107,10 @@ class Backend {
       isChecked: true
     }
   }
+
+  removeCompareStock(ticker) {
+    delete this.COMPARE_STOCKS[ticker];
+  }
 }
 
 backend = new Backend();
