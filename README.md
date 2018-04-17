@@ -7,8 +7,7 @@ Install Sass by running `gem install sass`.
 Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in the parent directory. This will generate a css file every time you save your scss file.
 
 ## TODO (!! are priority)
-- !! colorcode stocks
 - !! plots
-- ! fix check on compare button in company screen
-- alphabetize new stocks when added to compare
-- extra line when first item in table is missing
+- !! porfolio side
+- ! rest of company page
+- better pricing
