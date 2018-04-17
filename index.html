@@ -29,7 +29,7 @@
       <h2 class="ui center aligned header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
-          <div class="ui huge header">$1,000.00</div>
+          <div class="ui huge header">$<span id="portfolio-value"></span></div>
           <div class="ui vertical fluid menu">
             <div class="header item">My Stocks</div>
             <a class="item">Stock 1</a>
@@ -154,15 +154,15 @@
     <div class="content">
       <div class="ui grid">
         <div class="ten wide middle column">Shares</div>
-        <div class="six wide right aligned column">
+        <div id="buy-shares-container" class="six wide right aligned column">
           <div class="ui fluid input">
-            <input id="buy-shares" type="text" placeholder="0">
+            <input id="buy-shares" class="right" type="text" placeholder="0">
           </div>
         </div>
         <div class="ten wide column">Market Price</div>
         <div class="six wide right aligned column">$<span id="buy-price"></span></div>
       </div>
-      <div class="ui divider"></div>
+      <div id="buy-divider" class="ui divider"></div>
       <div class="ui grid">
         <div class="ten wide column">Total</div>
         <div class="six wide right aligned column">$<span id="total-price"></span></div>

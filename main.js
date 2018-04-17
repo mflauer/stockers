@@ -36,6 +36,7 @@ var editing = false;
 // DOM ELEMENTS
 //////////////////////////////
 dom = {};
+dom.portfolioValue = $('#portfolio-value');
 dom.search = $('#search');
 dom.searchInput = $('#search-input');
 dom.editButton = $('#edit-button');
@@ -154,6 +155,7 @@ function createCheckClickListener(ticker, location) {
     $(`#${tickerString}-compare-row`).toggleClass('hide');
 
     if (data.getSuggestedTickers().includes(ticker)) {
+      data.removeSuggestedStock(ticker);
       $(`#${tickerString}-item`).remove();
     }
     
@@ -211,6 +213,9 @@ function loadCompanyPage(ticker) {
 //////////////////////////////
 // Load page content
 //////////////////////////////
+
+// portfolio value
+dom.portfolioValue.text(data.getPortfolioValue());
 
 // search bar data
 dom.search.search({
