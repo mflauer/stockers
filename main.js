@@ -2,10 +2,10 @@
 const INIT_TIME_RANGE = '1D';
 
 // graph data
-var portfolioTimeRange = INIT_TIME_RANGE,
-    compareTimeRange = INIT_TIME_RANGE,
+var portfolioTimeRange = compareTimeRange = companyTimeRange = INIT_TIME_RANGE,
     portfolioGraphData = getGraphData('portfolio'),
     compareGraphData = getGraphData('compare');
+    companyGraphData;
 
 
 // table data
@@ -36,18 +36,33 @@ var editing = false;
 // DOM ELEMENTS
 //////////////////////////////
 dom = {};
+
 dom.search = $('#search');
 dom.searchInput = $('#search-input');
+
 dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
+
 dom.compareStocks = $('#compare-stocks');
-dom.compareTable = $('#compare-table');
 dom.suggestedStocks = $('#suggested-stocks');
+dom.compareTable = $('#compare-table');
+
 dom.companyPage = $('#company-page');
-dom.companyTicker = $('#company-ticker');
-dom.companyName = $('#company-name');
 dom.compareButton = $('#compare-button');
 dom.companyBuyButton = $('#company-buy-button');
+dom.companyTicker = $('#company-ticker');
+dom.companyName = $('#company-name');
+dom.companyBlurb = $('#blurb');
+dom.companyCEO = $('#ceo');
+dom.companyFounded = $('#founded');
+dom.companyHeadquarters = $('#headquarters');
+dom.companyOpen = $('#open');
+dom.companyHigh = $('#high');
+dom.companyLow = $('#low');
+dom.companyMktCap = $('#mkt-cap');
+dom.companyPERatio = $('#pe-ratio');
+dom.companyDivYield = $('#div-yeild');
+
 dom.buyPage = $('#buy-page');
 dom.buyCompanyTicker = $('#buy-company-ticker');
 dom.buyPrice = $('#buy-price');
@@ -78,9 +93,12 @@ function getGraphData(section) {
   if (section == 'portfolio') {
     var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
-  } else {
+  } else if (section == 'compare') {
     var tickers = data.getCompareTickers();
     var timeRange = compareTimeRange;
+  } else {
+    var tickers = [section];
+    var timeRange = companyTimeRange;
   }
 
   var plotData = {};
@@ -182,6 +200,20 @@ function loadCompanyPage(ticker) {
     dom.compareButton.removeClass('positive');
   }
 
+  createCheckClickListener(ticker, 'company');
+  createCheckClickListener(ticker, 'button');
+
+  dom.companyBlurb.text(data.getBlurb(ticker));
+  dom.companyCEO.text(data.getCEO(ticker));
+  dom.companyFounded.text(data.getFounded(ticker));
+  dom.companyHeadquarters.text(data.getHeadquarters(ticker));
+  dom.companyOpen.text(data.getOpen(ticker, companyTimeRange));
+  dom.companyHigh.text(data.getHigh(ticker, companyTimeRange));
+  dom.companyLow.text(data.getLow(ticker, companyTimeRange));
+  dom.companyMktCap.text(data.getMktCap(ticker));
+  dom.companyPERatio.text(data.getPERatio(ticker));
+  dom.companyDivYield.text(data.getDivYield(ticker));
+
   dom.companyPage
     .modal({
       autofocus: false,
@@ -189,8 +221,6 @@ function loadCompanyPage(ticker) {
     })
     .modal('attach events', dom.cancelBuy)
     .modal('show');
-  createCheckClickListener(ticker, 'company');
-  createCheckClickListener(ticker, 'button');
 
   dom.buyPage
     .modal({
