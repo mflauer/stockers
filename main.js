@@ -155,6 +155,10 @@ function getDates(array) {
   return date_list;
 }
 
+function mapData(array) {
+
+}
+
 var dates = getDates(compareGraphData['dates']);
 var prices = compareGraphData['GOOG'];
 
@@ -197,11 +201,6 @@ var compare = d3.select("#compare-graph").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-compare.append("text")
-    .attr("x", width - 6)
-    .attr("y", height - 6)
-    .style("text-anchor", "end")
-    .text("GOOG");
 
         // Add the X Axis
 compare.append("g")
@@ -209,11 +208,6 @@ compare.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x)
             .tickFormat(d3.timeFormat("%Y-%m-%d")))
-    .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", "rotate(-65)");
 
       // Add the Y Axis
 
@@ -226,13 +220,6 @@ compare.append("path")
     .attr("class", "line") // Assign a class for styling
     .attr("d", line);
 
-compare.selectAll(".dot")
-    .data(dataset)
-  .enter().append("circle") // Uses the enter().append() method
-    .attr("class", "dot") // Assign a class for styling
-    .attr("cx", function(d, i) { return x(i) })
-    .attr("cy", function(d) { return y(d.y) })
-    .attr("r", 5);
 
 //growth graph
 
@@ -255,11 +242,6 @@ var growth = d3.select("#growth").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-growth.append("text")
-    .attr("x", width - 6)
-    .attr("y", height - 6)
-    .style("text-anchor", "end")
-    .text("GOOG");
 
         // Add the X Axis
 growth.append("g")
@@ -267,11 +249,6 @@ growth.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x)
             .tickFormat(d3.timeFormat("%Y-%m-%d")))
-    .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", "rotate(-65)");
 
       // Add the Y Axis
 
@@ -283,13 +260,6 @@ growth.append("path")
     .attr("class", "line") // Assign a class for styling
     .attr("d", line);
 
-growth.selectAll(".dot")
-    .data(dataset)
-  .enter().append("circle") // Uses the enter().append() method
-    .attr("class", "dot") // Assign a class for styling
-    .attr("cx", function(d, i) { return x(i) })
-    .attr("cy", function(d) { return y(d.y) })
-    .attr("r", 5);
 
 //volume graph
 
@@ -314,11 +284,6 @@ var volume = d3.select("#volume").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-volume.append("text")
-    .attr("x", width - 6)
-    .attr("y", height - 6)
-    .style("text-anchor", "end")
-    .text("GOOG");
 
         // Add the X Axis
 volume.append("g")
@@ -326,11 +291,6 @@ volume.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x)
             .tickFormat(d3.timeFormat("%Y-%m-%d")))
-    .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", "rotate(-65)");
 
       // Add the Y Axis
 
@@ -342,13 +302,6 @@ volume.append("path")
     .attr("class", "line") // Assign a class for styling
     .attr("d", line);
 
-volume.selectAll(".dot")
-    .data(dataset)
-  .enter().append("circle") // Uses the enter().append() method
-    .attr("class", "dot") // Assign a class for styling
-    .attr("cx", function(d, i) { return x(i) })
-    .attr("cy", function(d) { return y(d.y) })
-    .attr("r", 5);
 
 
 
