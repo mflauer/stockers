@@ -179,18 +179,21 @@ function loadCompanyPage(ticker) {
   }
 
   dom.companyPage
-    .modal({ autofocus: false })
+    .modal({
+      autofocus: false,
+      allowMultiple: false,
+    })
     .modal('show');
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
 
+  dom.buyPage
+    .modal({ autofocus: false })
+    .modal('attach events', dom.buyButton)
+
   dom.buyButton.click(function() {
     dom.buyCompanyTicker.text(ticker);
-
-    dom.buyPage
-      .modal({ autofocus: false })
-      .modal('show');
-  })
+  });
 }
 
 
