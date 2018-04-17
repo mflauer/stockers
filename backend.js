@@ -85,7 +85,7 @@ class Backend {
   getChange(ticker, timeRange) {
     var time = this.getTime(timeRange);
     var data = this.getData(ticker);
-    var price = this.getPrice(ticker);
+    var price = parseFloat(data['min'][0][0]['close']).toFixed(2);
 
     if (time.interval == 'min') {
       var open = parseFloat(data[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);

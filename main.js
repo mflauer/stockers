@@ -171,6 +171,8 @@ function loadCompanyPage(ticker) {
     .modal('show');
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
+
+  // TODO buy button click listener
 }
 
 

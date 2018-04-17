@@ -6,7 +6,10 @@ Install Sass by running `gem install sass`.
 
 Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in the parent directory. This will generate a css file every time you save your scss file.
 
-## TODO (!! are priority)
+## TODO (! - priority level)
 - !! plots
 - !! porfolio side
 - ! rest of company page
+- ! buy button
+- extra line when first item in table is hidden
+- company page buttons move when hovered
