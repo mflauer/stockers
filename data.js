@@ -116,16 +116,25 @@ class Data {
     return (100 * ((price / open) - 1)).toFixed(2);
   }
 
-  getOpen(ticker, timeRange) {
-    return '';
-  }
-
-  getHigh(ticker, timeRange) {
-    return '';
-  }
-
-  getLow(ticker, timeRange) {
-    return '';
+  getStats(ticker, timeRange) {
+    var time = this.getTime(timeRange);
+    var stockData = this.getStockData(ticker);
+    if (time.interval == 'min') {
+      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);
+      var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => x.map(y => parseFloat(y['close']))));
+      var high = Math.max(...closes).toFixed(2);
+      var low = Math.min(...closes).toFixed(2);
+    } else {
+      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']).toFixed(2);
+      var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['close'])));
+      var high = Math.max(...closes).toFixed(2);
+      var low = Math.min(...closes).toFixed(2);
+    }
+    return {
+      open : open,
+      high : high,
+      low : low,
+    };
   }
 
   getMktCap(ticker) {
