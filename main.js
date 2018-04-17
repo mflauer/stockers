@@ -292,8 +292,8 @@ $('.selector>.item').click(function(e) {
     });
   }
 });
-// example
-// `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=${API_KEY}`
+
+
 
 //var color = d3.scale.category10();
 
@@ -454,10 +454,4 @@ volume.append("path")
     .attr("class", "line") // Assign a class for styling
     .attr("d", line);
 
-
-
-
-
 //data is in compareGraphData
-
-$('.ui.search').search({ source: SEARCH_CONTENT });
