@@ -32,10 +32,12 @@ dom.doneButton = $('#done-button');
 dom.editing = false;
 dom.compareStocks = $('#compare-stocks');
 dom.compareTable = $('#compare-table');
+dom.suggestedStocks = $('#suggested-stocks');
 dom.companyPage = $('#company-page');
 dom.companyTicker = $('#company-ticker');
 dom.companyName = $('#company-name');
 dom.compareButton = $('#compare-button')
+
 
 
 //////////////////////////////
@@ -93,13 +95,18 @@ function createCheckClickListener(ticker, location) {
 
     $(`#${ticker}-item, #${ticker}-table`).click(function() {
       loadCompanyPage(ticker);
-      return false;
     });
 
     $(`#${ticker}-remove`).click(function() {
       backend.removeCompareStock(ticker);
       $(`#${ticker}-item`).remove();
       $(`#${ticker}-compare-row`).remove();
+    });
+  } else if (location == 'suggested') {
+    createCompareItem(dom, ticker, '', true);
+
+    $(`#${ticker}-item`).click(function() {
+      loadCompanyPage(ticker);
     });
   }
 
@@ -119,6 +126,10 @@ function createCheckClickListener(ticker, location) {
       $(value).children('i').first().toggleClass('check');
     });
     $(`#${ticker}-compare-row`).toggleClass('hide');
+
+    if (backend.getSuggestedTickers().includes(ticker)) {
+      $(`#${ticker}-item`).remove();
+    }
     
     if (location != 'compare' && !backend.getCompareTickers().includes(ticker)) {
       backend.addToCompareStocks(ticker);
@@ -127,9 +138,7 @@ function createCheckClickListener(ticker, location) {
 
     if (location == 'search') {
       dom.search.focus();
-    }
-
-    if (location == 'company' || location == 'button') {
+    } else if (location == 'company' || location == 'button') {
       dom.compareButton.toggleClass('positive');
       $(`#${ticker}-check-company`).toggleClass('positive');
     }
@@ -180,6 +189,7 @@ $('#search').search({
 
 // compare stocks
 backend.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
+backend.getSuggestedTickers().map(x => createCheckClickListener(x, 'suggested'));
 
 
 //////////////////////////////

@@ -21,11 +21,20 @@ function createCompanyHeader(dom, ticker) {
   }
 }
 
-function createCompareItem(dom, ticker, color='') {
-  dom.compareStocks.append(`
+function createCompareItem(dom, ticker, color='', suggested=false) {
+  if (suggested) {
+    var element = dom.suggestedStocks;
+    var location = 'suggested';
+    var icon = '';
+  } else {
+    var element = dom.compareStocks;
+    var location = 'compare';
+    var icon = `<i id="${ticker}-remove" class="close link icon hide"></i>`;
+  }
+  element.append(`
     <div id="${ticker}-item" class="compare-item ui basic fluid ${color} left button">
-      ${createCheckButton(ticker, 'compare', color)}
-      <i id="${ticker}-remove" class="close link icon hide"></i>
+      ${createCheckButton(ticker, location, color)}
+      ${icon}
       <div class="middle inline">
         ${ticker}
       </div>

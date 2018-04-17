@@ -50,6 +50,7 @@ class Backend {
       'GOOG': { isChecked: true },
       'AAPL': { isChecked: false },
     };
+    this.SUGGESTED_STOCKS = ['AMZN'];
   }
 
   getSearchContent() {
@@ -89,6 +90,10 @@ class Backend {
     return Object.keys(this.COMPARE_STOCKS).sort();
   }
 
+  getSuggestedTickers() {
+    return this.SUGGESTED_STOCKS.sort();
+  }
+
   getCompareChecked(ticker) {
     if (ticker in this.COMPARE_STOCKS) {
       return this.COMPARE_STOCKS[ticker.toUpperCase()].isChecked;
@@ -110,6 +115,10 @@ class Backend {
 
   removeCompareStock(ticker) {
     delete this.COMPARE_STOCKS[ticker];
+  }
+
+  removeSuggestedStock(ticker) {
+    delete this.SUGGESTED_STOCKS[ticker];
   }
 }
 
