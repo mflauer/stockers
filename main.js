@@ -101,6 +101,8 @@ function getGraphData(section) {
 
 // creates click event listener for check mark buttons
 function createCheckClickListener(ticker, location) {
+  var tickerString = ticker.replace('.', '\\.');
+
   if (location == 'compare') {
     createCompareItem(dom, ticker, COLORS[currentColor]);
     createCompareTableRow(dom, ticker, compareTimeRange);
@@ -109,19 +111,19 @@ function createCheckClickListener(ticker, location) {
       currentColor = 0;
     }
 
-    $(`#${ticker}-item, #${ticker}-table`).click(function() {
+    $(`#${tickerString}-item, #${tickerString}-table`).click(function() {
       loadCompanyPage(ticker);
     });
 
-    $(`#${ticker}-remove`).click(function() {
+    $(`#${tickerString}-remove`).click(function() {
       backend.removeCompareStock(ticker);
-      $(`#${ticker}-item`).remove();
-      $(`#${ticker}-compare-row`).remove();
+      $(`#${tickerString}-item`).remove();
+      $(`#${tickerString}-compare-row`).remove();
     });
   } else if (location == 'suggested') {
     createCompareItem(dom, ticker, '', true);
 
-    $(`#${ticker}-item`).click(function() {
+    $(`#${tickerString}-item`).click(function() {
       loadCompanyPage(ticker);
     });
   }
@@ -130,7 +132,7 @@ function createCheckClickListener(ticker, location) {
     var element = dom.compareButton;
     element.off('click');
   } else {
-    var element = $(`#${ticker}-check-${location}`);
+    var element = $(`#${tickerString}-check-${location}`);
   }
 
   element.click(function(e) {
@@ -138,13 +140,13 @@ function createCheckClickListener(ticker, location) {
     e.stopPropagation();
 
     backend.toggleCompareChecked(ticker);
-    $(`[id^='${ticker}-check']`).each(function(i, value) {
+    $(`[id^='${tickerString}-check']`).each(function(i, value) {
       $(value).children('i').first().toggleClass('check');
     });
-    $(`#${ticker}-compare-row`).toggleClass('hide');
+    $(`#${tickerString}-compare-row`).toggleClass('hide');
 
     if (backend.getSuggestedTickers().includes(ticker)) {
-      $(`#${ticker}-item`).remove();
+      $(`#${tickerString}-item`).remove();
     }
     
     if (location != 'compare' && !backend.getCompareTickers().includes(ticker)) {
@@ -156,7 +158,7 @@ function createCheckClickListener(ticker, location) {
       dom.search.focus();
     } else if (location == 'company' || location == 'button') {
       dom.compareButton.toggleClass('positive');
-      $(`#${ticker}-check-company`).toggleClass('positive');
+      $(`#${tickerString}-check-company`).toggleClass('positive');
     }
   });
 }

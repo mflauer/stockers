@@ -10,4 +10,3 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 - !! plots
 - !! porfolio side
 - ! rest of company page
-- change in compare table
