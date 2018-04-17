@@ -47,9 +47,13 @@ dom.companyPage = $('#company-page');
 dom.companyTicker = $('#company-ticker');
 dom.companyName = $('#company-name');
 dom.compareButton = $('#compare-button');
-dom.buyButton = $('#buy-button');
+dom.companyBuyButton = $('#company-buy-button');
 dom.buyPage = $('#buy-page');
 dom.buyCompanyTicker = $('#buy-company-ticker');
+dom.buyPrice = $('#buy-price');
+dom.totalPrice = $('#total-price');
+dom.cancelBuy = $('#cancel-buy');
+dom.buyButton = $('#buy-button');
 
 
 //////////////////////////////
@@ -183,16 +187,23 @@ function loadCompanyPage(ticker) {
       autofocus: false,
       allowMultiple: false,
     })
+    .modal('attach events', dom.cancelBuy)
     .modal('show');
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
 
   dom.buyPage
-    .modal({ autofocus: false })
-    .modal('attach events', dom.buyButton)
+    .modal({
+      autofocus: false,
+      allowMultiple: false,
+    })
+    .modal('attach events', dom.companyBuyButton)
 
-  dom.buyButton.click(function() {
+  dom.companyBuyButton.click(function() {
     dom.buyCompanyTicker.text(ticker);
+    var price = data.getPrice(ticker);
+    dom.buyPrice.text(price);
+    dom.totalPrice.text((0 * price).toFixed(2));
   });
 }
 
