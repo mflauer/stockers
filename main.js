@@ -184,9 +184,7 @@ dom.editButton.click(function() {
   dom.editButton.addClass('hide');
   dom.doneButton.removeClass('hide');
   $('.close').each(function(i, value) {
-    var element = $(value);
-    element.removeClass('hide');
-    element.parent().addClass('jiggle');
+    $(value).removeClass('hide');
   });
 });
 
@@ -195,9 +193,7 @@ dom.doneButton.click(function() {
   dom.editButton.removeClass('hide');
   dom.doneButton.addClass('hide');
   $('.close').each(function(i, value) {
-    var element = $(value);
-    element.addClass('hide');
-    element.parent().removeClass('jiggle');
+    $(value).addClass('hide');
   });
 });
 

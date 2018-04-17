@@ -49,17 +49,3 @@ table {
 #buy-button {
   padding: 1.1em 1.5em;
 }
-
-// animations
-.jiggle {
-  animation: jiggle .2s infinite;
-}
-
-@keyframes jiggle {
-  0% {
-    transform: rotate(-1deg);
-  }
-  50% {
-    transform: rotate(1deg);
-  }
-}
