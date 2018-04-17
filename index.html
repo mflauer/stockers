@@ -13,7 +13,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
   <script src="stock.js"></script>
-  <script src="main.js"></script>
 </head>
 
 <body>
@@ -78,7 +77,7 @@
         <div class="twelve wide column">
           <div id="search" class="ui fluid search">
             <div class="ui icon fluid input">
-              <input class="prompt" type="text" placeholder="Search stocks...">
+              <input id="search-input" class="prompt" type="text" placeholder="Search stocks...">
               <i class="search icon"></i>
             </div>
             <div class="results"></div>
@@ -109,30 +108,57 @@
 
         </div>
         <div class="four wide column">
-          <div class="ui vertical fluid menu">
-            <div id="compare-stocks">
-              <!-- stocks dynamically added -->
-            </div>
-            <div class="header item">Suggested Stocks</div>
-            <a class="item">Stock 3</a>
-            <a class="item">Stock 4</a>
+          <div class="right">
+            <a id="edit-button" href="#" class="">Edit</a>
+            <a id="done-button" href="#" class="hide">Done</a>
+          </div>
+          <div id="compare-stocks">
+            <!-- stocks dynamically added -->
+          </div>
+          <h5 class="ui header">
+            Suggested Stocks
+          </h5>
+          <div id="suggested-stocks">
+            <!-- stocks dynamically added -->
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- company page modal -->
-  <div class="ui modal">
-    <i class="close icon"></i>
-    <div class="header">
-      <!-- title dynamically added -->
-      <div class="ui button">
-        Compare
-      </div>
-      <div class="ui button">
+  <div id="company-page" class="ui long modal">
+    <div id="company-header" class="ui header">
+      <div id="buy-button" class="ui right floated basic button">
         Buy
       </div>
+      <div id="compare-button" class="compare-button ui right floated compact basic button">
+        <div></div>
+        <div class="middle inline">
+          Compare
+        </div>
+      </div>
+      <div id='company-ticker'>
+        <!-- Company ticker -->
+      </div>
+      <div id='company-name' class="sub header">
+        <!-- Company name -->
+      </div>
+    </div>
+    <div class="content">
+      <div style="height: 300px; width: 100%; border: 1px solid black;">Plot</div>
+    </div>
+  </div>
+
+  <div id="buy-page" class="ui mini modal">
+    <div class="ui header">
+      Buy <span id="buy-company-ticker"></span>
+    </div>
+    <div class="content">
+      <div style="height: 300px; width: 100%; border: 1px solid black;">Content</div>
+    </div>
+    <div class="actions">
+      <div class="ui basic cancel button">Cancel</div>
+      <div class="ui basic positive button">Buy</div>
     </div>
   </div>
 
@@ -150,7 +176,7 @@
   <script src="data/goog_day.js"></script>
   <script src="data/goog_week.js"></script>
   <script src="data/companies.js"></script>
-  <script src="backend.js"></script>
+  <script src="data.js"></script>
   <script src="templates.js"></script>
   <script src="main.js"></script>
 </body>
