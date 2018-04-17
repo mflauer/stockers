@@ -2,10 +2,10 @@
 const INIT_TIME_RANGE = '1D';
 
 // graph data
-var portfolioTimeRange = INIT_TIME_RANGE,
-    compareTimeRange = INIT_TIME_RANGE,
+var portfolioTimeRange = compareTimeRange = companyTimeRange = INIT_TIME_RANGE,
     portfolioGraphData = getGraphData('portfolio'),
-    compareGraphData = getGraphData('compare');
+    compareGraphData = getGraphData('compare'),
+    companyTicker, companyGraphData;
 
 
 // table data
@@ -36,19 +36,35 @@ var editing = false;
 // DOM ELEMENTS
 //////////////////////////////
 dom = {};
+
 dom.portfolioValue = $('#portfolio-value');
+
 dom.search = $('#search');
 dom.searchInput = $('#search-input');
+
 dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
+
 dom.compareStocks = $('#compare-stocks');
-dom.compareTable = $('#compare-table');
 dom.suggestedStocks = $('#suggested-stocks');
+dom.compareTable = $('#compare-table');
+
 dom.companyPage = $('#company-page');
-dom.companyTicker = $('#company-ticker');
-dom.companyName = $('#company-name');
 dom.compareButton = $('#compare-button');
 dom.companyBuyButton = $('#company-buy-button');
+dom.companyTicker = $('#company-ticker');
+dom.companyName = $('#company-name');
+dom.companyBlurb = $('#blurb');
+dom.companyCEO = $('#ceo');
+dom.companyFounded = $('#founded');
+dom.companyHeadquarters = $('#headquarters');
+dom.companyOpen = $('#open');
+dom.companyHigh = $('#high');
+dom.companyLow = $('#low');
+dom.companyMktCap = $('#mkt-cap');
+dom.companyPERatio = $('#pe-ratio');
+dom.companyDivYield = $('#div-yield');
+
 dom.buyPage = $('#buy-page');
 dom.buyCompanyTicker = $('#buy-company-ticker');
 dom.buyPrice = $('#buy-price');
@@ -79,9 +95,12 @@ function getGraphData(section) {
   if (section == 'portfolio') {
     var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
-  } else {
+  } else if (section == 'compare') {
     var tickers = data.getCompareTickers();
     var timeRange = compareTimeRange;
+  } else if (section == 'company') {
+    var tickers = [companyTicker];
+    var timeRange = companyTimeRange;
   }
 
   var plotData = {};
@@ -121,7 +140,8 @@ function createCheckClickListener(ticker, location) {
     }
 
     $(`#${tickerString}-item, #${tickerString}-table`).click(function() {
-      loadCompanyPage(ticker);
+      companyTicker = ticker;
+      loadCompanyPage();
     });
 
     $(`#${tickerString}-remove`).click(function() {
@@ -133,7 +153,8 @@ function createCheckClickListener(ticker, location) {
     createCompareItem(dom, ticker, '', true);
 
     $(`#${tickerString}-item`).click(function() {
-      loadCompanyPage(ticker);
+      companyTicker = ticker;
+      loadCompanyPage();
     });
   }
 
@@ -174,15 +195,30 @@ function createCheckClickListener(ticker, location) {
 }
 
 // populates company page content
-function loadCompanyPage(ticker) {
-  dom.companyTicker.text(ticker);
-  dom.companyName.text(data.getCompany(ticker));
-  dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
-  if (data.getCompareChecked(ticker)) {
+function loadCompanyPage() {
+  dom.companyTicker.text(companyTicker);
+  dom.companyName.text(data.getCompany(companyTicker));
+  dom.compareButton.children().first().replaceWith(createCheckButton(companyTicker, 'company'));
+  if (data.getCompareChecked(companyTicker)) {
     dom.compareButton.addClass('positive');
   } else {
     dom.compareButton.removeClass('positive');
   }
+
+  createCheckClickListener(companyTicker, 'company');
+  createCheckClickListener(companyTicker, 'button');
+
+  dom.companyBlurb.text(data.getBlurb(companyTicker));
+  dom.companyCEO.text(data.getCEO(companyTicker));
+  dom.companyFounded.text(data.getFounded(companyTicker));
+  dom.companyHeadquarters.text(data.getHeadquarters(companyTicker));
+  var stats = data.getStats(companyTicker, companyTimeRange);
+  dom.companyOpen.text(stats.open);
+  dom.companyHigh.text(stats.high);
+  dom.companyLow.text(stats.low);
+  dom.companyMktCap.text(data.getMktCap(companyTicker));
+  dom.companyPERatio.text(data.getPERatio(companyTicker));
+  dom.companyDivYield.text(data.getDivYield(companyTicker));
 
   dom.companyPage
     .modal({
@@ -191,8 +227,6 @@ function loadCompanyPage(ticker) {
     })
     .modal('attach events', dom.cancelBuy)
     .modal('show');
-  createCheckClickListener(ticker, 'company');
-  createCheckClickListener(ticker, 'button');
 
   dom.buyPage
     .modal({
@@ -226,8 +260,8 @@ dom.search.search({
   ],
   fullTextSearch: false,
   onSelect: function(result, response) {
-    var ticker = result.title;
-    loadCompanyPage(ticker);
+    companyTicker = result.title;
+    loadCompanyPage();
   },
   onSearchQuery: function() {
     var results = $('.results').children();
@@ -305,5 +339,12 @@ $('.selector>.item').click(function(e) {
       element.siblings().removeClass('up down').addClass(change >= 0 ? 'up' : 'down');
       element.parent().removeClass('green red').addClass(change >= 0 ? 'green' : 'red');
     });
+  } else if (section == 'company') {
+    companyTimeRange = timeRange;
+    companyGraphData = getGraphData('company');
+    var stats = data.getStats(companyTicker, companyTimeRange);
+    dom.companyOpen.text(stats.open);
+    dom.companyHigh.text(stats.high);
+    dom.companyLow.text(stats.low);
   }
 });
