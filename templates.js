@@ -47,7 +47,7 @@ function createCompareTableRow(dom, ticker) {
   dom.compareTable.append(`
     <tr id="${ticker}-compare-row" class="${backend.getCompareChecked(ticker) ? '' : 'hide'}">
       <td id="${ticker}-table"><a href="#">${ticker}</a></td>
-      <td class="right aligned">$1000.00</td>
+      <td class="right aligned">$${parseFloat(data['min'][0][0]['close']).toFixed(2)}</td>
       <td class="right aligned">2.5%</td>
       <td class="right aligned">${data['mkt_cap']}</td>
       <td class="right aligned">${data['pe_ratio']}</td>
