@@ -42,15 +42,14 @@ function createCompareItem(dom, ticker, color='', suggested=false) {
   `);
 }
 
-function createCompareTableRow(dom, ticker) {
-  var data = backend.getData(ticker);
+function createCompareTableRow(dom, ticker, timeRange) {
   dom.compareTable.append(`
     <tr id="${ticker}-compare-row" class="${backend.getCompareChecked(ticker) ? '' : 'hide'}">
       <td id="${ticker}-table"><a href="#">${ticker}</a></td>
-      <td class="right aligned">$${parseFloat(data['min'][0][0]['close']).toFixed(2)}</td>
-      <td class="right aligned">2.5%</td>
-      <td class="right aligned">${data['mkt_cap']}</td>
-      <td class="right aligned">${data['pe_ratio']}</td>
+      <td class="right aligned">$${backend.getPrice(ticker)}</td>
+      <td class="right aligned"><span id="${ticker}-compare-change">${backend.getChange(ticker, timeRange)}</span>%</td>
+      <td class="right aligned">${backend.getMktCap(ticker)}</td>
+      <td class="right aligned">${backend.getPERatio(ticker)}</td>
     </tr>
   `);
 }

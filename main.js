@@ -1,6 +1,12 @@
+// constants
+const INIT_TIME_RANGE = '1D';
+
 // graph data
-var portfolioGraphData = getGraphData(backend.getPortfolioTickers(), '1D'),
-    compareGraphData = getGraphData(backend.getCompareTickers(), '1D');
+var portfolioTimeRange = INIT_TIME_RANGE,
+    compareTimeRange = INIT_TIME_RANGE,
+    portfolioGraphData = getGraphData('portfolio'),
+    compareGraphData = getGraphData('compare');
+
 
 // table data
 var portfolioTableData, compareTableData;
@@ -21,6 +27,10 @@ const COLORS = [
 ];
 var currentColor = 0;
 
+// flags
+var editing = false;
+
+
 
 //////////////////////////////
 // DOM ELEMENTS
@@ -29,7 +39,6 @@ dom = {};
 dom.search = $('#search-input');
 dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
-dom.editing = false;
 dom.compareStocks = $('#compare-stocks');
 dom.compareTable = $('#compare-table');
 dom.suggestedStocks = $('#suggested-stocks');
@@ -37,7 +46,6 @@ dom.companyPage = $('#company-page');
 dom.companyTicker = $('#company-ticker');
 dom.companyName = $('#company-name');
 dom.compareButton = $('#compare-button')
-
 
 
 //////////////////////////////
@@ -58,7 +66,15 @@ function formatDate(date) {
 }
 
 // load graph data
-function getGraphData(tickers, timeRange) {
+function getGraphData(section) {
+  if (section == 'portfolio') {
+    var tickers = backend.getPortfolioTickers();
+    var timeRange = portfolioTimeRange;
+  } else {
+    var tickers = backend.getCompareTickers();
+    var timeRange = compareTimeRange;
+  }
+
   var plotData = {};
   var time = backend.getTime(timeRange);
 
@@ -87,7 +103,7 @@ function getGraphData(tickers, timeRange) {
 function createCheckClickListener(ticker, location) {
   if (location == 'compare') {
     createCompareItem(dom, ticker, COLORS[currentColor]);
-    createCompareTableRow(dom, ticker);
+    createCompareTableRow(dom, ticker, compareTimeRange);
     currentColor += 1;
     if (currentColor == COLORS.length) {
       currentColor = 0;
@@ -199,7 +215,7 @@ backend.getSuggestedTickers().map(x => createCheckClickListener(x, 'suggested'))
 // edit button
 dom.editButton.click(function(e) {
   e.stopPropagation();
-  dom.editing = true;
+  editing = true;
   dom.editButton.addClass('hide');
   dom.doneButton.removeClass('hide');
   $('.close').each(function(i, value) {
@@ -209,7 +225,7 @@ dom.editButton.click(function(e) {
 
 // done button
 dom.doneButton.click(function() {
-  dom.editing = false;
+  editing = false;
   dom.editButton.removeClass('hide');
   dom.doneButton.addClass('hide');
   $('.close').each(function(i, value) {
@@ -219,7 +235,7 @@ dom.doneButton.click(function() {
 
 // done editing if click anything
 $(document).click(function(e) {
-  if (dom.editing && !$(e.target).hasClass('close')) {
+  if (editing && !$(e.target).hasClass('close')) {
     dom.doneButton.click();
   }
 });
@@ -235,8 +251,15 @@ $('.selector>.item').click(function(e) {
   var timeRange = timeRangeElement.text();
   var section = timeRangeElement.parent().attr('id').split('-')[0];
   if (section == 'portfolio') {
-    portfolioGraphData = getGraphData('portfolio', timeRange);
+    portfolioTimeRange = timeRange;
+    portfolioGraphData = getGraphData('portfolio');
   } else if (section == 'compare') {
-    compareGraphData = getGraphData('compare', timeRange);
+    compareTimeRange = timeRange;
+    compareGraphData = getGraphData('compare');
+    $('[id$="-compare-change"]').each(function(i, value) {
+      var element = $(value);
+      var ticker = element.attr('id').split('-')[0];
+      element.text(backend.getChange(ticker, compareTimeRange));
+    });
   }
 });

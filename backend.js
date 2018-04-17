@@ -39,7 +39,7 @@ class Backend {
       '5D': { n: 5, interval: 'min' },
       '1M': { n: 21, interval: 'day' },
       '3M': { n: 63, interval: 'day' },
-      '6M': { n: 126, interval: 'day' },
+      '6M': { n: 26, interval: 'week' },
       '1Y': { n: 52, interval: 'week' },
       '5Y': { n: 260, interval: 'week' },
     }
@@ -48,7 +48,7 @@ class Backend {
     this.PORTFOLIO_STOCKS = ['AAPL'];
     this.COMPARE_STOCKS = {
       'GOOG': { isChecked: true },
-      'AAPL': { isChecked: false },
+      'AAPL': { isChecked: true },
     };
     this.SUGGESTED_STOCKS = ['AMZN'];
   }
@@ -66,6 +66,10 @@ class Backend {
     return searchContent;
   }
 
+  getTime(timeRange) {
+    return this.TIME_RANGE_INTERVAL[timeRange];
+  }
+
   getData(ticker) {
     if (ticker in this.STOCK_DATA) {
       return this.STOCK_DATA[ticker];
@@ -74,8 +78,30 @@ class Backend {
     }
   }
 
-  getTime(timeRange) {
-    return this.TIME_RANGE_INTERVAL[timeRange];
+  getPrice(ticker) {
+    return parseFloat(this.getData(ticker)['min'][0][0]['close']).toFixed(2);
+  }
+
+  getChange(ticker, timeRange) {
+    var time = this.getTime(timeRange);
+    var data = this.getData(ticker);
+    var price = this.getPrice(ticker);
+
+    if (time.interval == 'min') {
+      var open = parseFloat(data[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);
+    } else {
+      var open = parseFloat(data[time.interval][time.n - 1]['adjusted close']).toFixed(2);
+    }
+
+    return (100 * ((price / open) - 1)).toFixed(2);
+  }
+
+  getMktCap(ticker) {
+    return this.getData(ticker)['mkt_cap'];
+  }
+
+  getPERatio(ticker) {
+    return this.getData(ticker)['pe_ratio'];
   }
 
   getCompany(ticker) {
