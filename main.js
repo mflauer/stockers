@@ -259,7 +259,10 @@ $('.selector>.item').click(function(e) {
     $('[id$="-compare-change"]').each(function(i, value) {
       var element = $(value);
       var ticker = element.attr('id').split('-')[0];
-      element.text(backend.getChange(ticker, compareTimeRange));
+      var change = backend.getChange(ticker, compareTimeRange)
+      element.text(change);
+      element.siblings().removeClass('up down').addClass(change >= 0 ? 'up' : 'down');
+      element.parent().removeClass('green red').addClass(change >= 0 ? 'green' : 'red');
     });
   }
 });

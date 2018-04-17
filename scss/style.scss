@@ -1,3 +1,8 @@
+// CONSTANTS
+$green: rgb(33, 186, 69);
+$red: rgb(219, 40, 40);
+
+// STYLES
 table {
   border: none !important;
 }
@@ -32,6 +37,14 @@ table {
   top: 5px;
   right: 5px;
   margin-right: 0px !important;
+}
+
+.green {
+  color: $green;
+}
+
+.red {
+  color: $red;
 }
 
 .ui.button:hover .icon.button {

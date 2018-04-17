@@ -43,11 +43,17 @@ function createCompareItem(dom, ticker, color='', suggested=false) {
 }
 
 function createCompareTableRow(dom, ticker, timeRange) {
+  var change = backend.getChange(ticker, timeRange);
   dom.compareTable.append(`
     <tr id="${ticker}-compare-row" class="${backend.getCompareChecked(ticker) ? '' : 'hide'}">
       <td id="${ticker}-table"><a href="#">${ticker}</a></td>
       <td class="right aligned">$${backend.getPrice(ticker)}</td>
-      <td class="right aligned"><span id="${ticker}-compare-change">${backend.getChange(ticker, timeRange)}</span>%</td>
+      <td class="right aligned">
+        <div class="${change >= 0 ? 'green' : 'red'}">
+          <i class="caret ${change >= 0 ? 'up' : 'down'} icon"></i>
+          <span id="${ticker}-compare-change">${change}</span>%
+        </div>
+      </td>
       <td class="right aligned">${backend.getMktCap(ticker)}</td>
       <td class="right aligned">${backend.getPERatio(ticker)}</td>
     </tr>
