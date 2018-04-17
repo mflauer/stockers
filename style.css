@@ -2,10 +2,44 @@ table {
   border: none !important; }
 
 .hide {
-  display: none; }
+  display: none !important; }
+
+.left {
+  text-align: left !important; }
+
+.right {
+  text-align: right !important; }
 
 .middle {
   vertical-align: middle !important; }
 
 .inline {
   display: inline-block !important; }
+
+.compare-item {
+  margin-bottom: 5px !important;
+  position: relative; }
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  margin-right: 0px !important; }
+
+.green {
+  color: #21ba45; }
+
+.red {
+  color: #db2828; }
+
+.ui.button:hover .icon.button {
+  opacity: 1; }
+
+#compare-stocks {
+  margin-top: 5px; }
+
+#company-header {
+  padding: 1.5rem; }
+
+#buy-button {
+  padding: 1.1em 1.5em; }

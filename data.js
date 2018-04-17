@@ -1,4 +1,4 @@
-class Backend {
+class Data {
   constructor() {
     // Stock data API key (https://www.alphavantage.co/)
     // this.API_KEY = 'MIRLW3E1H4871KNW';
@@ -39,7 +39,7 @@ class Backend {
       '5D': { n: 5, interval: 'min' },
       '1M': { n: 21, interval: 'day' },
       '3M': { n: 63, interval: 'day' },
-      '6M': { n: 126, interval: 'day' },
+      '6M': { n: 26, interval: 'week' },
       '1Y': { n: 52, interval: 'week' },
       '5Y': { n: 260, interval: 'week' },
     }
@@ -48,8 +48,9 @@ class Backend {
     this.PORTFOLIO_STOCKS = ['AAPL'];
     this.COMPARE_STOCKS = {
       'GOOG': { isChecked: true },
-      'AAPL': { isChecked: false },
+      'AAPL': { isChecked: true },
     };
+    this.SUGGESTED_STOCKS = ['AMZN'];
   }
 
   getSearchContent() {
@@ -65,7 +66,11 @@ class Backend {
     return searchContent;
   }
 
-  getData(ticker) {
+  getTime(timeRange) {
+    return this.TIME_RANGE_INTERVAL[timeRange];
+  }
+
+  getStockData(ticker) {
     if (ticker in this.STOCK_DATA) {
       return this.STOCK_DATA[ticker];
     } else {
@@ -73,8 +78,34 @@ class Backend {
     }
   }
 
-  getTime(timeRange) {
-    return this.TIME_RANGE_INTERVAL[timeRange];
+  getPrice(ticker) {
+    return parseFloat(this.getStockData(ticker)['min'][0][0]['close']).toFixed(2);
+  }
+
+  getChange(ticker, timeRange) {
+    var time = this.getTime(timeRange);
+    var stockData = this.getStockData(ticker);
+    var price = parseFloat(stockData['min'][0][0]['close']).toFixed(2);
+
+    if (time.interval == 'min') {
+      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);
+    } else {
+      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']).toFixed(2);
+    }
+
+    return (100 * ((price / open) - 1)).toFixed(2);
+  }
+
+  getMktCap(ticker) {
+    return this.getStockData(ticker)['mkt_cap'];
+  }
+
+  getPERatio(ticker) {
+    return this.getStockData(ticker)['pe_ratio'];
+  }
+
+  getCompany(ticker) {
+    return this.COMPANIES[ticker];
   }
 
   getPortfolioTickers() {
@@ -83,6 +114,10 @@ class Backend {
 
   getCompareTickers() {
     return Object.keys(this.COMPARE_STOCKS).sort();
+  }
+
+  getSuggestedTickers() {
+    return this.SUGGESTED_STOCKS.sort();
   }
 
   getCompareChecked(ticker) {
@@ -103,6 +138,14 @@ class Backend {
       isChecked: true
     }
   }
+
+  removeCompareStock(ticker) {
+    delete this.COMPARE_STOCKS[ticker];
+  }
+
+  removeSuggestedStock(ticker) {
+    delete this.SUGGESTED_STOCKS[ticker];
+  }
 }
 
-backend = new Backend();
+data = new Data();

@@ -1,31 +1,50 @@
-function createCheckButton(ticker, location='compare') {
+function createCheckButton(ticker, location='compare', color='') {
+  var checked = backend.getCompareChecked(ticker);
+  if (location == 'company' && checked) {
+    color = 'positive';
+  }
   return `
-    <button id="${ticker}-check-${location}" type="button" class="mini circular ui icon middle button">
-      <i class="${backend.getCompareChecked(ticker) ? 'check ' : ''} icon"></i>
-    </button>
+    <div id="${ticker}-check-${location}" class="mini circular ui icon ${color} middle button">
+      <i class="${checked ? 'check ' : ''} icon"></i>
+    </div>
   `;
 }
 
-function createCompareItem(ticker) {
-  $('#compare-stocks').append(`
-    <a id="${ticker}-item" class="item">
-      ${createCheckButton(ticker)}
+function createCompareItem(dom, ticker, color='', suggested=false) {
+  if (suggested) {
+    var element = dom.suggestedStocks;
+    var location = 'suggested';
+    var icon = '';
+  } else {
+    var element = dom.compareStocks;
+    var location = 'compare';
+    var icon = `<i id="${ticker}-remove" class="close link icon hide"></i>`;
+  }
+  element.append(`
+    <div id="${ticker}-item" class="compare-item ui basic fluid ${color} left button">
+      ${createCheckButton(ticker, location, color)}
+      ${icon}
       <div class="middle inline">
-        ${ticker.toUpperCase()}
+        ${ticker}
       </div>
-    </a>
+    </div>
   `);
 }
 
-function createCompareTableRow(ticker) {
-  var data = backend.getData(ticker);
-  $('#compare-table').append(`
+function createCompareTableRow(dom, ticker, timeRange) {
+  var change = backend.getChange(ticker, timeRange);
+  dom.compareTable.append(`
     <tr id="${ticker}-compare-row" class="${backend.getCompareChecked(ticker) ? '' : 'hide'}">
-      <td>${ticker.toUpperCase()}</td>
-      <td class="right aligned">$1000.00</td>
-      <td class="right aligned">2.5%</td>
-      <td class="right aligned">${data['mkt_cap']}</td>
-      <td class="right aligned">${data['pe_ratio']}</td>
+      <td id="${ticker}-table"><a href="#">${ticker}</a></td>
+      <td class="right aligned">$${backend.getPrice(ticker)}</td>
+      <td class="right aligned">
+        <div class="${change >= 0 ? 'green' : 'red'}">
+          <i class="caret ${change >= 0 ? 'up' : 'down'} icon"></i>
+          <span id="${ticker}-compare-change">${change}</span>%
+        </div>
+      </td>
+      <td class="right aligned">${backend.getMktCap(ticker)}</td>
+      <td class="right aligned">${backend.getPERatio(ticker)}</td>
     </tr>
   `);
 }
