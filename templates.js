@@ -10,17 +10,6 @@ function createCheckButton(ticker, location='compare', color='') {
   `;
 }
 
-function createCompanyHeader(dom, ticker) {
-  dom.companyTicker.text(ticker);
-  dom.companyName.text(backend.getCompany(ticker));
-  dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
-  if (backend.getCompareChecked(ticker)) {
-    dom.compareButton.addClass('positive');
-  } else {
-    dom.compareButton.removeClass('positive');
-  }
-}
-
 function createCompareItem(dom, ticker, color='', suggested=false) {
   if (suggested) {
     var element = dom.suggestedStocks;

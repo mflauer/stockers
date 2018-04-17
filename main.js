@@ -36,7 +36,8 @@ var editing = false;
 // DOM ELEMENTS
 //////////////////////////////
 dom = {};
-dom.search = $('#search-input');
+dom.search = $('#search');
+dom.searchInput = $('#search-input');
 dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
 dom.compareStocks = $('#compare-stocks');
@@ -45,7 +46,10 @@ dom.suggestedStocks = $('#suggested-stocks');
 dom.companyPage = $('#company-page');
 dom.companyTicker = $('#company-ticker');
 dom.companyName = $('#company-name');
-dom.compareButton = $('#compare-button')
+dom.compareButton = $('#compare-button');
+dom.buyButton = $('#buy-button');
+dom.buyPage = $('#buy-page');
+dom.buyCompanyTicker = $('#buy-company-ticker');
 
 
 //////////////////////////////
@@ -155,7 +159,7 @@ function createCheckClickListener(ticker, location) {
     }
 
     if (location == 'search') {
-      dom.search.focus();
+      dom.searchInput.focus();
     } else if (location == 'company' || location == 'button') {
       dom.compareButton.toggleClass('positive');
       $(`#${tickerString}-check-company`).toggleClass('positive');
@@ -165,14 +169,28 @@ function createCheckClickListener(ticker, location) {
 
 // populates company page content
 function loadCompanyPage(ticker) {
-  createCompanyHeader(dom, ticker);
+  dom.companyTicker.text(ticker);
+  dom.companyName.text(backend.getCompany(ticker));
+  dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
+  if (backend.getCompareChecked(ticker)) {
+    dom.compareButton.addClass('positive');
+  } else {
+    dom.compareButton.removeClass('positive');
+  }
+
   dom.companyPage
     .modal({ autofocus: false })
     .modal('show');
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
 
-  // TODO buy button click listener
+  dom.buyButton.click(function() {
+    dom.buyCompanyTicker.text(ticker);
+
+    dom.buyPage
+      .modal({ autofocus: false })
+      .modal('show');
+  })
 }
 
 
@@ -181,7 +199,7 @@ function loadCompanyPage(ticker) {
 //////////////////////////////
 
 // search bar data
-$('#search').search({
+dom.search.search({
   source: backend.getSearchContent(),
   searchFields: [
     'title',
