@@ -62,12 +62,13 @@ function formatDate(date) {
   var d = new Date(date),
       year = d.getFullYear(),
       month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate();
+      day = '' + d.getDate(),
+      time = '' + d.getTime();
 
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
 
-  return str = [year, month, day].join('-');
+  return str = [year, month, day, time].join('-');
 }
 
 // load graph data
@@ -100,7 +101,6 @@ function getGraphData(section) {
 
     plotData[tickers[t]] = stockData;
   }
-
   return plotData;
 }
 
@@ -298,6 +298,7 @@ $('.selector>.item').click(function(e) {
 //var color = d3.scale.category10();
 
 //compare graph
+//1d and 5d = in every 5 mins
 
 function getDates(array) {
   var date_list = [];
@@ -308,44 +309,58 @@ function getDates(array) {
 }
 
 
-
-var dates = getDates(compareGraphData['dates']);
-var prices = compareGraphData['GOOG'];
+var dates = getDates(compareGraphData['dates'][0]);
+var pricesGOOG = compareGraphData['GOOG'];
+var pricesAAPL = compareGraphData['AAPL'];
 
 var margin = {top: 40, right: 40, bottom: 40, left: 40},
     width = 500 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var n = prices[0].length;
-
-console.log(dates);
-console.log(prices[0].length);
+var n = pricesGOOG[0].length;
+/*
+console.log(pricesGOOG[0].length);
 console.log(compareGraphData);
 console.log(n);
-console.log(prices[n-1][0]);
-console.log(dates[n-1]);
-console.log(prices[0]);
+console.log(pricesAAPL[0]);
+console.log(dates);
+console.log(Math.max.apply(Math, pricesAAPL[0]));
+*/
 
-function mapData(arrayP, arrayD) {
-  var n = arrayP.length;
-
+function mapData(arrayP) {
+  price_map = [];
+  for (var i=0; i < n; i++) {
+    price_map.push({ "y" : arrayP[i]});
+  }
+  return price_map;
 }
 
-var dataset = d3.range(20).map(function(d) { return {"y": d3.randomUniform(1)() } })
+var price_data_GOOG = mapData(pricesGOOG[0]);
+var price_data_AAPL = mapData(pricesAAPL[0])
+
+
+//dummy dataset
+var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
 console.log(dataset);
 
 var x = d3.scaleTime()
-    .domain([0, 20])
+    .domain([0, n-1])
     .range([0, width]);
 
 var y = d3.scaleLinear()
-    .domain([0,1])
+    .domain([Math.min.apply(Math, pricesGOOG[0]), Math.max.apply(Math, pricesGOOG[0])])
     .range([height, 0]);
 
-var line = d3.line()
+var lineGOOG = d3.line()
     .x(function(d, i) { return x(i); })
     .y(function(d) { return y(d.y); })
-    .curve(d3.curveMonotoneX);
+    .curve(d3.curveLinear);
+
+var lineAAPL = d3.line()
+    .x(function(d, i) { return x(i); })
+    .y(function(d) { return y(d.y); })
+    .curve(d3.curveLinear);
+
 
 var compare = d3.select("#compare-graph").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -361,19 +376,63 @@ compare.append("g")
     .call(d3.axisBottom(x)
             .tickFormat(d3.timeFormat("%m-%d")))
 
-      // Add the Y Axis
 
 compare.append("g")
     .attr("class", "y axis")
     .call(d3.axisLeft(y));
 
 compare.append("path")
-    .datum(dataset) // 10. Binds data to the line
+    .datum(price_data_GOOG) // 10. Binds data to the line
     .attr("class", "line") // Assign a class for styling
-    .attr("d", line);
+    .attr("d", lineGOOG);
 
+/*compare.append("path")
+        .datum(price_data_AAPL) // 10. Binds data to the line
+        .attr("class", "line") // Assign a class for styling
+        .attr("d", lineAAPL);
+*/
+//change timescale of data
+function changeTime() {
+  //get data again
+  console.log(compareGraphData);
+  var dates = getDates(compareGraphData['dates'][1]);
+  var pricesGOOG = compareGraphData['GOOG'];
+  var pricesAAPL = compareGraphData['AAPL'];
+  console.log(dates);
+  console.log(pricesGOOG);
+  console.log(pricesGOOG[0]);
+  console.log(pricesGOOG[1]);
+  console.log(pricesGOOG[2]);
+
+
+  var compare = d3.select('#compare-graph').transition();
+
+    compare.select(".lineGOOG") //change the line
+            .duration(500)
+            .attr("d", lineGOOG);
+    compare.select(".x.axis")
+            .duration(500)
+            .call(x);
+    compare.select(".y.axis")
+            .duration(500)
+            .call(y);
+
+
+}
+
+//add company data to graph
+function addStock() {
+
+}
+//remove company data from graph
+function removeStock() {
+
+}
+//add hover!!
+//https://bl.ocks.org/d3noob/257c360b3650b9f0a52dd8257d7a2d73
 
 //growth graph
+// https://bl.ocks.org/mbostock/c69f5960c6b1a95b6f78
 
 var x = d3.scaleTime()
     .domain([0, 20])
@@ -386,7 +445,7 @@ var y = d3.scaleLinear()
 var line = d3.line()
     .x(function(d, i) { return x(i); })
     .y(function(d) { return y(d.y); })
-    .curve(d3.curveMonotoneX);
+    .curve(d3.curveLinear);
 
 var growth = d3.select("#growth").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -426,9 +485,13 @@ var y = d3.scaleLinear()
 var line = d3.line()
     .x(function(d, i) { return x(i); })
     .y(function(d) { return y(d.y); })
-    .curve(d3.curveMonotoneX);
+    .curve(d3.curveLinear);
 
 var stack = d3.stack();
+
+var divVolume = d3.select('#volume').append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
 var volume = d3.select("#volume").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -445,6 +508,27 @@ volume.append("g")
             .tickFormat(d3.timeFormat("%m-%d")))
 
       // Add the Y Axis
+
+volume.selectAll("dot")
+   .data(dataset)
+ .enter().append("circle")
+   .attr("r", 2)
+   .attr("cx", function(d, i) { return x(i); })
+   .attr("cy", function(d) { return y(d.y); })
+   .attr("color", "grey")
+   .on("mouseover", function(d) {
+     divVolume.transition()
+       .duration(200)
+       .style("opacity", .9);
+     divVolume.html("Date" + "<br/>" + "Price")
+       .style("left", (d3.event.pageX - 180) + "px")
+       .style("top", (d3.event.pageY - 155) + "px");
+     })
+   .on("mouseout", function(d) {
+     divVolume.transition()
+       .duration(500)
+       .style("opacity", 0);
+     });
 
 volume.append("g")
     .attr("class", "y axis")
