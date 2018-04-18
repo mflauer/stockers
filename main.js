@@ -316,7 +316,7 @@ $('.selector>.item').click(function(e) {
       var element = $(value);
       var ticker = element.attr('id').split('-')[0];
       var change = data.getChange(ticker, compareTimeRange);
-      element.text(change);
+      element.text(change.withCommas());
       element.siblings().removeClass('up down').addClass(change >= 0 ? 'up' : 'down');
       element.parent().removeClass('green red').addClass(change >= 0 ? 'green' : 'red');
     });
@@ -324,9 +324,9 @@ $('.selector>.item').click(function(e) {
     companyTimeRange = timeRange;
     companyGraphData = getGraphData('company');
     var stats = data.getStats(companyTicker, companyTimeRange);
-    dom.companyOpen.text(stats.open.withCommas);
-    dom.companyHigh.text(stats.high.withCommas);
-    dom.companyLow.text(stats.low.withCommas);
+    dom.companyOpen.text(stats.open.withCommas());
+    dom.companyHigh.text(stats.high.withCommas());
+    dom.companyLow.text(stats.low.withCommas());
   }
 });
 
