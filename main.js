@@ -112,23 +112,44 @@ function getGraphData(section) {
 
   for (var t in tickers) {
     var stockData = data.getStockData(tickers[t])[time.interval].slice(0, time.n);
-
-    if (time.interval == 'min') {
-      if (t == 0) {
-        plotData['dates'] = stockData.map(x => x.map(y => Date.parse(y['date']))).reverse();
-      }
-      stockData = stockData.map(x => x.map(y => parseFloat(y['close']))).reverse();
-    } else {
-      if (t == 0) {
-        plotData['dates'] = stockData.map(x => Date.parse(x['date'])).reverse();
-      }
-      stockData = stockData.map(x => parseFloat(x['close'])).reverse();
+    if (t == 0) {
+      plotData['dates'] = stockData.map(x => Date.parse(x['date'])).reverse();
     }
-
-    plotData[tickers[t]] = stockData;
+    plotData[tickers[t]] = stockData.map(x => parseFloat(x['close'])).reverse();
   }
 
   return plotData;
+}
+
+// get change value
+function getChange(change) {
+  if (change > 0 || change < 0) {
+    return change.withCommas() + '%';
+  } else {
+    return change;
+  }
+}
+
+// get arrow direction for change value
+function getArrow(change) {
+  if (change > 0) {
+    return 'up';
+  } else if (change < 0) {
+    return 'down'
+  } else {
+    return '';
+  }
+}
+
+// get color for change value
+function getColor(change) {
+  if (change > 0) {
+    return 'green';
+  } else if (change < 0) {
+    return 'red'
+  } else {
+    return '';
+  }
 }
 
 // creates click event listener for check mark buttons
@@ -327,20 +348,33 @@ $('.selector>.item').click(function(e) {
   if (section == 'portfolio') {
     portfolioTimeRange = timeRange;
     portfolioGraphData = getGraphData('portfolio');
+
+    $('[id$="-portfolio-change"]').each(function(i, value) {
+      var element = $(value);
+      var ticker = element.attr('id').split('-')[0];
+      var change = data.getPortfolioChange(ticker, portfolioTimeRange);
+
+      element.text(getChange(change));
+      element.siblings().removeClass('up down').addClass(getArrow(change));
+      element.parent().removeClass('green red').addClass(getColor(change));
+    });
   } else if (section == 'compare') {
     compareTimeRange = timeRange;
     compareGraphData = getGraphData('compare');
+
     $('[id$="-compare-change"]').each(function(i, value) {
       var element = $(value);
       var ticker = element.attr('id').split('-')[0];
       var change = data.getChange(ticker, compareTimeRange);
-      element.text(change.withCommas());
-      element.siblings().removeClass('up down').addClass(change >= 0 ? 'up' : 'down');
-      element.parent().removeClass('green red').addClass(change >= 0 ? 'green' : 'red');
+
+      element.text(getChange(change));
+      element.siblings().removeClass('up down').addClass(getArrow(change));
+      element.parent().removeClass('green red').addClass(getColor(change));
     });
   } else if (section == 'company') {
     companyTimeRange = timeRange;
     companyGraphData = getGraphData('company');
+
     var stats = data.getStats(companyTicker, companyTimeRange);
     dom.companyOpen.text(stats.open.withCommas());
     dom.companyHigh.text(stats.high.withCommas());

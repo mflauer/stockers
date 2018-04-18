@@ -40,9 +40,9 @@ function createPortfolioTableRow(dom, ticker, timeRange) {
       <td><a id="${ticker}-portfolio-table" href="#">${ticker}</a></td>
       <td class="right aligned">$${data.getPortfolioValue(ticker).withCommas()}</td>
       <td class="right aligned">
-        <div class="${change >= 0 ? 'green' : 'red'}">
-          <i class="caret ${change >= 0 ? 'up' : 'down'} icon"></i>
-          <span id="${ticker}-portfolio-change">${change.withCommas()}</span>%
+        <div class="${getColor(change)}">
+          <i class="caret ${getArrow(change)} icon"></i>
+          <span id="${ticker}-portfolio-change">${getChange(change)}</span>
         </div>
       </td>
       <td class="right aligned">${data.getPortfolioPercent(ticker).withCommas()}%</td>
@@ -57,9 +57,9 @@ function createCompareTableRow(dom, ticker, timeRange) {
       <td><a id="${ticker}-compare-table" href="#">${ticker}</a></td>
       <td class="right aligned">$${data.getPrice(ticker).withCommas()}</td>
       <td class="right aligned">
-        <div class="${change >= 0 ? 'green' : 'red'}">
-          <i class="caret ${change >= 0 ? 'up' : 'down'} icon"></i>
-          <span id="${ticker}-compare-change">${change.withCommas()}</span>%
+        <div class="${getColor(change)}">
+          <i class="caret ${getArrow(change)} icon"></i>
+          <span id="${ticker}-compare-change">${getChange(change)}</span>
         </div>
       </td>
       <td class="right aligned">${data.getMktCap(ticker)}</td>

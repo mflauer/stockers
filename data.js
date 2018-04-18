@@ -59,8 +59,8 @@ class Data {
       },
     };
     this.TIME_RANGE_INTERVAL = {
-      '1D': { n: 1, interval: 'min' },
-      '5D': { n: 5, interval: 'min' },
+      '1D': { n: 68, interval: 'min' },
+      '5D': { n: 384, interval: 'min' },
       '1M': { n: 21, interval: 'day' },
       '3M': { n: 63, interval: 'day' },
       '6M': { n: 26, interval: 'week' },
@@ -71,19 +71,19 @@ class Data {
     this.PORTFOLIO_STOCKS = {
       'AAPL' : [
         {
-          'time': '2017-05-12T12:30:00',
+          'date': '2017-05-12T12:30:00',
           'price': 153.78,
           'amount': 6,
         },
         {
-          'time': '2017-12-22T13:15:00',
+          'date': '2017-12-22T13:15:00',
           'price': 176.29,
           'amount': -3,
         },
       ],
       'AMZN' : [
         {
-          'time': '2018-02-23T10:45:00',
+          'date': '2018-02-23T10:45:00',
           'price': 1469.92,
           'amount': 2,
         },
@@ -109,7 +109,11 @@ class Data {
   }
 
   getTime(timeRange) {
-    return this.TIME_RANGE_INTERVAL[timeRange];
+    if (timeRange in this.TIME_RANGE_INTERVAL) {
+      return this.TIME_RANGE_INTERVAL[timeRange];
+    } else {
+      return timeRange;
+    }
   }
 
   getStockData(ticker) {
@@ -120,42 +124,30 @@ class Data {
     }
   }
 
-  getPrice(ticker) {
-    return parseFloat(this.getStockData(ticker)['min'][0][0]['close']);
+  getPrice(ticker, timeRange) {
+    var stockData = this.getStockData(ticker);
+    if (timeRange != undefined) {
+      var time = this.getTime(timeRange);
+      return parseFloat(stockData[time.interval][time.n - 1]['close']);
+    } else {
+      return parseFloat(stockData['min'][0]['close']);
+    }
   }
 
   getChange(ticker, timeRange) {
-    var time = this.getTime(timeRange);
-    var stockData = this.getStockData(ticker);
-    var price = parseFloat(stockData['min'][0][0]['close']);
-
-    if (time.interval == 'min') {
-      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']);
-    } else {
-      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']);
-    }
-
-    return (100 * ((price / open) - 1));
+    return 100 * ((this.getPrice(ticker) / this.getPrice(ticker, timeRange)) - 1);
   }
 
   getStats(ticker, timeRange) {
     var time = this.getTime(timeRange);
     var stockData = this.getStockData(ticker);
-    if (time.interval == 'min') {
-      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']);
-      var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => x.map(y => parseFloat(y['close']))));
-      var high = Math.max(...closes);
-      var low = Math.min(...closes);
-    } else {
-      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']);
-      var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['close'])));
-      var high = Math.max(...closes);
-      var low = Math.min(...closes);
-    }
+    var highs = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['high'])));
+    var lows = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['low'])));
+    
     return {
-      open : open,
-      high : high,
-      low : low,
+      open : this.getPrice(ticker, timeRange),
+      high : Math.max(...highs),
+      low : Math.min(...lows),
     };
   }
 
@@ -195,27 +187,45 @@ class Data {
     return Object.keys(this.PORTFOLIO_STOCKS).sort();
   }
 
-  getPortfolioValue(ticker=undefined) {
+  getPortfolioValue(ticker, timeRange) {
     var total = 0;
     if (ticker == undefined) {
       for (ticker in this.PORTFOLIO_STOCKS) {
-        total += this.getPortfolioValue(ticker);
+        total += this.getPortfolioValue(ticker, timeRange);
       }
     } else {
       var changes = this.PORTFOLIO_STOCKS[ticker];
+      var shares = 0;
+      var price = this.getPrice(ticker, timeRange);
       for (var i = 0; i < changes.length; i++) {
-        total += changes[i]['price'] * changes[i]['amount'];
+        if (timeRange != undefined) {
+          var time = this.getTime(timeRange);
+          if (new Date(changes[i]['date']) > new Date(this.getStockData(ticker)[time.interval][time.n - 1]['date'])) {
+            break;
+          }
+        }
+        shares += changes[i]['amount'];
       }
+      total = shares * price;
     }
     return total;
   }
 
   getPortfolioChange(ticker, timeRange) {
-    return 0.00;
+    var start = this.getPortfolioValue(ticker, timeRange);
+    if (start == 0) {
+      return '—';
+    }
+    return 100 * ((this.getPortfolioValue(ticker) / start) - 1);
   }
 
-  getPortfolioPercent(ticker) {
-    return 0.00;
+  getPortfolioPercent(ticker, timeRange) {
+    var total = this.getPortfolioValue(undefined, timeRange);
+    if (total == 0) {
+      return '—';
+    } else {
+      return 100 * (this.getPortfolioValue(ticker, timeRange) / total);
+    }
   }
 
   getCompareTickers() {
