@@ -25,7 +25,8 @@ const COLORS = [
   'pink',
   'brown',
 ];
-var currentColor = 0;
+var portfolioColor = 0;
+var compareColor = 0;
 
 // flags
 var editing = false;
@@ -38,6 +39,7 @@ var editing = false;
 dom = {};
 
 dom.portfolioValue = $('#portfolio-value');
+dom.portfolioStocks = $('#portfolio-stocks');
 
 dom.search = $('#search');
 dom.searchInput = $('#search-input');
@@ -132,32 +134,38 @@ function getGraphData(section) {
 function createCheckClickListener(ticker, location) {
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
 
-  if (location == 'compare') {
-    createCompareItem(dom, ticker, COLORS[currentColor]);
-    createCompareTableRow(dom, ticker, compareTimeRange);
-    currentColor += 1;
-    if (currentColor == COLORS.length) {
-      currentColor = 0;
+  if (location == 'portfolio') {
+    createCompareItem(dom, ticker, location, COLORS[portfolioColor]);
+    portfolioColor += 1;
+    if (portfolioColor == COLORS.length) {
+      portfolioColor = 0;
+    }
+  } else if (location == 'compare') {
+    createCompareItem(dom, ticker, location, COLORS[compareColor]);
+    compareColor += 1;
+    if (compareColor == COLORS.length) {
+      compareColor = 0;
     }
 
-    $(`#${tickerString}-item, #${tickerString}-table`).click(function() {
+    createCompareTableRow(dom, ticker, compareTimeRange);
+    $(`#${tickerString}-table`).click(function() {
       companyTicker = ticker;
       loadCompanyPage();
     });
 
     $(`#${tickerString}-remove`).click(function() {
       data.removeCompareStock(ticker);
-      $(`#${tickerString}-item`).remove();
-      $(`#${tickerString}-compare-row`).remove();
+      button.remove();
+      row.remove();
     });
   } else if (location == 'suggested') {
-    createCompareItem(dom, ticker, '', true);
-
-    $(`#${tickerString}-item`).click(function() {
-      companyTicker = ticker;
-      loadCompanyPage();
-    });
+    createCompareItem(dom, ticker, location);
   }
+
+  $(`#${tickerString}-${location}-item`).click(function() {
+    companyTicker = ticker;
+    loadCompanyPage();
+  });
 
   if (location == 'button') {
     var element = dom.compareButton;
@@ -178,7 +186,7 @@ function createCheckClickListener(ticker, location) {
 
     if (data.getSuggestedTickers().includes(ticker)) {
       data.removeSuggestedStock(ticker);
-      $(`#${tickerString}-item`).remove();
+      $(`#${tickerString}-suggested-item`).remove();
     }
     
     if (location != 'compare' && !data.getCompareTickers().includes(ticker)) {
@@ -231,6 +239,9 @@ function loadCompanyPage() {
 
 // portfolio value
 dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+
+// portfolio stocks
+data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
 
 // search bar data
 dom.search.search({

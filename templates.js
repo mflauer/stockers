@@ -10,19 +10,21 @@ function createCheckButton(ticker, location='compare', color='') {
   `;
 }
 
-function createCompareItem(dom, ticker, color='', suggested=false) {
-  if (suggested) {
-    var element = dom.suggestedStocks;
-    var location = 'suggested';
-    var icon = '';
-  } else {
+function createCompareItem(dom, ticker, location, color='') {
+  var isPortfolio = (location == 'portfolio');
+  if (isPortfolio) {
+    var element = dom.portfolioStocks;
+    var icon = ''
+  } else if (location == 'compare') {
     var element = dom.compareStocks;
-    var location = 'compare';
     var icon = `<i id="${ticker}-remove" class="close link icon hide"></i>`;
+  } else if (location == 'suggested') {
+    var element = dom.suggestedStocks;
+    var icon = '';
   }
   element.append(`
-    <div id="${ticker}-item" class="compare-item ui basic fluid ${color} left button">
-      ${createCheckButton(ticker, location, color)}
+    <div id="${ticker}-${location}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui basic fluid ${color} left button">
+      ${isPortfolio ? '' : createCheckButton(ticker, location, color)}
       ${icon}
       <div class="baseline inline">
         ${ticker}
