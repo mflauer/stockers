@@ -1,3 +1,7 @@
+Number.prototype.withCommas = function() {
+  return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 class Data {
   constructor() {
     // Stock data API key (https://www.alphavantage.co/)
@@ -9,9 +13,9 @@ class Data {
         'min': AAPL_MIN,
         'day': AAPL_DAY,
         'week': AAPL_WEEK,
-        'pe_ratio': '16.47',
+        'pe_ratio': 16.47,
         'mkt_cap': '854.36B',
-        'div_yield': '1.56',
+        'div_yield': 1.56,
         'blurb': 'Apple, Inc. engages in the design, manufacture, and marketing of mobile communication, media devices, personal computers, and portable digital music players. It operates through the following geographical segments: Americas, Europe, Greater China, Japan, and Rest of Asia Pacific.',
         'ceo': 'Tim Cook',
         'founded': '1976',
@@ -21,9 +25,9 @@ class Data {
         'min': AMZN_MIN,
         'day': AMZN_DAY,
         'week': AMZN_WEEK,
-        'pe_ratio': '307.02',
+        'pe_ratio': 307.02,
         'mkt_cap': '680.28B',
-        'div_yield': '0.00',
+        'div_yield': 0.00,
         'blurb': 'Amazon.com, Inc. engages in the provision of online retail shopping services. It operates through the following segments: North America, International, and Amazon Web Services (AWS).',
         'ceo': 'Jeffrey Bezos',
         'founded': '1994',
@@ -33,9 +37,9 @@ class Data {
         'min': FB_MIN,
         'day': FB_DAY,
         'week': FB_WEEK,
-        'pe_ratio': '25.51',
+        'pe_ratio': 25.51,
         'mkt_cap': '456.67B',
-        'div_yield': '0.00',
+        'div_yield': 0.00,
         'blurb': 'Facebook, Inc. engages in the development of social media applications for people to connect through mobile devices, personal computers, and other surfaces. It enables users to share opinions, ideas, photos, videos, and other activities online.',
         'ceo': 'Mark Zuckerberg',
         'founded': '2004',
@@ -45,9 +49,9 @@ class Data {
         'min': GOOG_MIN,
         'day': GOOG_DAY,
         'week': GOOG_WEEK,
-        'pe_ratio': '31.37',
+        'pe_ratio': 31.37,
         'mkt_cap': '700.20B',
-        'div_yield': '0.00',
+        'div_yield': 0.00,
         'blurb': 'Alphabet Inc. Class C Capital Stock, also called Alphabet, is a holding company, which engages in the business of acquisition and operation of different companies.',
         'ceo': 'Lawrence Page',
         'founded': '2015',
@@ -55,8 +59,8 @@ class Data {
       },
     };
     this.TIME_RANGE_INTERVAL = {
-      '1D': { n: 1, interval: 'min' },
-      '5D': { n: 5, interval: 'min' },
+      '1D': { n: 68, interval: 'min' },
+      '5D': { n: 384, interval: 'min' },
       '1M': { n: 21, interval: 'day' },
       '3M': { n: 63, interval: 'day' },
       '6M': { n: 26, interval: 'week' },
@@ -64,13 +68,31 @@ class Data {
       '5Y': { n: 260, interval: 'week' },
     }
 
-    this.PORTFOLIO_VALUE = 1000.00;
-    this.PORTFOLIO_STOCKS = ['AAPL'];
+    this.PORTFOLIO_STOCKS = {
+      'AAPL' : [
+        {
+          'date': '2017-05-12T12:30:00',
+          'price': 153.78,
+          'amount': 6,
+        },
+        {
+          'date': '2017-12-22T13:15:00',
+          'price': 176.29,
+          'amount': -3,
+        },
+      ],
+      'AMZN' : [
+        {
+          'date': '2018-02-23T10:45:00',
+          'price': 1469.92,
+          'amount': 2,
+        },
+      ],
+    };
     this.COMPARE_STOCKS = {
-      'GOOG': { isChecked: true },
       'AAPL': { isChecked: true },
     };
-    this.SUGGESTED_STOCKS = ['AMZN'];
+    this.SUGGESTED_STOCKS = ['AMZN', 'FB', 'GOOG'];
   }
 
   getSearchContent() {
@@ -87,7 +109,15 @@ class Data {
   }
 
   getTime(timeRange) {
-    return this.TIME_RANGE_INTERVAL[timeRange];
+    if (timeRange in this.TIME_RANGE_INTERVAL) {
+      return this.TIME_RANGE_INTERVAL[timeRange];
+    } else {
+      return timeRange;
+    }
+  }
+
+  getCurrentTime() {
+    return '2018-04-06T15:05:00';
   }
 
   getStockData(ticker) {
@@ -98,42 +128,35 @@ class Data {
     }
   }
 
-  getPrice(ticker) {
-    return parseFloat(this.getStockData(ticker)['min'][0][0]['close']).toFixed(2);
+  getPrice(ticker, timeRange) {
+    var stockData = this.getStockData(ticker);
+    if (timeRange != undefined) {
+      var time = this.getTime(timeRange);
+      var close = time.interval == 'min' ? 'close' : 'adjusted close'
+      return parseFloat(stockData[time.interval][time.n - 1][close]);
+    } else {
+      return parseFloat(stockData['min'][0]['close']);
+    }
   }
 
   getChange(ticker, timeRange) {
-    var time = this.getTime(timeRange);
-    var stockData = this.getStockData(ticker);
-    var price = parseFloat(stockData['min'][0][0]['close']).toFixed(2);
-
-    if (time.interval == 'min') {
-      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);
-    } else {
-      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']).toFixed(2);
+    var start = this.getPrice(ticker, timeRange);
+    if (start == 0) {
+      return '—';
     }
-
-    return (100 * ((price / open) - 1)).toFixed(2);
+    return 100 * ((this.getPrice(ticker) / start) - 1);
   }
 
   getStats(ticker, timeRange) {
     var time = this.getTime(timeRange);
     var stockData = this.getStockData(ticker);
-    if (time.interval == 'min') {
-      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']).toFixed(2);
-      var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => x.map(y => parseFloat(y['close']))));
-      var high = Math.max(...closes).toFixed(2);
-      var low = Math.min(...closes).toFixed(2);
-    } else {
-      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']).toFixed(2);
-      var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['close'])));
-      var high = Math.max(...closes).toFixed(2);
-      var low = Math.min(...closes).toFixed(2);
-    }
+    var highs = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['high'])));
+    var lows = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['low'])));
+    
     return {
-      open : open,
-      high : high,
-      low : low,
+      open : this.getPrice(ticker, timeRange),
+      high : Math.max(...highs),
+      low : Math.min(...lows),
     };
   }
 
@@ -170,15 +193,68 @@ class Data {
   }
 
   getPortfolioTickers() {
-    return this.PORTFOLIO_STOCKS.sort();
+    return Object.keys(this.PORTFOLIO_STOCKS).sort();
+  }
+
+  getPortfolioValue(ticker, timeRange) {
+    var total = 0;
+    if (ticker == undefined) {
+      for (ticker in this.PORTFOLIO_STOCKS) {
+        total += this.getPortfolioValue(ticker, timeRange);
+      }
+    } else {
+      var changes = this.PORTFOLIO_STOCKS[ticker];
+      var shares = 0;
+      var price = this.getPrice(ticker, timeRange);
+      for (var i = 0; i < changes.length; i++) {
+        if (timeRange != undefined) {
+          var time = this.getTime(timeRange);
+          if (new Date(changes[i]['date']) > new Date(this.getStockData(ticker)[time.interval][time.n - 1]['date'])) {
+            break;
+          }
+        }
+        shares += changes[i]['amount'];
+      }
+      total = shares * price;
+    }
+    return total;
+  }
+
+  getPortfolioChange(ticker, timeRange) {
+    var start = this.getPortfolioValue(ticker, timeRange);
+    if (start == 0) {
+      return '—';
+    }
+    return 100 * ((this.getPortfolioValue(ticker) / start) - 1);
+  }
+
+  getPortfolioPercent(ticker, timeRange) {
+    var total = this.getPortfolioValue(undefined, timeRange);
+    if (total == 0) {
+      return '—';
+    } else {
+      return 100 * (this.getPortfolioValue(ticker, timeRange) / total);
+    }
+  }
+
+  buyStock(ticker, shares) {
+    if (shares > 0) {
+      var newStock = false;
+      if (!(ticker in this.PORTFOLIO_STOCKS)) {
+        this.PORTFOLIO_STOCKS[ticker] = [];
+        newStock = true;
+      }
+      this.PORTFOLIO_STOCKS[ticker].push({
+        'date': this.getCurrentTime(),
+        'price': this.getPrice(ticker),
+        'amount': shares,
+      });
+      return newStock;
+    }
   }
 
   getCompareTickers() {
     return Object.keys(this.COMPARE_STOCKS).sort();
-  }
-
-  getSuggestedTickers() {
-    return this.SUGGESTED_STOCKS.sort();
   }
 
   getCompareChecked(ticker) {
@@ -204,8 +280,12 @@ class Data {
     delete this.COMPARE_STOCKS[ticker];
   }
 
+  getSuggestedTickers() {
+    return this.SUGGESTED_STOCKS.sort();
+  }
+
   removeSuggestedStock(ticker) {
-    delete this.SUGGESTED_STOCKS[ticker];
+    this.SUGGESTED_STOCKS.splice(this.SUGGESTED_STOCKS.indexOf(ticker), 1 );
   }
 }
 

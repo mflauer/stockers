@@ -30,11 +30,12 @@
       <h2 class="ui center aligned header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
-          <div class="ui huge header">$1,000.00</div>
-          <div class="ui vertical fluid menu">
-            <div class="header item">My Stocks</div>
-            <a class="item">Stock 1</a>
-            <a class="item">Stock 2</a>
+          <div class="ui huge header">$<span id="portfolio-value"></span></div>
+          <h5 class="ui header">
+            Your Stocks
+          </h5>
+          <div id="portfolio-stocks">
+            <!-- stocks dynamically added -->
           </div>
         </div>
         <div class="twelve wide column">
@@ -49,7 +50,7 @@
           </div>
           <div style="height: 300px; width: 100%; border: 1px solid black;">Volume plot</div>
           <div style="height: 300px; width: 100%; border: 1px solid black;">Growth plot</div>
-          <table class="ui very basic selectable fixed compact table">
+          <table class="ui basic selectable fixed compact table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -58,13 +59,8 @@
                 <th class="right aligned">% of Portfolio</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Company</td>
-                <td class="right aligned">$1000</td>
-                <td class="right aligned">2.5%</td>
-                <td class="right aligned">45%</td>
-              </tr>
+            <tbody id="portfolio-table">
+              <!-- stocks dynamically added -->
             </tbody>
           </table>
         </div>
@@ -89,6 +85,7 @@
             <a class="item">3M</a>
             <a class="item">6M</a>
             <a class="item">1Y</a>
+            <a class="item">5Y</a>
           </div>
           <div style="height: 300px; width: 100%; border: 1px solid black;">Compare plot</div>
           <table class="ui basic selectable fixed compact table">
@@ -114,7 +111,7 @@
           <div id="compare-stocks">
             <!-- stocks dynamically added -->
           </div>
-          <h5 class="ui header">
+          <h5 id="suggested-label" class="ui header">
             Suggested Stocks
           </h5>
           <div id="suggested-stocks">
@@ -126,24 +123,20 @@
   </div>
 
   <div id="company-page" class="ui long modal">
-    <div id="company-header" class="ui header">
-      <div id="company-buy-button" class="ui right floated basic button">
-        Buy
-      </div>
-      <div id="compare-button" class="compare-button ui right floated compact basic button">
-        <div></div>
-        <div class="middle inline">
-          Compare
+    <div class="content">
+      <div class="ui grid">
+        <div class="sixteen wide right aligned column">
+          <div id="compare-button" class="compare-button ui right compact basic baseline button">
+            <div></div>
+            <div class="baseline inline">
+              Compare
+            </div>
+          </div>
+          <div id="company-buy-button" class="ui right basic baseline button">
+            Buy
+          </div>
         </div>
       </div>
-      <div id='company-ticker'>
-        <!-- Company ticker -->
-      </div>
-      <div id='company-name' class="sub header">
-        <!-- Company name -->
-      </div>
-    </div>
-    <div class="content">
       <div id="company-selector" class="ui text compact menu selector">
         <a class="active item">1D</a>
         <a class="item">5D</a>
@@ -151,39 +144,72 @@
         <a class="item">3M</a>
         <a class="item">6M</a>
         <a class="item">1Y</a>
+        <a class="item">5Y</a>
       </div>
       <div style="height: 300px; width: 100%; border: 1px solid black;">Plot</div>
-      <div class="ui divider"></div>
+      <div class="ui large header">
+        <div id="company-ticker"></div>
+        <div id="company-name" class="sub header"></div>
+      </div>
       <p id="blurb"></p>
-      <div class="ui divider"></div>
-      <table class="ui basic fixed table">
-        <tbody>
-          <tr>
-            <th>CEO</th>
-            <td id="ceo"></td>
-            <th>Open</th>
-            <td>$<span id="open"></span></td>
-            <th>Market Cap</th>
-            <td id="mkt-cap"></td>
-          </tr>
-          <tr>
-            <th>Year Founded</th>
-            <td id="founded"></td>
-            <th>High</th>
-            <td>$<span id="high"></span></td>
-            <th>P/E Ratio</th>
-            <td id="pe-ratio">/td>
-          </tr>
-          <tr>
-            <th>Headquarters</th>
-            <td id="headquarters"></td>
-            <th>Low</th>
-            <td>$<span id="low"></span></td>
-            <th>Dividend Yield</th>
-            <td id="div-yield"></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="ui centered grid">
+        <div class="five wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>CEO</th>
+                <td id="ceo"></td>
+              </tr>
+              <tr>
+                <th>Year Founded</th>
+                <td id="founded"></td>
+              </tr>
+              <tr>
+                <th>Headquarters</th>
+                <td id="headquarters"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="one wide column"></div>
+        <div class="three wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>Open</th>
+                <td>$<span id="open"></span></td>
+              </tr>
+              <tr>
+                <th>High</th>
+                <td>$<span id="high"></span></td>
+              </tr>
+              <tr>
+                <th>Low</th>
+                <td>$<span id="low"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="one wide column"></div>
+        <div class="four wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>Market Cap</th>
+                <td id="mkt-cap"></td>
+              </tr>
+              <tr>
+                <th>P/E Ratio</th>
+                <td id="pe-ratio">/td>
+              </tr>
+              <tr>
+                <th>Dividend Yield</th>
+                <td id="div-yield"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div class="ui divider"></div>
       <div class="ui header">News</div>
       <div class="ui three column grid">
@@ -215,16 +241,16 @@
     </div>
     <div class="content">
       <div class="ui grid">
-        <div class="ten wide middle column">Shares</div>
-        <div class="six wide right aligned column">
+        <div class="ten wide baseline column">Shares</div>
+        <div id="buy-shares-container" class="six wide right aligned column">
           <div class="ui fluid input">
-            <input id="buy-shares" type="text" placeholder="0">
+            <input id="buy-shares" class="right" type="text" placeholder="0" maxlength="4">
           </div>
         </div>
         <div class="ten wide column">Market Price</div>
         <div class="six wide right aligned column">$<span id="buy-price"></span></div>
       </div>
-      <div class="ui divider"></div>
+      <div id="buy-divider" class="ui divider"></div>
       <div class="ui grid">
         <div class="ten wide column">Total</div>
         <div class="six wide right aligned column">$<span id="total-price"></span></div>
@@ -232,7 +258,7 @@
     </div>
     <div class="actions">
       <div id="cancel-buy" class="ui basic cancel button">Cancel</div>
-      <div class="ui basic positive button">Buy</div>
+      <div id="buy-button" class="ui basic positive button">Buy</div>
     </div>
   </div>
 

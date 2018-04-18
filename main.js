@@ -25,7 +25,8 @@ const COLORS = [
   'pink',
   'brown',
 ];
-var currentColor = 0;
+var portfolioColor = 0;
+var compareColor = 0;
 
 // flags
 var editing = false;
@@ -37,6 +38,10 @@ var editing = false;
 //////////////////////////////
 dom = {};
 
+dom.portfolioValue = $('#portfolio-value');
+dom.portfolioStocks = $('#portfolio-stocks');
+dom.portfolioTable = $('#portfolio-table');
+
 dom.search = $('#search');
 dom.searchInput = $('#search-input');
 
@@ -44,6 +49,7 @@ dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
 
 dom.compareStocks = $('#compare-stocks');
+dom.suggestedLabel = $('#suggested-label');
 dom.suggestedStocks = $('#suggested-stocks');
 dom.compareTable = $('#compare-table');
 
@@ -65,6 +71,7 @@ dom.companyDivYield = $('#div-yield');
 
 dom.buyPage = $('#buy-page');
 dom.buyCompanyTicker = $('#buy-company-ticker');
+dom.buyShares = $('#buy-shares');
 dom.buyPrice = $('#buy-price');
 dom.totalPrice = $('#total-price');
 dom.cancelBuy = $('#cancel-buy');
@@ -89,7 +96,7 @@ function formatDate(date) {
 }
 
 // load graph data
-function getGraphData(section) {
+function getGraphData(section, percentage=false) {
   if (section == 'portfolio') {
     var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
@@ -103,58 +110,93 @@ function getGraphData(section) {
 
   var plotData = {};
   var time = data.getTime(timeRange);
+  var close = time.interval == 'min' ? 'close' : 'adjusted close'
 
   for (var t in tickers) {
     var stockData = data.getStockData(tickers[t])[time.interval].slice(0, time.n);
-
-    if (time.interval == 'min') {
-      if (t == 0) {
-        plotData['dates'] = stockData.map(x => x.map(y => Date.parse(y['date']))).reverse();
-      }
-      stockData = stockData.map(x => x.map(y => parseFloat(y['close']))).reverse();
-    } else {
-      if (t == 0) {
-        plotData['dates'] = stockData.map(x => Date.parse(x['date'])).reverse();
-      }
-      stockData = stockData.map(x => parseFloat(x['close'])).reverse();
+    if (t == 0) {
+      plotData['dates'] = stockData.map(x => Date.parse(x['date'])).reverse();
     }
-
-    plotData[tickers[t]] = stockData;
+    if (tickers.length > 1 || percentage) {
+      var first = parseFloat(stockData[0][close]);
+      plotData[tickers[t]] = stockData.map(x => 100 * ((parseFloat(x[close]) / first) - 1));
+    } else {
+      plotData[tickers[t]] = stockData.map(x => parseFloat(x[close])).reverse();
+    }
   }
 
   return plotData;
 }
 
+// get change value
+function getChange(change) {
+  if (change > 0 || change < 0) {
+    return change.withCommas() + '%';
+  } else {
+    return change;
+  }
+}
+
+// get arrow direction for change value
+function getArrow(change) {
+  if (change > 0) {
+    return 'up';
+  } else if (change < 0) {
+    return 'down'
+  } else {
+    return '';
+  }
+}
+
+// get color for change value
+function getColor(change) {
+  if (change > 0) {
+    return 'green';
+  } else if (change < 0) {
+    return 'red'
+  } else {
+    return '';
+  }
+}
+
+// click event to load company page
+function createCompanyClickListener(element, ticker) {
+  element.click(function() { loadCompanyPage(ticker) });
+}
+
 // creates click event listener for check mark buttons
 function createCheckClickListener(ticker, location) {
-  var tickerString = ticker.replace('.', '\\.');
+  var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
 
-  if (location == 'compare') {
-    createCompareItem(dom, ticker, COLORS[currentColor]);
-    createCompareTableRow(dom, ticker, compareTimeRange);
-    currentColor += 1;
-    if (currentColor == COLORS.length) {
-      currentColor = 0;
+  if (location == 'portfolio') {
+    createCompareItem(dom, ticker, location, COLORS[portfolioColor]);
+    portfolioColor += 1;
+    if (portfolioColor == COLORS.length) {
+      portfolioColor = 0;
     }
 
-    $(`#${tickerString}-item, #${tickerString}-table`).click(function() {
-      companyTicker = ticker;
-      loadCompanyPage();
-    });
+    createPortfolioTableRow(dom, ticker, portfolioTimeRange);
+    createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
+  } else if (location == 'compare') {
+    createCompareItem(dom, ticker, location, COLORS[compareColor]);
+    compareColor += 1;
+    if (compareColor == COLORS.length) {
+      compareColor = 0;
+    }
+
+    createCompareTableRow(dom, ticker, compareTimeRange);
+    createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
 
     $(`#${tickerString}-remove`).click(function() {
       data.removeCompareStock(ticker);
-      $(`#${tickerString}-item`).remove();
+      $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
     });
   } else if (location == 'suggested') {
-    createCompareItem(dom, ticker, '', true);
-
-    $(`#${tickerString}-item`).click(function() {
-      companyTicker = ticker;
-      loadCompanyPage();
-    });
+    createCompareItem(dom, ticker, location);
   }
+
+  createCompanyClickListener($(`#${tickerString}-${location}-item`), ticker);
 
   if (location == 'button') {
     var element = dom.compareButton;
@@ -174,7 +216,11 @@ function createCheckClickListener(ticker, location) {
     $(`#${tickerString}-compare-row`).toggleClass('hide');
 
     if (data.getSuggestedTickers().includes(ticker)) {
-      $(`#${tickerString}-item`).remove();
+      data.removeSuggestedStock(ticker);
+      $(`#${tickerString}-suggested-item`).remove();
+      if (data.getSuggestedTickers() == 0) {
+        dom.suggestedLabel.addClass('hide');
+      }
     }
     
     if (location != 'compare' && !data.getCompareTickers().includes(ticker)) {
@@ -188,62 +234,75 @@ function createCheckClickListener(ticker, location) {
       dom.compareButton.toggleClass('positive');
       $(`#${tickerString}-check-company`).toggleClass('positive');
     }
+
+    compareGraphData = getGraphData('compare'); 
   });
 }
 
 // populates company page content
-function loadCompanyPage() {
-  dom.companyTicker.text(companyTicker);
-  dom.companyName.text(data.getCompany(companyTicker));
-  dom.compareButton.children().first().replaceWith(createCheckButton(companyTicker, 'company'));
-  if (data.getCompareChecked(companyTicker)) {
+function loadCompanyPage(ticker) {
+  companyTicker = ticker;
+  dom.companyTicker.text(ticker);
+  dom.companyName.text(data.getCompany(ticker));
+  dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
+  if (data.getCompareChecked(ticker)) {
     dom.compareButton.addClass('positive');
   } else {
     dom.compareButton.removeClass('positive');
   }
 
-  createCheckClickListener(companyTicker, 'company');
-  createCheckClickListener(companyTicker, 'button');
+  createCheckClickListener(ticker, 'company');
+  createCheckClickListener(ticker, 'button');
 
-  dom.companyBlurb.text(data.getBlurb(companyTicker));
-  dom.companyCEO.text(data.getCEO(companyTicker));
-  dom.companyFounded.text(data.getFounded(companyTicker));
-  dom.companyHeadquarters.text(data.getHeadquarters(companyTicker));
-  var stats = data.getStats(companyTicker, companyTimeRange);
-  dom.companyOpen.text(stats.open);
-  dom.companyHigh.text(stats.high);
-  dom.companyLow.text(stats.low);
-  dom.companyMktCap.text(data.getMktCap(companyTicker));
-  dom.companyPERatio.text(data.getPERatio(companyTicker));
-  dom.companyDivYield.text(data.getDivYield(companyTicker));
+  dom.companyBlurb.text(data.getBlurb(ticker));
+  dom.companyCEO.text(data.getCEO(ticker));
+  dom.companyFounded.text(data.getFounded(ticker));
+  dom.companyHeadquarters.text(data.getHeadquarters(ticker));
+  var stats = data.getStats(ticker, companyTimeRange);
+  dom.companyOpen.text(stats.open.withCommas());
+  dom.companyHigh.text(stats.high.withCommas());
+  dom.companyLow.text(stats.low.withCommas());
+  dom.companyMktCap.text(data.getMktCap(ticker));
+  dom.companyPERatio.text(data.getPERatio(ticker).withCommas());
+  dom.companyDivYield.text(data.getDivYield(ticker).withCommas());
 
-  dom.companyPage
-    .modal({
-      autofocus: false,
-      allowMultiple: false,
-    })
-    .modal('attach events', dom.cancelBuy)
-    .modal('show');
+  dom.companyPage.modal('show');
+}
 
-  dom.buyPage
-    .modal({
-      autofocus: false,
-      allowMultiple: false,
-    })
-    .modal('attach events', dom.companyBuyButton)
 
-  dom.companyBuyButton.click(function() {
-    dom.buyCompanyTicker.text(ticker);
-    var price = data.getPrice(ticker);
-    dom.buyPrice.text(price);
-    dom.totalPrice.text((0 * price).toFixed(2));
-  });
+// update portfolio row
+function updatePortfolioRow(ticker, timeRange, hoverRange) {
+  $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
+  $(`#${ticker}-portfolio-percent`).text(data.getPortfolioPercent(ticker, hoverRange).withCommas());
+  var element = $(`#${ticker}-portfolio-change`);
+  var change = data.getPortfolioChange(ticker, timeRange);
+
+  element.text(getChange(change));
+  element.siblings().removeClass('up down').addClass(getArrow(change));
+  element.parent().removeClass('green red').addClass(getColor(change));
+}
+
+// update compare row
+function updateCompareRow(ticker, timeRange, hoverRange) {
+  $(`#${ticker}-compare-price`).text(data.getPrice(ticker, hoverRange).withCommas());
+  var element = $(`#${ticker}-compare-change`);
+  var change = data.getChange(ticker, timeRange);
+
+  element.text(getChange(change));
+  element.siblings().removeClass('up down').addClass(getArrow(change));
+  element.parent().removeClass('green red').addClass(getColor(change));
 }
 
 
 //////////////////////////////
 // Load page content
 //////////////////////////////
+
+// portfolio value
+dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+
+// portfolio stocks
+data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
 
 // search bar data
 dom.search.search({
@@ -254,8 +313,7 @@ dom.search.search({
   ],
   fullTextSearch: false,
   onSelect: function(result, response) {
-    companyTicker = result.title;
-    loadCompanyPage();
+    loadCompanyPage(result.title);
   },
   onSearchQuery: function() {
     var results = $('.results').children();
@@ -322,23 +380,68 @@ $('.selector>.item').click(function(e) {
   if (section == 'portfolio') {
     portfolioTimeRange = timeRange;
     portfolioGraphData = getGraphData('portfolio');
+
+    data.getPortfolioTickers().map(x => updatePortfolioRow(x, portfolioTimeRange));
   } else if (section == 'compare') {
     compareTimeRange = timeRange;
     compareGraphData = getGraphData('compare');
-    $('[id$="-compare-change"]').each(function(i, value) {
-      var element = $(value);
-      var ticker = element.attr('id').split('-')[0];
-      var change = data.getChange(ticker, compareTimeRange);
-      element.text(change);
-      element.siblings().removeClass('up down').addClass(change >= 0 ? 'up' : 'down');
-      element.parent().removeClass('green red').addClass(change >= 0 ? 'green' : 'red');
-    });
+
+    data.getCompareTickers().map(x => updateCompareRow(x, compareTimeRange));
   } else if (section == 'company') {
     companyTimeRange = timeRange;
     companyGraphData = getGraphData('company');
+
     var stats = data.getStats(companyTicker, companyTimeRange);
-    dom.companyOpen.text(stats.open);
-    dom.companyHigh.text(stats.high);
-    dom.companyLow.text(stats.low);
+    dom.companyOpen.text(stats.open.withCommas());
+    dom.companyHigh.text(stats.high.withCommas());
+    dom.companyLow.text(stats.low.withCommas());
   }
+});
+
+// company page
+dom.companyPage
+  .modal({
+    autofocus: false,
+    allowMultiple: false,
+  })
+  .modal('attach events', dom.cancelBuy);
+
+// buy page
+dom.buyPage
+  .modal({
+    autofocus: false,
+    allowMultiple: false,
+  })
+  .modal('attach events', dom.companyBuyButton);
+
+// load buy page
+dom.companyBuyButton.click(function() {
+  dom.buyShares.val('');
+  dom.buyCompanyTicker.text(companyTicker);
+  var price = data.getPrice(companyTicker).withCommas();
+  dom.buyPrice.text(price);
+  dom.totalPrice.text('0.00');
+});
+
+// input shares to buy
+dom.buyShares.on('input', function(e) {
+  dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
+  dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
+});
+
+// select input on focus
+dom.buyShares.focus(function() {
+  dom.buyShares.select();
+});
+
+// buy stock
+dom.buyButton.click(function() {
+  var newStock = data.buyStock(companyTicker, parseInt(dom.buyShares.val()));
+  dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+  if (newStock) {
+    createCheckClickListener(companyTicker, 'portfolio');
+  } else {
+    updatePortfolioRow(companyTicker, portfolioTimeRange);
+  }
+  dom.companyPage.modal('show');
 });
