@@ -8,10 +8,9 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 
 ## TODO (! - priority level)
 - !! plots
-- !! porfolio side
-- ! rest of company page
-- ! content and routing of buy modal
-- ! better hover affordance on company buttons
+- !! hover
+- sell functionality
 - extra line when first item in table is hidden
 - company page buttons move when hovered
+- ? better hover affordance on company buttons
 - ? drag and drop to reorder compare companies

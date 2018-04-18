@@ -12,13 +12,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
-  <script src="stock.js"></script>
 </head>
 
 <body>
   <div class="ui secondary pointing menu">
     <div class="header item">
-      <h1>StockViz</h1>
+      <img class="ui image small" src="assets/text-logo.svg"
+           onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
     </div>
     <div class="right menu">
       <a class="item">Logout</a>
@@ -30,11 +30,12 @@
       <h2 class="ui center aligned header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
-          <div class="ui huge header">$1,000.00</div>
-          <div class="ui vertical fluid menu">
-            <div class="header item">My Stocks</div>
-            <a class="item">Stock 1</a>
-            <a class="item">Stock 2</a>
+          <div class="ui huge header">$<span id="portfolio-value"></span></div>
+          <h5 class="ui header">
+            Your Stocks
+          </h5>
+          <div id="portfolio-stocks">
+            <!-- stocks dynamically added -->
           </div>
         </div>
         <div class="twelve wide column">
@@ -47,9 +48,17 @@
             <a class="item">1Y</a>
             <a class="item">5Y</a>
           </div>
-          <div id="volume">Volume plot</div>
-          <div id="growth">Growth plot</div>
-          <table class="ui very basic selectable fixed compact table">
+          <div>
+            <svg id="value-graph-container" class="graph-container">
+              <g id="value-graph"></g>
+            </svg>
+          </div>
+          <div>
+            <svg id="growth-graph-container" class="graph-container">
+              <g id="growth-graph"></g>
+            </svg>
+          </div>
+          <table class="ui basic selectable fixed compact table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -58,13 +67,8 @@
                 <th class="right aligned">% of Portfolio</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Company</td>
-                <td class="right aligned">$1000</td>
-                <td class="right aligned">2.5%</td>
-                <td class="right aligned">45%</td>
-              </tr>
+            <tbody id="portfolio-table">
+              <!-- stocks dynamically added -->
             </tbody>
           </table>
         </div>
@@ -84,13 +88,18 @@
           </div>
           <div id="compare-selector" class="ui text compact menu selector">
             <a class="active item">1D</a>
-            <a class="item" onclick="changeTime()">5D</a>
-            <a class="item" onclick="changeTime()">1M</a>
-            <a class="item" onclick="changeTime()">3M</a>
-            <a class="item" onclick="changeTime()">6M</a>
-            <a class="item" onclick="changeTime()">1Y</a>
+            <a class="item">5D</a>
+            <a class="item">1M</a>
+            <a class="item">3M</a>
+            <a class="item">6M</a>
+            <a class="item">1Y</a>
+            <a class="item">5Y</a>
           </div>
-          <div id="compare-graph">Compare plot</div>
+          <div>
+            <svg id="compare-graph-container" class="graph-container">
+              <g id="compare-graph"></g>
+            </svg>
+          </div>
           <table class="ui basic selectable fixed compact table">
             <thead>
               <tr>
@@ -115,7 +124,7 @@
           <div id="compare-stocks">
             <!-- stocks dynamically added -->
           </div>
-          <h5 class="ui header">
+          <h5 id="suggested-label" class="ui header">
             Suggested Stocks
           </h5>
           <div id="suggested-stocks">
@@ -127,25 +136,126 @@
   </div>
 
   <div id="company-page" class="ui long modal">
-    <div id="company-header" class="ui header">
-      <div id="buy-button" class="ui right floated basic button">
-        Buy
-      </div>
-      <div id="compare-button" class="compare-button ui right floated compact basic button">
-        <div></div>
-        <div class="middle inline">
-          Compare
+    <div class="content">
+      <div class="ui grid">
+        <div class="sixteen wide right aligned column">
+          <div id="compare-button" class="compare-button ui right compact basic baseline button">
+            <div></div>
+            <div class="baseline inline">
+              Compare
+            </div>
+          </div>
+          <div id="company-buy-button" class="ui right basic baseline button">
+            Buy
+          </div>
         </div>
       </div>
-      <div id='company-ticker'>
-        <!-- Company ticker -->
+      <div id="company-selector" class="ui text compact menu selector">
+        <a class="active item">1D</a>
+        <a class="item">5D</a>
+        <a class="item">1M</a>
+        <a class="item">3M</a>
+        <a class="item">6M</a>
+        <a class="item">1Y</a>
+        <a class="item">5Y</a>
       </div>
-      <div id='company-name' class="sub header">
-        <!-- Company name -->
+      <div>
+        <svg id="company-graph-container" class="graph-container">
+          <g id="company-graph"></g>
+        </svg>
       </div>
-    </div>
-    <div class="content">
-      <div style="height: 300px; width: 100%; border: 1px solid black;">Plot</div>
+      <div id="company-header" class="ui large header middle inline">
+        <div id="company-ticker"></div>
+        <div id="company-name" class="sub header"></div>
+      </div>
+      <div class="ui horizontal small statistic middle inline">
+        <div class="value">$<span id="company-price"></span></div>
+        <div class="label">
+          <i class="caret icon"></i>
+          <span id="company-change"></span>
+        </div>
+      </div>
+      <p id="blurb"></p>
+      <div class="ui centered grid">
+        <div class="five wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>CEO</th>
+                <td id="ceo"></td>
+              </tr>
+              <tr>
+                <th>Year Founded</th>
+                <td id="founded"></td>
+              </tr>
+              <tr>
+                <th>Headquarters</th>
+                <td id="headquarters"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="one wide column"></div>
+        <div class="three wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>Start</th>
+                <td>$<span id="start"></span></td>
+              </tr>
+              <tr>
+                <th>High</th>
+                <td>$<span id="high"></span></td>
+              </tr>
+              <tr>
+                <th>Low</th>
+                <td>$<span id="low"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="one wide column"></div>
+        <div class="four wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>Market Cap</th>
+                <td id="mkt-cap"></td>
+              </tr>
+              <tr>
+                <th>P/E Ratio</th>
+                <td id="pe-ratio">/td>
+              </tr>
+              <tr>
+                <th>Dividend Yield</th>
+                <td id="div-yield"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ui divider"></div>
+      <div class="ui header">News</div>
+      <div class="ui three column grid">
+        <div class="column">
+          <div class="ui segment">
+            <img style="width: 100%" src="assets/logo.svg"/>
+            <h5 class="ui header">Article 1</h5>
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui segment">
+            <img style="width: 100%" src="assets/logo.svg"/>
+            <h5 class="ui header">Article 2</h5>
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui segment">
+            <img style="width: 100%" src="assets/logo.svg"/>
+            <h5 class="ui header">Article 3</h5>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -154,11 +264,25 @@
       Buy <span id="buy-company-ticker"></span>
     </div>
     <div class="content">
-      <div style="height: 300px; width: 100%; border: 1px solid black;">Content</div>
+      <div class="ui grid">
+        <div class="ten wide baseline column">Shares</div>
+        <div id="buy-shares-container" class="six wide right aligned column">
+          <div class="ui fluid input">
+            <input id="buy-shares" class="right" type="text" placeholder="0" maxlength="4">
+          </div>
+        </div>
+        <div class="ten wide column">Market Price</div>
+        <div class="six wide right aligned column">$<span id="buy-price"></span></div>
+      </div>
+      <div id="buy-divider" class="ui divider"></div>
+      <div class="ui grid">
+        <div class="ten wide column">Total</div>
+        <div class="six wide right aligned column">$<span id="total-price"></span></div>
+      </div>
     </div>
     <div class="actions">
-      <div class="ui basic cancel button">Cancel</div>
-      <div class="ui basic positive button">Buy</div>
+      <div id="cancel-buy" class="ui basic cancel button">Cancel</div>
+      <div id="buy-button" class="ui basic positive button">Buy</div>
     </div>
   </div>
 
