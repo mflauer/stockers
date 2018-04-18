@@ -121,11 +121,10 @@ class Data {
   }
 
   getStockData(ticker) {
-    if (ticker in this.STOCK_DATA) {
-      return this.STOCK_DATA[ticker];
-    } else {
-      return this.STOCK_DATA[Object.keys(this.STOCK_DATA)[Math.floor(Math.random() * 4)]];
+    if (!(ticker in this.STOCK_DATA)) {
+      this.STOCK_DATA[ticker] = this.STOCK_DATA[Object.keys(this.STOCK_DATA)[Math.floor(Math.random() * 4)]];
     }
+    return this.STOCK_DATA[ticker];
   }
 
   getPrice(ticker, timeRange) {
