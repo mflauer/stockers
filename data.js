@@ -132,7 +132,8 @@ class Data {
     var stockData = this.getStockData(ticker);
     if (timeRange != undefined) {
       var time = this.getTime(timeRange);
-      return parseFloat(stockData[time.interval][time.n - 1]['close']);
+      var close = time.interval == 'min' ? 'close' : 'adjusted close'
+      return parseFloat(stockData[time.interval][time.n - 1][close]);
     } else {
       return parseFloat(stockData['min'][0]['close']);
     }
