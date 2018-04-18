@@ -35,16 +35,16 @@ function createCompareTableRow(dom, ticker, timeRange) {
   var change = data.getChange(ticker, timeRange);
   dom.compareTable.append(`
     <tr id="${ticker}-compare-row" class="${data.getCompareChecked(ticker) ? '' : 'hide'}">
-      <td id="${ticker}-table"><a href="#">${ticker}</a></td>
-      <td class="right aligned">$${data.getPrice(ticker)}</td>
+      <td><a id="${ticker}-table" href="#">${ticker}</a></td>
+      <td class="right aligned">$${data.getPrice(ticker).withCommas()}</td>
       <td class="right aligned">
         <div class="${change >= 0 ? 'green' : 'red'}">
           <i class="caret ${change >= 0 ? 'up' : 'down'} icon"></i>
-          <span id="${ticker}-compare-change">${change}</span>%
+          <span id="${ticker}-compare-change">${change.withCommas()}</span>%
         </div>
       </td>
       <td class="right aligned">${data.getMktCap(ticker)}</td>
-      <td class="right aligned">${data.getPERatio(ticker)}</td>
+      <td class="right aligned">${data.getPERatio(ticker).withCommas()}</td>
     </tr>
   `);
 }

@@ -1,10 +1,6 @@
-Number.prototype.formatMoney = function() {
-  var n = this,
-      s = n < 0 ? '-' : '',
-      i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(2))),
-      j = (j = i.length) > 3 ? j % 3 : 0;
-  return s + (j ? i.substr(0, j) + ',' : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + ',') + (2 ? '.' + Math.abs(n - i).toFixed(2).slice(2) : "");
- };
+Number.prototype.withCommas = function() {
+  return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 class Data {
   constructor() {
@@ -17,9 +13,9 @@ class Data {
         'min': AAPL_MIN,
         'day': AAPL_DAY,
         'week': AAPL_WEEK,
-        'pe_ratio': '16.47',
+        'pe_ratio': 16.47,
         'mkt_cap': '854.36B',
-        'div_yield': '1.56',
+        'div_yield': 1.56,
         'blurb': 'Apple, Inc. engages in the design, manufacture, and marketing of mobile communication, media devices, personal computers, and portable digital music players. It operates through the following geographical segments: Americas, Europe, Greater China, Japan, and Rest of Asia Pacific.',
         'ceo': 'Tim Cook',
         'founded': '1976',
@@ -29,9 +25,9 @@ class Data {
         'min': AMZN_MIN,
         'day': AMZN_DAY,
         'week': AMZN_WEEK,
-        'pe_ratio': '307.02',
+        'pe_ratio': 307.02,
         'mkt_cap': '680.28B',
-        'div_yield': '0.00',
+        'div_yield': 0.00,
         'blurb': 'Amazon.com, Inc. engages in the provision of online retail shopping services. It operates through the following segments: North America, International, and Amazon Web Services (AWS).',
         'ceo': 'Jeffrey Bezos',
         'founded': '1994',
@@ -41,9 +37,9 @@ class Data {
         'min': FB_MIN,
         'day': FB_DAY,
         'week': FB_WEEK,
-        'pe_ratio': '25.51',
+        'pe_ratio': 25.51,
         'mkt_cap': '456.67B',
-        'div_yield': '0.00',
+        'div_yield': 0.00,
         'blurb': 'Facebook, Inc. engages in the development of social media applications for people to connect through mobile devices, personal computers, and other surfaces. It enables users to share opinions, ideas, photos, videos, and other activities online.',
         'ceo': 'Mark Zuckerberg',
         'founded': '2004',
@@ -53,9 +49,9 @@ class Data {
         'min': GOOG_MIN,
         'day': GOOG_DAY,
         'week': GOOG_WEEK,
-        'pe_ratio': '31.37',
+        'pe_ratio': 31.37,
         'mkt_cap': '700.20B',
-        'div_yield': '0.00',
+        'div_yield': 0.00,
         'blurb': 'Alphabet Inc. Class C Capital Stock, also called Alphabet, is a holding company, which engages in the business of acquisition and operation of different companies.',
         'ceo': 'Lawrence Page',
         'founded': '2015',
@@ -96,7 +92,7 @@ class Data {
     this.COMPARE_STOCKS = {
       'AAPL': { isChecked: true },
     };
-    this.SUGGESTED_STOCKS = ['GOOG'];
+    this.SUGGESTED_STOCKS = ['AMZN', 'FB', 'GOOG'];
   }
 
   getSearchContent() {
@@ -125,36 +121,36 @@ class Data {
   }
 
   getPrice(ticker) {
-    return parseFloat(this.getStockData(ticker)['min'][0][0]['close']).formatMoney();
+    return parseFloat(this.getStockData(ticker)['min'][0][0]['close']);
   }
 
   getChange(ticker, timeRange) {
     var time = this.getTime(timeRange);
     var stockData = this.getStockData(ticker);
-    var price = parseFloat(stockData['min'][0][0]['close']).formatMoney();
+    var price = parseFloat(stockData['min'][0][0]['close']);
 
     if (time.interval == 'min') {
-      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']).formatMoney();
+      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']);
     } else {
-      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']).formatMoney();
+      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']);
     }
 
-    return (100 * ((price / open) - 1)).formatMoney();
+    return (100 * ((price / open) - 1));
   }
 
   getStats(ticker, timeRange) {
     var time = this.getTime(timeRange);
     var stockData = this.getStockData(ticker);
     if (time.interval == 'min') {
-      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']).formatMoney();
+      var open = parseFloat(stockData[time.interval][time.n - 1].slice(-1)[0]['close']);
       var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => x.map(y => parseFloat(y['close']))));
-      var high = Math.max(...closes).formatMoney();
-      var low = Math.min(...closes).formatMoney();
+      var high = Math.max(...closes);
+      var low = Math.min(...closes);
     } else {
-      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']).formatMoney();
+      var open = parseFloat(stockData[time.interval][time.n - 1]['adjusted close']);
       var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['close'])));
-      var high = Math.max(...closes).formatMoney();
-      var low = Math.min(...closes).formatMoney();
+      var high = Math.max(...closes);
+      var low = Math.min(...closes);
     }
     return {
       open : open,
@@ -203,16 +199,15 @@ class Data {
     var total = 0;
     if (ticker == undefined) {
       for (ticker in this.PORTFOLIO_STOCKS) {
-        total += parseFloat(this.getPortfolioValue(ticker).replace(',', ''));
+        total += this.getPortfolioValue(ticker);
       }
-      return total.formatMoney();
     } else {
       var changes = this.PORTFOLIO_STOCKS[ticker];
       for (var i = 0; i < changes.length; i++) {
         total += changes[i]['price'] * changes[i]['amount'];
       }
-      return total.formatMoney();
     }
+    return total;
   }
 
   getCompareTickers() {

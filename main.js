@@ -214,12 +214,12 @@ function loadCompanyPage() {
   dom.companyFounded.text(data.getFounded(companyTicker));
   dom.companyHeadquarters.text(data.getHeadquarters(companyTicker));
   var stats = data.getStats(companyTicker, companyTimeRange);
-  dom.companyOpen.text(stats.open);
-  dom.companyHigh.text(stats.high);
-  dom.companyLow.text(stats.low);
+  dom.companyOpen.text(stats.open.withCommas());
+  dom.companyHigh.text(stats.high.withCommas());
+  dom.companyLow.text(stats.low.withCommas());
   dom.companyMktCap.text(data.getMktCap(companyTicker));
-  dom.companyPERatio.text(data.getPERatio(companyTicker));
-  dom.companyDivYield.text(data.getDivYield(companyTicker));
+  dom.companyPERatio.text(data.getPERatio(companyTicker).withCommas());
+  dom.companyDivYield.text(data.getDivYield(companyTicker).withCommas());
 
   dom.companyPage.modal('show');
 }
@@ -230,7 +230,7 @@ function loadCompanyPage() {
 //////////////////////////////
 
 // portfolio value
-dom.portfolioValue.text(data.getPortfolioValue());
+dom.portfolioValue.text(data.getPortfolioValue().withCommas());
 
 // search bar data
 dom.search.search({
@@ -324,9 +324,9 @@ $('.selector>.item').click(function(e) {
     companyTimeRange = timeRange;
     companyGraphData = getGraphData('company');
     var stats = data.getStats(companyTicker, companyTimeRange);
-    dom.companyOpen.text(stats.open);
-    dom.companyHigh.text(stats.high);
-    dom.companyLow.text(stats.low);
+    dom.companyOpen.text(stats.open.withCommas);
+    dom.companyHigh.text(stats.high.withCommas);
+    dom.companyLow.text(stats.low.withCommas);
   }
 });
 
@@ -348,8 +348,9 @@ dom.buyPage
 
 // load buy page
 dom.companyBuyButton.click(function() {
+  dom.buyShares.val('');
   dom.buyCompanyTicker.text(companyTicker);
-  var price = data.getPrice(companyTicker);
+  var price = data.getPrice(companyTicker).withCommas();
   dom.buyPrice.text(price);
   dom.totalPrice.text('0.00');
 });
@@ -357,7 +358,7 @@ dom.companyBuyButton.click(function() {
 // input shares to buy
 dom.buyShares.on('input', function(e) {
   dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
-  dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).formatMoney());
+  dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
 });
 
 // select input on focus

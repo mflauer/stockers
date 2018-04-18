@@ -154,35 +154,64 @@
         <div id="company-name" class="sub header"></div>
       </div>
       <p id="blurb"></p>
-      <div class="ui divider"></div>
-      <table class="ui basic fixed table">
-        <tbody>
-          <tr>
-            <th>CEO</th>
-            <td id="ceo"></td>
-            <th>Open</th>
-            <td>$<span id="open"></span></td>
-            <th>Market Cap</th>
-            <td id="mkt-cap"></td>
-          </tr>
-          <tr>
-            <th>Year Founded</th>
-            <td id="founded"></td>
-            <th>High</th>
-            <td>$<span id="high"></span></td>
-            <th>P/E Ratio</th>
-            <td id="pe-ratio">/td>
-          </tr>
-          <tr>
-            <th>Headquarters</th>
-            <td id="headquarters"></td>
-            <th>Low</th>
-            <td>$<span id="low"></span></td>
-            <th>Dividend Yield</th>
-            <td id="div-yield"></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="ui centered grid">
+        <div class="five wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>CEO</th>
+                <td id="ceo"></td>
+              </tr>
+              <tr>
+                <th>Year Founded</th>
+                <td id="founded"></td>
+              </tr>
+              <tr>
+                <th>Headquarters</th>
+                <td id="headquarters"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="one wide column"></div>
+        <div class="three wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>Open</th>
+                <td>$<span id="open"></span></td>
+              </tr>
+              <tr>
+                <th>High</th>
+                <td>$<span id="high"></span></td>
+              </tr>
+              <tr>
+                <th>Low</th>
+                <td>$<span id="low"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="one wide column"></div>
+        <div class="four wide column">
+          <table class="stats-table ui very basic compact table">
+            <tbody>
+              <tr>
+                <th>Market Cap</th>
+                <td id="mkt-cap"></td>
+              </tr>
+              <tr>
+                <th>P/E Ratio</th>
+                <td id="pe-ratio">/td>
+              </tr>
+              <tr>
+                <th>Dividend Yield</th>
+                <td id="div-yield"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div class="ui divider"></div>
       <div class="ui header">News</div>
       <div class="ui three column grid">
@@ -217,7 +246,7 @@
         <div class="ten wide baseline column">Shares</div>
         <div id="buy-shares-container" class="six wide right aligned column">
           <div class="ui fluid input">
-            <input id="buy-shares" class="right" type="text" placeholder="0">
+            <input id="buy-shares" class="right" type="text" placeholder="0" maxlength="4">
           </div>
         </div>
         <div class="ten wide column">Market Price</div>
