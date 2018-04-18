@@ -40,6 +40,7 @@ dom = {};
 
 dom.portfolioValue = $('#portfolio-value');
 dom.portfolioStocks = $('#portfolio-stocks');
+dom.portfolioTable = $('#portfolio-table');
 
 dom.search = $('#search');
 dom.searchInput = $('#search-input');
@@ -140,6 +141,12 @@ function createCheckClickListener(ticker, location) {
     if (portfolioColor == COLORS.length) {
       portfolioColor = 0;
     }
+
+    createPortfolioTableRow(dom, ticker, portfolioTimeRange);
+    $(`#${tickerString}-portfolio-table`).click(function() {
+      companyTicker = ticker;
+      loadCompanyPage();
+    });
   } else if (location == 'compare') {
     createCompareItem(dom, ticker, location, COLORS[compareColor]);
     compareColor += 1;
@@ -148,7 +155,7 @@ function createCheckClickListener(ticker, location) {
     }
 
     createCompareTableRow(dom, ticker, compareTimeRange);
-    $(`#${tickerString}-table`).click(function() {
+    $(`#${tickerString}-compare-table`).click(function() {
       companyTicker = ticker;
       loadCompanyPage();
     });

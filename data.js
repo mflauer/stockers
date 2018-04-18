@@ -210,6 +210,14 @@ class Data {
     return total;
   }
 
+  getPortfolioChange(ticker, timeRange) {
+    return 0.00;
+  }
+
+  getPortfolioPercent(ticker) {
+    return 0.00;
+  }
+
   getCompareTickers() {
     return Object.keys(this.COMPARE_STOCKS).sort();
   }
