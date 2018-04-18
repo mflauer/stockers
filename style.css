@@ -58,7 +58,8 @@ table {
 .graph-container {
   width: 100%;
   height: 30vh;
-  padding: 5px; }
+  margin-top: 1em;
+  padding: 2px; }
 
 #compare-stocks {
   margin-top: 5px; }
@@ -83,6 +84,8 @@ path {
   path.thin {
     stroke-width: 1;
     stroke-dasharray: 10, 15; }
+  path.thick {
+    stroke-width: 3; }
   path.red {
     stroke: #db2828; }
   path.orange {

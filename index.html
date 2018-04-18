@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="twelve wide column">
-          <div id="portfolio-selector" class="ui text compact menu selector">
+          <div id="portfolio-selector" class="ui secondary pointing compact menu selector">
             <a class="active item">1D</a>
             <a class="item">5D</a>
             <a class="item">1M</a>
@@ -48,16 +48,12 @@
             <a class="item">1Y</a>
             <a class="item">5Y</a>
           </div>
-          <div>
-            <svg id="value-graph-container" class="graph-container" viewBox="0 0 960 500">
-              <g id="value-graph"></g>
-            </svg>
-          </div>
-          <div>
-            <svg id="growth-graph-container" class="graph-container" viewBox="0 0 960 500">
-              <g id="growth-graph"></g>
-            </svg>
-          </div>
+          <svg id="value-graph-container" class="graph-container" viewBox="0 0 960 500">
+            <g id="value-graph"></g>
+          </svg>
+          <svg id="growth-graph-container" class="graph-container" viewBox="0 0 960 500">
+            <g id="growth-graph"></g>
+          </svg>
           <table class="ui basic selectable fixed compact table">
             <thead>
               <tr>
@@ -86,7 +82,7 @@
             </div>
             <div class="results"></div>
           </div>
-          <div id="compare-selector" class="ui text compact menu selector">
+          <div id="compare-selector" class="ui secondary pointing compact menu selector">
             <a class="active item">1D</a>
             <a class="item">5D</a>
             <a class="item">1M</a>
@@ -95,11 +91,9 @@
             <a class="item">1Y</a>
             <a class="item">5Y</a>
           </div>
-          <div>
-            <svg id="compare-graph-container" class="graph-container">
-              <g id="compare-graph"></g>
-            </svg>
-          </div>
+          <svg id="compare-graph-container" class="graph-container">
+            <g id="compare-graph"></g>
+          </svg>
           <table class="ui basic selectable fixed compact table">
             <thead>
               <tr>
@@ -150,7 +144,7 @@
           </div>
         </div>
       </div>
-      <div id="company-selector" class="ui text compact menu selector">
+      <div id="company-selector" class="ui secondary pointing compact menu selector">
         <a class="active item">1D</a>
         <a class="item">5D</a>
         <a class="item">1M</a>
@@ -159,11 +153,9 @@
         <a class="item">1Y</a>
         <a class="item">5Y</a>
       </div>
-      <div>
-        <svg id="company-graph-container" class="graph-container">
-          <g id="company-graph"></g>
-        </svg>
-      </div>
+      <svg id="company-graph-container" class="graph-container">
+        <g id="company-graph"></g>
+      </svg>
       <div id="company-header" class="ui large header middle inline">
         <div id="company-ticker"></div>
         <div id="company-name" class="sub header"></div>
@@ -239,19 +231,22 @@
       <div class="ui three column grid">
         <div class="column">
           <div class="ui segment">
-            <img style="width: 100%" src="assets/logo.svg"/>
+            <img class="ui fluid image" src="assets/text-logo.svg"
+                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
             <h5 class="ui header">Article 1</h5>
           </div>
         </div>
         <div class="column">
           <div class="ui segment">
-            <img style="width: 100%" src="assets/logo.svg"/>
+            <img class="ui fluid image" src="assets/text-logo.svg"
+                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
             <h5 class="ui header">Article 2</h5>
           </div>
         </div>
         <div class="column">
           <div class="ui segment">
-            <img style="width: 100%" src="assets/logo.svg"/>
+            <img class="ui fluid image" src="assets/text-logo.svg"
+                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
             <h5 class="ui header">Article 3</h5>
           </div>
         </div>

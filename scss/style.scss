@@ -94,7 +94,8 @@ table {
 .graph-container {
   width: 100%;
   height: 30vh;
-  padding: 5px;
+  margin-top: 1em;
+  padding: 2px;
 }
 
 #compare-stocks {
@@ -126,6 +127,10 @@ path {
   &.thin {
     stroke-width: 1;
     stroke-dasharray: 10, 15;
+  }
+
+  &.thick {
+    stroke-width: 3;
   }
 
   &.red {
