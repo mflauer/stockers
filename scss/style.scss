@@ -59,11 +59,11 @@ table {
 }
 
 .red {
-  color: $red !important;
+  color: $red;
 }
 
 .green {
-  color: $green !important;
+  color: $green;
 }
 
 .ui.button:hover .icon.button {
@@ -81,6 +81,14 @@ table {
 
 .label {
   margin-left: 1em !important;
+
+  &.red {
+    color: $red !important;
+  }
+
+  &.green {
+    color: $green !important;
+  }
 }
 
 .graph-container {

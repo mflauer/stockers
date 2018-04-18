@@ -34,10 +34,10 @@ table {
   margin-right: 0px !important; }
 
 .red {
-  color: #db2828 !important; }
+  color: #db2828; }
 
 .green {
-  color: #21ba45 !important; }
+  color: #21ba45; }
 
 .ui.button:hover .icon.button {
   opacity: 1; }
@@ -50,6 +50,10 @@ table {
 
 .label {
   margin-left: 1em !important; }
+  .label.red {
+    color: #db2828 !important; }
+  .label.green {
+    color: #21ba45 !important; }
 
 .graph-container {
   width: 100%;
