@@ -96,7 +96,7 @@ function formatDate(date) {
 }
 
 // load graph data
-function getGraphData(section) {
+function getGraphData(section, percentage=false) {
   if (section == 'portfolio') {
     var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
@@ -117,7 +117,12 @@ function getGraphData(section) {
     if (t == 0) {
       plotData['dates'] = stockData.map(x => Date.parse(x['date'])).reverse();
     }
-    plotData[tickers[t]] = stockData.map(x => parseFloat(x[close])).reverse();
+    if (tickers.length > 1 || percentage) {
+      var first = parseFloat(stockData[0][close]);
+      plotData[tickers[t]] = stockData.map(x => 100 * ((parseFloat(x[close]) / first) - 1));
+    } else {
+      plotData[tickers[t]] = stockData.map(x => parseFloat(x[close])).reverse();
+    }
   }
 
   return plotData;
