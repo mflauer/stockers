@@ -234,6 +234,8 @@ function createCheckClickListener(ticker, location) {
       dom.compareButton.toggleClass('positive');
       $(`#${tickerString}-check-company`).toggleClass('positive');
     }
+
+    compareGraphData = getGraphData('compare'); 
   });
 }
 
@@ -435,6 +437,7 @@ dom.buyShares.focus(function() {
 // buy stock
 dom.buyButton.click(function() {
   var newStock = data.buyStock(companyTicker, parseInt(dom.buyShares.val()));
+  dom.portfolioValue.text(data.getPortfolioValue().withCommas());
   if (newStock) {
     createCheckClickListener(companyTicker, 'portfolio');
   } else {
