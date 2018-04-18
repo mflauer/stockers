@@ -417,3 +417,12 @@ dom.buyShares.on('input', function(e) {
 dom.buyShares.focus(function() {
   dom.buyShares.select();
 });
+
+// buy stock
+dom.buyButton.click(function() {
+  var newStock = data.buyStock(companyTicker, dom.buyShares.val());
+  if (newStock) {
+    createCheckClickListener(companyTicker, 'portfolio');
+  }
+  dom.companyPage.modal('show');
+})

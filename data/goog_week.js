@@ -2099,4 +2099,504 @@ const GOOG_WEEK = [
     "volume": "11602500",
     "dividend amount": "0.0000"
   },
+  {
+    "date": "2014-03-28",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-03-21",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-03-14",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-03-07",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-02-28",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-02-21",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-02-14",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-02-07",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-01-31",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-01-24",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-01-17",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-01-10",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2014-01-03",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-12-27",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-12-20",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-12-13",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-12-06",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-11-29",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-11-22",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-11-15",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-11-08",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-11-01",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-10-25",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-10-18",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-10-11",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-12-27",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-10-04",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-09-27",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-09-20",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-09-13",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-09-06",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-08-30",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-08-23",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-08-16",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-08-09",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-08-02",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-07-26",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-07-19",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-07-12",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-07-05",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-06-28",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-06-21",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-06-14",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-06-07",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-05-31",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-05-24",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-05-17",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-05-10",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-05-03",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
+  {
+    "date": "2013-04-26",
+    "open": "0.0000",
+    "high": "0.0000",
+    "low": "0.0000",
+    "close": "0.0000",
+    "adjusted close": "0.0000",
+    "volume": "0",
+    "dividend amount": "0.0000"
+  },
 ];

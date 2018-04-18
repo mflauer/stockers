@@ -116,6 +116,10 @@ class Data {
     }
   }
 
+  getCurrentTime() {
+    return '2018-04-06T15:05:00';
+  }
+
   getStockData(ticker) {
     if (ticker in this.STOCK_DATA) {
       return this.STOCK_DATA[ticker];
@@ -135,7 +139,11 @@ class Data {
   }
 
   getChange(ticker, timeRange) {
-    return 100 * ((this.getPrice(ticker) / this.getPrice(ticker, timeRange)) - 1);
+    var start = this.getPrice(ticker, timeRange);
+    if (start == 0) {
+      return '—';
+    }
+    return 100 * ((this.getPrice(ticker) / start) - 1);
   }
 
   getStats(ticker, timeRange) {
@@ -225,6 +233,22 @@ class Data {
       return '—';
     } else {
       return 100 * (this.getPortfolioValue(ticker, timeRange) / total);
+    }
+  }
+
+  buyStock(ticker, shares) {
+    if (shares > 0) {
+      var newStock = false;
+      if (!(ticker in this.PORTFOLIO_STOCKS)) {
+        this.PORTFOLIO_STOCKS[ticker] = [];
+        newStock = true;
+      }
+      this.PORTFOLIO_STOCKS[ticker].push({
+        'date': this.getCurrentTime(),
+        'price': this.getPrice(ticker),
+        'amount': shares,
+      });
+      return newStock;
     }
   }
 
