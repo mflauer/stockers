@@ -60,10 +60,98 @@ table {
 
 .red {
   color: $red;
+
+  &:hover {
+    color: $red;
+  }
+}
+
+.orange {
+  color: $orange;
+
+  &:hover {
+    color: $orange;
+  }
+}
+
+.yellow {
+  color: $yellow;
+
+  &:hover {
+    color: $yellow;
+  }
+}
+
+.olive {
+  color: $olive;
+
+  &:hover {
+    color: $olive;
+  }
 }
 
 .green {
   color: $green;
+
+  &:hover {
+    color: $green;
+  }
+}
+
+.teal {
+  color: $teal;
+
+  &:hover {
+    color: $teal;
+  }
+}
+
+.blue {
+  color: $blue;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+.violet {
+  color: $violet;
+
+  &:hover {
+    color: $violet;
+  }
+}
+
+.purple {
+  color: $purple;
+
+  &:hover {
+    color: $purple;
+  }
+}
+
+.pink {
+  color: $pink;
+
+  &:hover {
+    color: $pink;
+  }
+}
+
+.brown {
+  color: $brown;
+
+  &:hover {
+    color: $brown;
+  }
+}
+
+.grey {
+  color: $grey;
+
+  &:hover {
+    color: $grey;
+  }
 }
 
 .ui.button:hover .icon.button {

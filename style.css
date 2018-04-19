@@ -35,9 +35,63 @@ table {
 
 .red {
   color: #db2828; }
+  .red:hover {
+    color: #db2828; }
+
+.orange {
+  color: #f2711c; }
+  .orange:hover {
+    color: #f2711c; }
+
+.yellow {
+  color: #fbbd08; }
+  .yellow:hover {
+    color: #fbbd08; }
+
+.olive {
+  color: #b5cc18; }
+  .olive:hover {
+    color: #b5cc18; }
 
 .green {
   color: #21ba45; }
+  .green:hover {
+    color: #21ba45; }
+
+.teal {
+  color: #00b5ad; }
+  .teal:hover {
+    color: #00b5ad; }
+
+.blue {
+  color: #2185d0; }
+  .blue:hover {
+    color: #2185d0; }
+
+.violet {
+  color: #6435c9; }
+  .violet:hover {
+    color: #6435c9; }
+
+.purple {
+  color: #a333c8; }
+  .purple:hover {
+    color: #a333c8; }
+
+.pink {
+  color: #e03997; }
+  .pink:hover {
+    color: #e03997; }
+
+.brown {
+  color: #a5673f; }
+  .brown:hover {
+    color: #a5673f; }
+
+.grey {
+  color: #767676; }
+  .grey:hover {
+    color: #767676; }
 
 .ui.button:hover .icon.button {
   opacity: 1; }

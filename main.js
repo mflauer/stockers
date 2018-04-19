@@ -321,7 +321,7 @@ function createCheckClickListener(ticker, section) {
     // create elements
     createCompareItem(dom, ticker, section, color);
     plotStockChange(section, ticker, tickerString, color);
-    createPortfolioTableRow(dom, ticker, portfolioTimeRange);
+    createPortfolioTableRow(dom, ticker, portfolioTimeRange, color);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
   } else if (section == 'compare') {
     // pick color
@@ -334,7 +334,7 @@ function createCheckClickListener(ticker, section) {
     // create elements
     createCompareItem(dom, ticker, section, color);
     plotStockChange(section, ticker, tickerString, color);
-    createCompareTableRow(dom, ticker, compareTimeRange);
+    createCompareTableRow(dom, ticker, compareTimeRange, color);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
 
     // create click event listener for removing stock

@@ -33,11 +33,11 @@ function createCompareItem(dom, ticker, section, color='') {
   `);
 }
 
-function createPortfolioTableRow(dom, ticker, timeRange) {
+function createPortfolioTableRow(dom, ticker, timeRange, color) {
   var change = data.getPortfolioChange(ticker, timeRange);
   dom.portfolioTable.append(`
     <tr id="${ticker}-portfolio-row">
-      <td><a id="${ticker}-portfolio-table" href="#">${ticker}</a></td>
+      <td><a id="${ticker}-portfolio-table" class="${color}" href="#">${ticker}</a></td>
       <td class="right aligned">$<span id="${ticker}-portfolio-value">${data.getPortfolioValue(ticker).withCommas()}</span></td>
       <td class="right aligned">
         <div class="${getColor(change)}">
@@ -50,11 +50,11 @@ function createPortfolioTableRow(dom, ticker, timeRange) {
   `);
 }
 
-function createCompareTableRow(dom, ticker, timeRange) {
+function createCompareTableRow(dom, ticker, timeRange, color) {
   var change = data.getChange(ticker, timeRange);
   dom.compareTable.append(`
     <tr id="${ticker}-compare-row" class="${data.getCompareChecked(ticker) ? '' : 'hide'}">
-      <td><a id="${ticker}-compare-table" href="#">${ticker}</a></td>
+      <td><a id="${ticker}-compare-table" class="${color}" href="#">${ticker}</a></td>
       <td class="right aligned">$<span id="${ticker}-compare-price">${data.getPrice(ticker).withCommas()}</span></td>
       <td class="right aligned">
         <div class="${getColor(change)}">

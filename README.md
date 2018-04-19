@@ -11,6 +11,7 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 - !! value plot
 - ! hover item/row/line should hover all others
 - ! hover over plot should get date and show tooltip
+- ! color order
 - better hover affordance on company items
 - sell functionality
 - extra line when first item in table is hidden
