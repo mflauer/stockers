@@ -63,13 +63,13 @@ class Data {
       },
     };
     this.TIME_RANGE_INTERVAL = {
-      '1D': { n: 68, interval: 'min' },
-      '5D': { n: 384, interval: 'min' },
-      '1M': { n: 21, interval: 'day' },
-      '3M': { n: 63, interval: 'day' },
-      '6M': { n: 26, interval: 'week' },
-      '1Y': { n: 52, interval: 'week' },
-      '5Y': { n: 260, interval: 'week' },
+      '1D': { n: 68, interval: 'min', period: 1 },
+      '5D': { n: 384, interval: 'min', period: 4 },
+      '1M': { n: 21, interval: 'day', period: 1 },
+      '3M': { n: 63, interval: 'day', period: 1 },
+      '6M': { n: 26, interval: 'week', period: 1 },
+      '1Y': { n: 52, interval: 'week', period: 1 },
+      '5Y': { n: 260, interval: 'week', period: 2 },
     }
 
     this.PORTFOLIO_STOCKS = {
