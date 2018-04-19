@@ -374,7 +374,7 @@ function plotStockStacked(ticker, tickerString, color) {
     });
   var area = d3.area()
     .x(function(d, i) { return xScale(i); })
-    .y0(dom.volumeGraphContainer.height())
+    .y0(dom.volumeGraphContainer.height() - GRAPH_Y_MARGIN)
     .y1(function(d) { return yScale(d); })
     .defined(function(d) {
       return d != null;
