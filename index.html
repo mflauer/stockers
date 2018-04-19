@@ -40,12 +40,12 @@
         </div>
         <div class="twelve wide column">
           <div id="portfolio-selector" class="ui secondary pointing compact menu selector">
-            <a class="active item">1D</a>
+            <a class="item">1D</a>
             <a class="item">5D</a>
             <a class="item">1M</a>
             <a class="item">3M</a>
             <a class="item">6M</a>
-            <a class="item">1Y</a>
+            <a class="active item">1Y</a>
             <a class="item">5Y</a>
           </div>
           <svg id="volume-graph-container" class="graph-container">
@@ -82,7 +82,7 @@
             </div>
             <div class="results"></div>
           </div>
-          <div id="compare-selector" class="ui secondary pointing compact menu selector">
+          <div id="compare-selector" class="ui secondary pointing compact menu selector hide compare-hidden">
             <a class="active item">1D</a>
             <a class="item">5D</a>
             <a class="item">1M</a>
@@ -91,10 +91,10 @@
             <a class="item">1Y</a>
             <a class="item">5Y</a>
           </div>
-          <svg id="compare-graph-container" class="graph-container">
+          <svg id="compare-graph-container" class="graph-container hide compare-hidden">
             <g id="compare-graph"></g>
           </svg>
-          <table class="ui basic selectable fixed compact table">
+          <table class="ui basic selectable fixed compact table hide compare-hidden">
             <thead>
               <tr>
                 <th>Name</th>
@@ -111,11 +111,11 @@
 
         </div>
         <div class="four wide column">
-          <div class="right">
+          <div id="compare-buttons" class="right hide compare-hidden">
             <a id="edit-button" href="#" class="">Edit</a>
             <a id="done-button" href="#" class="hide">Done</a>
           </div>
-          <div id="compare-stocks">
+          <div id="compare-stocks" class="hide compare-hidden">
             <!-- stocks dynamically added -->
           </div>
           <h5 id="suggested-label" class="ui header">

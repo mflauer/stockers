@@ -93,10 +93,8 @@ class Data {
         },
       ],
     };
-    this.COMPARE_STOCKS = {
-      'AAPL': { isChecked: true },
-    };
-    this.SUGGESTED_STOCKS = ['AMZN', 'FB', 'GOOG'];
+    this.COMPARE_STOCKS = {};
+    this.SUGGESTED_STOCKS = ['AAPL',  'AMZN', 'FB', 'GOOG'];
   }
 
   getSearchContent() {
@@ -310,8 +308,17 @@ class Data {
   }
 
   getCompareChecked(ticker) {
-    if (ticker in this.COMPARE_STOCKS) {
-      return this.COMPARE_STOCKS[ticker.toUpperCase()].isChecked;
+    if (ticker == undefined) {
+      // check if any company is checked
+      for (ticker in this.COMPARE_STOCKS) {
+        if (this.COMPARE_STOCKS[ticker].isChecked) {
+          return true;
+        }
+      }
+      return false;
+    } else if (ticker in this.COMPARE_STOCKS) {
+      // check is specific company is checked
+      return this.COMPARE_STOCKS[ticker].isChecked;
     }
     return false;
   }

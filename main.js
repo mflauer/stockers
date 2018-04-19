@@ -23,6 +23,8 @@ dom.search = $('#search');
 dom.searchInput = $('#search-input');
 
 // compare
+dom.compareHidden = $('.compare-hidden');
+dom.compareButtons = $('#compare-buttons');
 dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
 dom.compareStocks = $('#compare-stocks');
@@ -84,8 +86,7 @@ var volumeX = d3.scaleTime().range([0, dom.volumeGraphContainer.width()]),
     volumeY = d3.scaleLinear().range([dom.volumeGraphContainer.height(), 0]),
     growthX = d3.scaleTime().range([0, dom.growthGraphContainer.width()]),
     growthY = d3.scaleLinear().range([dom.growthGraphContainer.height(), 0]),
-    compareX = d3.scaleTime().range([0, dom.compareGraphContainer.width()]),
-    compareY = d3.scaleLinear().range([dom.compareGraphContainer.height(), 0]),
+    compareX, compareY,
     companyX, companyY;
 
 // graph data
@@ -495,6 +496,13 @@ function createCheckClickListener(ticker, section) {
     createPortfolioTableRow(dom, ticker, portfolioTimeRange, color);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
   } else if (section == 'compare') {
+    // set scale of compare page plot
+    if (compareX == undefined || compareY == undefined) {
+      dom.compareGraphContainer.removeClass('hide');
+      compareX = d3.scaleTime().range([0, dom.compareGraphContainer.width()]);
+      compareY = d3.scaleLinear().range([dom.compareGraphContainer.height(), 0]);
+    }
+
     // pick color
     var color = COLORS[compareColor];
     compareColor += 1;
@@ -514,6 +522,12 @@ function createCheckClickListener(ticker, section) {
       $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
       d3.select(`#${tickerString}-compare-line`).remove();
+
+      if (data.getCompareTickers.length == 0) {
+        dom.compareStocks.addClass('hide');
+        dom.doneButton.click();
+        dom.compareButtons.addClass('hide');
+      }
     });
   } else if (section == 'suggested') {
     createCompareItem(dom, ticker, section);
@@ -571,8 +585,10 @@ function createCheckClickListener(ticker, section) {
     }
 
     // hide plot and table if no plots displayed
-    if (data.getCompareTickers().length == 0) {
-      // TODO
+    if (!data.getCompareChecked()) {
+      dom.compareHidden.not(dom.compareButtons).not(dom.compareStocks).addClass('hide');
+    } else {
+      dom.compareHidden.removeClass('hide');
     }
   });
 }
@@ -622,10 +638,8 @@ function loadCompanyPage(ticker) {
   dom.companyPage.modal('show');
   
   // set scale of company page plot
-  if (companyX == undefined) {
+  if (companyX == undefined || companyY == undefined) {
     companyX = d3.scaleTime().range([0, dom.companyGraphContainer.width()]);
-  }
-  if (companyY == undefined) {
     companyY = d3.scaleLinear().range([dom.companyGraphContainer.height(), 0]);
   }
   
