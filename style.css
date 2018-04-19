@@ -145,26 +145,48 @@ path {
     stroke-width: 3; }
   path.red {
     stroke: #db2828; }
+    path.red.fill {
+      fill: #db2828; }
   path.orange {
     stroke: #f2711c; }
+    path.orange.fill {
+      fill: #f2711c; }
   path.yellow {
     stroke: #fbbd08; }
+    path.yellow.fill {
+      fill: #fbbd08; }
   path.olive {
     stroke: #b5cc18; }
+    path.olive.fill {
+      fill: #b5cc18; }
   path.green {
     stroke: #21ba45; }
+    path.green.fill {
+      fill: #21ba45; }
   path.teal {
     stroke: #00b5ad; }
+    path.teal.fill {
+      fill: #00b5ad; }
   path.blue {
     stroke: #2185d0; }
+    path.blue.fill {
+      fill: #2185d0; }
   path.violet {
     stroke: #6435c9; }
+    path.violet.fill {
+      fill: #6435c9; }
   path.purple {
     stroke: #a333c8; }
+    path.purple.fill {
+      fill: #a333c8; }
   path.pink {
     stroke: #e03997; }
+    path.pink.fill {
+      fill: #e03997; }
   path.brown {
     stroke: #a5673f; }
+    path.brown.fill {
+      fill: #a5673f; }
 
 div.tooltip {
   position: absolute;

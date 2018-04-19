@@ -227,46 +227,90 @@ path {
 
   &.red {
     stroke: $red;
+
+    &.fill {
+      fill: $red;
+    }
   }
 
   &.orange {
     stroke: $orange;
+
+    &.fill {
+      fill: $orange;
+    }
   }
 
   &.yellow {
     stroke: $yellow;
+
+    &.fill {
+      fill: $yellow;
+    }
   }
 
   &.olive {
     stroke: $olive;
+
+    &.fill {
+      fill: $olive;
+    }
   }
 
   &.green {
     stroke: $green;
+
+    &.fill {
+      fill: $green;
+    }
   }
 
   &.teal {
     stroke: $teal;
+
+    &.fill {
+      fill: $teal;
+    }
   }
 
   &.blue {
     stroke: $blue;
+
+    &.fill {
+      fill: $blue;
+    }
   }
 
   &.violet {
     stroke: $violet;
+
+    &.fill {
+      fill: $violet;
+    }
   }
 
   &.purple {
     stroke: $purple;
+
+    &.fill {
+      fill: $purple;
+    }
   }
 
   &.pink {
     stroke: $pink;
+
+    &.fill {
+      fill: $pink;
+    }
   }
 
   &.brown {
     stroke: $brown;
+
+    &.fill {
+      fill: $brown;
+    }
   }
 }
 
