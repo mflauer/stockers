@@ -71,7 +71,7 @@ table {
   position: relative;
 }
 
-tr[id$="-compare-row"] {
+tr[id$="-row"] {
   &.hover {
     background-color: rgba(0,0,0,.05) !important;
   }

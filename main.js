@@ -227,14 +227,20 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
     var graph = dom.growthGraph;
     var xScale = growthX;
     var yScale = growthY;
+    var mouseEnterHandler = handleMouseEnterPortfolio;
+    var mouseLeaveHandler = handleMouseLeavePortfolio;
   } else if (section == 'compare') {
     var graph = dom.compareGraph;
     var xScale = compareX;
     var yScale = compareY;
+    var mouseEnterHandler = handleMouseEnterCompare;
+    var mouseLeaveHandler = handleMouseLeaveCompare;
   } else if (section == 'company') {
     var graph = dom.companyGraph;
     var xScale = companyX;
     var yScale = companyY;
+    var mouseEnterHandler = null;
+    var mouseLeaveHandler = null;
   }
 
   // rescale plots
@@ -282,8 +288,8 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
     .attr('id', `${tickerString}-${section}-line`)
     .classed(color, true)
     .attr('d', tickerLine(plotData['tickers'][ticker]))
-    .on("mouseover", handleMouseEnterCompare)
-    .on("mouseout", handleMouseLeaveCompare);
+    .on("mouseover", mouseEnterHandler)
+    .on("mouseout", mouseLeaveHandler);
 }
 
 // redraw change plot, optionally forcing all lines to have a color
@@ -469,14 +475,14 @@ function handleMouseLeaveCompare() {
 // mouseenter event listener on portfolio plot
 function handleMouseEnterPortfolio() {
   var ticker = $(this).attr('id').split('-')[0];
-  $(`#${ticker}-portfolio-item, #${ticker}-volume-area`).addClass('hover');
+  $(`#${ticker}-portfolio-item, #${ticker}-portfolio-row, #${ticker}-volume-area`).addClass('hover');
   $(`#${ticker}-volume-line, #${ticker}-portfolio-line`).addClass('thick');
 }
 
 // mouseleave event listener on portfolio plot
 function handleMouseLeavePortfolio() {
   var ticker = $(this).attr('id').split('-')[0];
-  $(`#${ticker}-portfolio-item, #${ticker}-volume-area`).removeClass('hover');
+  $(`#${ticker}-portfolio-item, #${ticker}-portfolio-row, #${ticker}-volume-area`).removeClass('hover');
   $(`#${ticker}-volume-line, #${ticker}-portfolio-line`).removeClass('thick');
 }
 
@@ -647,6 +653,7 @@ function addCompanyHoverHandlers(ticker, section) {
     // plot hover set upon plot drawing
   } else if (section == 'portfolio') {
     $(`#${ticker}-portfolio-item`).hover(handleMouseEnterPortfolio, handleMouseLeavePortfolio);
+    $(`#${ticker}-portfolio-row`).hover(handleMouseEnterPortfolio, handleMouseLeavePortfolio);
     // plot hover (for both plots) set upon plot drawing
   }
   
