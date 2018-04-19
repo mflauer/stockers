@@ -141,9 +141,7 @@ path {
   path.thin {
     stroke-width: 1;
     stroke-dasharray: 10, 15; }
-    path.thin:hover {
-      stroke-width: 1; }
-  path:hover {
+  path.hover {
     stroke-width: 3; }
   path.red {
     stroke: #db2828; }

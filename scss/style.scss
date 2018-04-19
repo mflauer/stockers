@@ -219,13 +219,9 @@ path {
   &.thin {
     stroke-width: 1;
     stroke-dasharray: 10, 15;
-
-    &:hover {
-      stroke-width: 1;
-    }
   }
 
-  &:hover {
+  &.hover {
     stroke-width: 3;
   }
 
