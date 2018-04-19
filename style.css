@@ -179,56 +179,78 @@ path {
     path.red.fill {
       stroke: none;
       fill: rgba(219, 40, 40, 0.1); }
+    path.red.hover {
+      fill: #db2828; }
   path.orange {
     stroke: #f2711c; }
     path.orange.fill {
       stroke: none;
       fill: rgba(242, 113, 28, 0.1); }
+    path.orange.hover {
+      fill: #f2711c; }
   path.yellow {
     stroke: #fbbd08; }
     path.yellow.fill {
       stroke: none;
       fill: rgba(251, 189, 8, 0.1); }
+    path.yellow.hover {
+      fill: #fbbd08; }
   path.olive {
     stroke: #b5cc18; }
     path.olive.fill {
       stroke: none;
       fill: rgba(181, 204, 24, 0.1); }
+    path.olive.hover {
+      fill: #b5cc18; }
   path.green {
     stroke: #21ba45; }
     path.green.fill {
       stroke: none;
       fill: rgba(33, 186, 69, 0.1); }
+    path.green.hover {
+      fill: #21ba45; }
   path.teal {
     stroke: #00b5ad; }
     path.teal.fill {
       stroke: none;
       fill: rgba(0, 181, 173, 0.1); }
+    path.teal.hover {
+      fill: #00b5ad; }
   path.blue {
     stroke: #2185d0; }
     path.blue.fill {
       stroke: none;
       fill: rgba(33, 133, 208, 0.1); }
+    path.blue.hover {
+      fill: #2185d0; }
   path.violet {
     stroke: #6435c9; }
     path.violet.fill {
       stroke: none;
       fill: rgba(100, 53, 201, 0.1); }
+    path.violet.hover {
+      fill: #6435c9; }
   path.purple {
     stroke: #a333c8; }
     path.purple.fill {
       stroke: none;
       fill: rgba(163, 51, 200, 0.1); }
+    path.purple.hover {
+      fill: #a333c8; }
   path.pink {
     stroke: #e03997; }
     path.pink.fill {
       stroke: none;
       fill: rgba(224, 57, 151, 0.1); }
+    path.pink.hover {
+      fill: #e03997; }
   path.brown {
     stroke: #a5673f; }
     path.brown.fill {
       stroke: none;
       fill: rgba(165, 103, 63, 0.1); }
+    path.brown.hover {
+      fill: #a5673f; }
 
 div.tooltip {
   position: absolute;

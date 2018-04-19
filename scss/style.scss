@@ -331,6 +331,10 @@ path {
       stroke: none;
       fill: $light-red;
     }
+
+    &.hover {
+      fill: $red;
+    }
   }
 
   &.orange {
@@ -339,6 +343,10 @@ path {
     &.fill {
       stroke: none;
       fill: $light-orange;
+    }
+
+    &.hover {
+      fill: $orange;
     }
   }
 
@@ -349,6 +357,10 @@ path {
       stroke: none;
       fill: $light-yellow;
     }
+
+    &.hover {
+      fill: $yellow;
+    }
   }
 
   &.olive {
@@ -357,6 +369,10 @@ path {
     &.fill {
       stroke: none;
       fill: $light-olive;
+    }
+
+    &.hover {
+      fill: $olive;
     }
   }
 
@@ -367,6 +383,10 @@ path {
       stroke: none;
       fill: $light-green;
     }
+
+    &.hover {
+      fill: $green;
+    }
   }
 
   &.teal {
@@ -375,6 +395,10 @@ path {
     &.fill {
       stroke: none;
       fill: $light-teal;
+    }
+
+    &.hover {
+      fill: $teal;
     }
   }
 
@@ -385,6 +409,10 @@ path {
       stroke: none;
       fill: $light-blue;
     }
+
+    &.hover {
+      fill: $blue;
+    }
   }
 
   &.violet {
@@ -393,6 +421,10 @@ path {
     &.fill {
       stroke: none;
       fill: $light-violet;
+    }
+
+    &.hover {
+      fill: $violet;
     }
   }
 
@@ -403,6 +435,10 @@ path {
       stroke: none;
       fill: $light-purple;
     }
+
+    &.hover {
+      fill: $purple;
+    }
   }
 
   &.pink {
@@ -412,6 +448,10 @@ path {
       stroke: none;
       fill: $light-pink;
     }
+
+    &.hover {
+      fill: $pink;
+    }
   }
 
   &.brown {
@@ -420,6 +460,10 @@ path {
     &.fill {
       stroke: none;
       fill: $light-brown;
+    }
+
+    &.hover {
+      fill: $brown;
     }
   }
 }
