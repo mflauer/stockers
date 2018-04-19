@@ -27,34 +27,6 @@ table {
   margin-bottom: 5px !important;
   position: relative; }
 
-tr[id$="-row"].hover {
-  background-color: rgba(0, 0, 0, 0.05) !important; }
-
-.ui.basic.button.red.hover {
-  background-color: #f8d4d4 !important; }
-.ui.basic.button.orange.hover {
-  background-color: #fce3d2 !important; }
-.ui.basic.button.yellow.hover {
-  background-color: #fef2ce !important; }
-.ui.basic.button.olive.hover {
-  background-color: #f0f5d1 !important; }
-.ui.basic.button.green.hover {
-  background-color: #d3f1da !important; }
-.ui.basic.button.teal.hover {
-  background-color: #ccf0ef !important; }
-.ui.basic.button.blue.hover {
-  background-color: #d3e7f6 !important; }
-.ui.basic.button.violet.hover {
-  background-color: #e0d7f4 !important; }
-.ui.basic.button.purple.hover {
-  background-color: #edd6f4 !important; }
-.ui.basic.button.pink.hover {
-  background-color: #f9d7ea !important; }
-.ui.basic.button.brown.hover {
-  background-color: #ede1d9 !important; }
-.ui.basic.button.grey.hover {
-  background-color: #e4e4e4 !important; }
-
 .close {
   position: absolute;
   top: 5px;
@@ -124,6 +96,34 @@ tr[id$="-row"].hover {
 .white {
   color: white !important; }
 
+tr[id$="-row"].hover {
+  background-color: rgba(0, 0, 0, 0.05) !important; }
+
+.ui.basic.button.red.hover {
+  background-color: #f8d4d4 !important; }
+.ui.basic.button.orange.hover {
+  background-color: #fce3d2 !important; }
+.ui.basic.button.yellow.hover {
+  background-color: #fef2ce !important; }
+.ui.basic.button.olive.hover {
+  background-color: #f0f5d1 !important; }
+.ui.basic.button.green.hover {
+  background-color: #d3f1da !important; }
+.ui.basic.button.teal.hover {
+  background-color: #ccf0ef !important; }
+.ui.basic.button.blue.hover {
+  background-color: #d3e7f6 !important; }
+.ui.basic.button.violet.hover {
+  background-color: #e0d7f4 !important; }
+.ui.basic.button.purple.hover {
+  background-color: #edd6f4 !important; }
+.ui.basic.button.pink.hover {
+  background-color: #f9d7ea !important; }
+.ui.basic.button.brown.hover {
+  background-color: #ede1d9 !important; }
+.ui.basic.button.grey.hover {
+  background-color: #e4e4e4 !important; }
+
 .ui.button:hover .icon.button {
   opacity: 1; }
 
@@ -143,6 +143,9 @@ i.caret.icon {
   .label.green {
     color: #21ba45 !important; }
 
+.ui.menu.selector .item {
+  padding: .75em !important; }
+
 .graph-container {
   width: 100%;
   height: 30vh;
@@ -154,6 +157,9 @@ i.caret.icon {
 
 #company-buy-button {
   padding: 1.1em 1.5em; }
+
+#company-selector {
+  margin-top: -2.5em; }
 
 #company-header {
   margin: 1rem 2rem 1rem 0; }
