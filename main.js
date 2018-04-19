@@ -182,6 +182,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
     var graph = dom.growthGraph;
     var xScale = growthX;
     var yScale = growthY;
+
   } else if (section == 'compare') {
     var graph = dom.compareGraph;
     var xScale = compareX;
@@ -217,7 +218,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
       if (id == `${section}-baseline`) {
         baseline = true;
         line.attr('d', startLine(plotData['dates']));
-      } else {
+      } else if ((id != 'tipBox') && (id !='toolTipLine' )) {
         var company = id.split('-')[0];
         line.attr('d', tickerLine(plotData['tickers'][company]));
       }
@@ -230,6 +231,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
       .attr('id', `${section}-baseline`)
       .classed('baseline', true)
       .attr('d', startLine(plotData['dates']));
+
   }
 
   // draw ticker line
@@ -237,6 +239,19 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
     .attr('id', `${tickerString}-${section}-line`)
     .classed(color, true)
     .attr('d', tickerLine(plotData['tickers'][ticker]));
+
+  var tooltip = d3.select('#tooltip');
+  var tooltipLine = graph.append('line')
+        .attr('id', 'toolTipLine');
+
+  var tipBox = graph.append('rect')
+    .attr('id', 'tipBox')
+    .attr('width', graph.width)
+    .attr('height', graph.height)
+    .attr('opacity', 0)
+    .on('mousemove', drawTooltip)
+    .on('mouseout', removeTooltip);
+
 }
 
 // redraw plot, optionally forcing all lines to have a color
@@ -265,14 +280,19 @@ function updateChangePlot(section, color) {
   var tickerLine = d3.line()
     .x(function(d, i) { return xScale(i); })
     .y(function(d) { return yScale(d); })
+
     .defined(function(d) {
       return d != null;
     });
+
+
 
   // update current lines in plot
   graph.selectAll('*').each(function() {
     var line = d3.select(this);
     var id = line.attr('id');
+
+
     if (id == `${section}-baseline`) {
       line.attr('d', startLine(plotData['dates']));
     } else {
@@ -284,6 +304,46 @@ function updateChangePlot(section, color) {
     }
   });
 }
+
+
+//http://bl.ocks.org/wdickerson/64535aff478e8a9fd9d9facccfef8929
+function removeTooltip() {
+  if (tooltip) {
+    console.log(tooltip);
+    tooltip.style('display', 'none');
+  }
+  if (tooltipline) {
+    tooltipLine.attr('stroke', 'none');
+  }
+}
+
+function drawTooltip() {
+  //get where the line should be aligned on the x axis
+  var timePoint = Math.floor((x.invert(d3.mouse(tipBox.node())[0]) + 5) / 10) * 10;
+  console.log("hi");
+
+  //need function to get the data at that point
+  //var tipData =
+
+  tooltipLine.attr('stroke', 'black')
+    .attr('x1', x(timePoint))
+    .attr('x2', x(timePoint))
+    .attr('y1', 0)
+    .attr('y2', graph.height);
+
+
+  tooltip.html(bottom)
+    .style('display', 'block')
+    .style('left', d3.event.pageX + 20)
+    .style ('top', d3,event.pageY - 20)
+    .selectAll()
+    .data(tipData).enter()
+    .append('div')
+    .style('color', d => d.color)
+    .html(date, price);
+
+}
+
 
 // get color associated with change
 function getColor(change) {
@@ -370,7 +430,7 @@ function createCheckClickListener(ticker, section) {
     e.stopPropagation();
 
     data.toggleCompareChecked(ticker);
-    
+
     // check/uncheck all other checkmarks
     $(`[id^='${tickerString}-check']`).each(function(i, value) {
       $(value).children('i').first().toggleClass('check');
@@ -456,7 +516,7 @@ function loadCompanyPage(ticker) {
 
   // show modal
   dom.companyPage.modal('show');
-  
+
   // set scale of company page plot
   if (companyX == undefined) {
     companyX = d3.scaleTime().range([0, dom.companyGraphContainer.width()]);
@@ -464,7 +524,7 @@ function loadCompanyPage(ticker) {
   if (companyY == undefined) {
     companyY = d3.scaleLinear().range([dom.companyGraphContainer.height(), 0]);
   }
-  
+
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
   plotStockChange('company', ticker, tickerString, getColor(change), true)
@@ -476,7 +536,7 @@ function loadCompanyPage(ticker) {
 function updatePortfolioRow(ticker, timeRange, hoverRange) {
   var change = data.getPortfolioChange(ticker, timeRange);
   var element = $(`#${ticker}-portfolio-change`);
-  
+
   $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
   $(`#${ticker}-portfolio-percent`).text(data.getPortfolioPercent(ticker, hoverRange).withCommas());
   element.text(change.withCommas());
@@ -503,7 +563,7 @@ function updateCompareRow(ticker, timeRange, hoverRange) {
 function updateCompanyPage(ticker, timeRange, hoverRange) {
   var change = data.getChange(ticker, timeRange);
   var stats = data.getStats(ticker, timeRange);
-  
+
   updateChangePlot('company', getColor(change));
 
   dom.companyPrice.text(data.getPrice(ticker, hoverRange).withCommas());
@@ -909,4 +969,3 @@ dom.buyButton.click(function() {
 //     .attr("d", line);
 
 // //data is in compareGraphData
-
