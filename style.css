@@ -97,6 +97,9 @@ table {
   .grey:hover {
     color: #767676; }
 
+.white {
+  color: white; }
+
 .ui.button:hover .icon.button {
   opacity: 1; }
 
