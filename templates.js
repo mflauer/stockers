@@ -12,6 +12,7 @@ function createCheckButton(ticker, section='compare', color='') {
 
 function createCompareItem(dom, ticker, section, color='') {
   var isPortfolio = (section == 'portfolio');
+  var isSuggested = (section == 'suggested');
   if (isPortfolio) {
     var element = dom.portfolioStocks;
     var icon = ''
@@ -23,7 +24,7 @@ function createCompareItem(dom, ticker, section, color='') {
     var icon = '';
   }
   element.append(`
-    <div id="${ticker}-${section}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui basic fluid ${color} left button">
+    <div id="${ticker}-${section}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui ${isSuggested ? 'inverted' : ''} fluid ${color} left button">
       ${isPortfolio ? '' : createCheckButton(ticker, section, color)}
       ${icon}
       <div class="baseline inline">

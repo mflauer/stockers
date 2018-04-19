@@ -1,6 +1,5 @@
 body {
-  background-color: #0c343d;
-}
+  background-color: #191919; }
 
 table {
   border: none !important; }
@@ -98,7 +97,10 @@ table {
     color: #767676; }
 
 .white {
-  color: white !important; }
+  color: #f0f0f0 !important; }
+
+.ui.secondary.pointing.menu .active.item {
+  border-color: #f0f0f0 !important; }
 
 .ui.button:hover .icon.button {
   opacity: 1; }
