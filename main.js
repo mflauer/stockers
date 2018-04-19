@@ -292,6 +292,28 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
       .attr('id', `${section}-baseline`)
       .classed('baseline', true)
       .attr('d', startLine(plotData['dates']));
+
+
+    graph.append("rect")
+      .attr('id', `${section}-overlay`)
+      .attr("width", 400)
+      .attr("height", 400)
+      .on("mouseover", function() { console.log('mouseover') })
+      .on("mouseout", function() { console.log('mouseout')})
+      .on("mousemove", mousemove);
+
+    graph.append("line")
+        .attr('id', 'hover-line')
+        .style('stroke', 'red')
+        .attr('x1', xScale(0))
+        .attr('x2', xScale(0))
+        .attr('y1', yScale(plotData['min']))
+        .attr('y2', yScale(plotData['max']));
+
+    function mousemove() {
+      var x = d3.mouse(this)[0];
+      d3.select('#hover-line').attr('x1', x).attr('x2', x);
+    }
   }
 
   // draw ticker line
@@ -301,6 +323,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
     .attr('d', tickerLine(plotData['tickers'][ticker]))
     .on("mouseover", mouseEnterHandler)
     .on("mouseout", mouseLeaveHandler);
+
 }
 
 // redraw change plot, optionally forcing all lines to have a color
