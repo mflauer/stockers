@@ -9,7 +9,7 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 ## TODO (! - priority level)
 - !! value plot
 - ! hover item/row/line should hover all others
-- ! hover over plot should get date
+- ! hover over plot should get date and show tooltip
 - sell functionality
 - extra line when first item in table is hidden
 - company page buttons move when hovered
