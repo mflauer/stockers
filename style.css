@@ -42,6 +42,9 @@ table {
 .ui.button:hover .icon.button {
   opacity: 1; }
 
+i.caret.icon {
+  margin: 0 !important; }
+
 .stats-table {
   margin: auto; }
   .stats-table tr td {
