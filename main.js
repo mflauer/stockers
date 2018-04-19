@@ -14,6 +14,7 @@ dom.companyGraphContainer = $('#company-graph-container');
 dom.companyGraph = d3.select('#company-graph');
 
 // portfolio
+dom.portfolioHidden = $('#portfolio-hidden');
 dom.portfolioValue = $('#portfolio-value');
 dom.portfolioStocks = $('#portfolio-stocks');
 dom.portfolioTable = $('#portfolio-table');
@@ -23,6 +24,8 @@ dom.search = $('#search');
 dom.searchInput = $('#search-input');
 
 // compare
+dom.compareHidden = $('.compare-hidden');
+dom.compareButtons = $('#compare-buttons');
 dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
 dom.compareStocks = $('#compare-stocks');
@@ -80,13 +83,7 @@ const COLORS = [
 ];
 
 // graph axes
-var volumeX = d3.scaleTime().range([0, dom.volumeGraphContainer.width()]),
-    volumeY = d3.scaleLinear().range([dom.volumeGraphContainer.height(), 0]),
-    growthX = d3.scaleTime().range([0, dom.growthGraphContainer.width()]),
-    growthY = d3.scaleLinear().range([dom.growthGraphContainer.height(), 0]),
-    compareX = d3.scaleTime().range([0, dom.compareGraphContainer.width()]),
-    compareY = d3.scaleLinear().range([dom.compareGraphContainer.height(), 0]),
-    companyX, companyY;
+var volumeX, volumeY, growthX, growthY, compareX, compareY, companyX, companyY;
 
 // graph data
 var portfolioTimeRange = '1Y',
@@ -516,6 +513,17 @@ function createCheckClickListener(ticker, section) {
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
 
   if (section == 'portfolio') {
+    // show section
+    dom.portfolioHidden.removeClass('hide');
+
+    // set scale of portfolio page plots
+    if (volumeX == undefined || volumeY == undefined || growthX == undefined || growthY == undefined) {
+      volumeX = d3.scaleTime().range([0, dom.volumeGraphContainer.width()]);
+      volumeY = d3.scaleLinear().range([dom.volumeGraphContainer.height(), 0]);
+      growthX = d3.scaleTime().range([0, dom.growthGraphContainer.width()]);
+      growthY = d3.scaleLinear().range([dom.growthGraphContainer.height(), 0]);
+    }
+
     // pick color
     var color = COLORS[portfolioColor];
     portfolioColor += 1;
@@ -530,6 +538,15 @@ function createCheckClickListener(ticker, section) {
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
     addCompanyHoverHandlers(ticker, section);
   } else if (section == 'compare') {
+    // show section
+    dom.compareHidden.removeClass('hide');
+
+    // set scale of compare page plot
+    if (compareX == undefined || compareY == undefined) {
+      compareX = d3.scaleTime().range([0, dom.compareGraphContainer.width()]);
+      compareY = d3.scaleLinear().range([dom.compareGraphContainer.height(), 0]);
+    }
+
     // pick color
     var color = COLORS[compareColor];
     compareColor += 1;
@@ -550,6 +567,12 @@ function createCheckClickListener(ticker, section) {
       $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
       d3.select(`#${tickerString}-compare-line`).remove();
+
+      if (data.getCompareTickers.length == 0) {
+        dom.compareStocks.addClass('hide');
+        dom.doneButton.click();
+        dom.compareButtons.addClass('hide');
+      }
     });
   } else if (section == 'suggested') {
     createCompareItem(dom, ticker, section);
@@ -607,8 +630,10 @@ function createCheckClickListener(ticker, section) {
     }
 
     // hide plot and table if no plots displayed
-    if (data.getCompareTickers().length == 0) {
-      // TODO
+    if (!data.getCompareChecked()) {
+      dom.compareHidden.not(dom.compareButtons).not(dom.compareStocks).addClass('hide');
+    } else {
+      dom.compareHidden.removeClass('hide');
     }
   });
 }
@@ -672,10 +697,8 @@ function loadCompanyPage(ticker) {
   dom.companyPage.modal('show');
   
   // set scale of company page plot
-  if (companyX == undefined) {
+  if (companyX == undefined || companyY == undefined) {
     companyX = d3.scaleTime().range([0, dom.companyGraphContainer.width()]);
-  }
-  if (companyY == undefined) {
     companyY = d3.scaleLinear().range([dom.companyGraphContainer.height(), 0]);
   }
   
@@ -866,6 +889,7 @@ dom.buyShares.focus(function() {
 dom.buyButton.click(function() {
   var newStock = data.buyStock(companyTicker, parseInt(dom.buyShares.val()));
   dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+  dom.portfolioHidden.removeClass('hide');
   if (newStock) {
     createCheckClickListener(companyTicker, 'portfolio');
   } else {
