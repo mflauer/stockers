@@ -77,19 +77,19 @@ class Data {
         {
           'date': '2017-05-12T12:30:00',
           'price': 153.78,
-          'amount': 6,
+          'amount': 10,
         },
         {
           'date': '2017-12-22T13:15:00',
           'price': 176.29,
-          'amount': -3,
+          'amount': -5,
         },
       ],
       'AMZN' : [
         {
           'date': '2018-02-23T10:45:00',
           'price': 1469.92,
-          'amount': 2,
+          'amount': 1,
         },
       ],
     };
