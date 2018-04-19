@@ -216,12 +216,12 @@ path {
   stroke: $grey;
   stroke-width: 2;
 
-  &.thin {
+  &.baseline {
     stroke-width: 1;
     stroke-dasharray: 10, 15;
   }
 
-  &.hover {
+  &.thick {
     stroke-width: 3;
   }
 

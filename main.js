@@ -213,7 +213,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
   if (!baseline) {
     graph.append('path')
       .attr('id', `${section}-baseline`)
-      .classed('thin', true)
+      .classed('baseline', true)
       .attr('d', startLine(plotData['dates']));
   }
 
