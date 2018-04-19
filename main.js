@@ -246,10 +246,8 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
 
   var tipBox = graph.append('rect')
     .attr('id', 'tipBox')
-    .attr('width', graph.width)
-    .attr('height', graph.height)
-    .attr('opacity', 0)
-    .on('mousemove', drawTooltip)
+    .classed(tipBox, true)
+    .on('mousemove', drawTooltip(section))
     .on('mouseout', removeTooltip);
 
 }
@@ -309,7 +307,6 @@ function updateChangePlot(section, color) {
 //http://bl.ocks.org/wdickerson/64535aff478e8a9fd9d9facccfef8929
 function removeTooltip() {
   if (tooltip) {
-    console.log(tooltip);
     tooltip.style('display', 'none');
   }
   if (tooltipline) {
@@ -317,30 +314,40 @@ function removeTooltip() {
   }
 }
 
-function drawTooltip() {
+function drawTooltip(section) {
   //get where the line should be aligned on the x axis
-  var timePoint = Math.floor((x.invert(d3.mouse(tipBox.node())[0]) + 5) / 10) * 10;
-  console.log("hi");
+  if (section == 'portfolio') {
+    var graph = dom.growthGraph;
+    var xScale = growthX;
+    var yScale = growthY;
+  } else if (section == 'compare') {
+    var graph = dom.compareGraph;
+    var xScale = compareX;
+    var yScale = compareY;
+  } else if (section == 'company') {
+    var graph = dom.companyGraph;
+    var xScale = companyX;
+    var yScale = companyY;
+  }
+
+  var tooltip = d3.select('#tooltip');
+  toolTipLine.classList.add("#toolTipLine");
 
   //need function to get the data at that point
   //var tipData =
 
-  tooltipLine.attr('stroke', 'black')
-    .attr('x1', x(timePoint))
-    .attr('x2', x(timePoint))
-    .attr('y1', 0)
-    .attr('y2', graph.height);
+  tooltip.attr('stroke', 'black')
+    .classed(toolTipLine, true);
 
 
-  tooltip.html(bottom)
+  tooltip.html("timePoint")
     .style('display', 'block')
     .style('left', d3.event.pageX + 20)
-    .style ('top', d3,event.pageY - 20)
+    .style ('top', d3.event.pageY - 20)
     .selectAll()
     .data(tipData).enter()
     .append('div')
-    .style('color', d => d.color)
-    .html(date, price);
+    .html("date", "price");
 
 }
 
