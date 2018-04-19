@@ -132,7 +132,9 @@ function getStackedPlotData() {
   var values;
 
   for (var t in tickers) {
-    var stockData = data.getPortfolioData(tickers[t])[time.interval].slice(0, time.n);
+    var stockData = data.getPortfolioData(tickers[t])[time.interval].slice(0, time.n).filter(function(x, i) {
+      return i % time.period == 0;
+    });
 
     // populate dates
     if (t == 0) {
@@ -185,7 +187,9 @@ function getChangePlotData(section) {
   var max = -Infinity;
 
   for (var t in tickers) {
-    var stockData = data[f](tickers[t])[time.interval].slice(0, time.n);
+    var stockData = data[f](tickers[t])[time.interval].slice(0, time.n).filter(function(x, i) {
+      return i % time.period == 0;
+    });
 
     // populate dates
     if (t == 0) {
