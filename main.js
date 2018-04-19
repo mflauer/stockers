@@ -455,6 +455,7 @@ function updateStackedPlot() {
   });
 }
 
+// mouseenter event listener on compare plot
 function handleMouseEnterCompare() {
   var ticker = $(this).attr('id').split('-')[0];
   $(`#${ticker}-compare-item`).addClass('hover');
@@ -462,6 +463,7 @@ function handleMouseEnterCompare() {
   $(`#${ticker}-compare-line`).addClass('thick');
 }
 
+// mouseleave event listener on compare plot
 function handleMouseLeaveCompare() {
   var ticker = $(this).attr('id').split('-')[0];
   $(`#${ticker}-compare-item`).removeClass('hover');
@@ -469,6 +471,7 @@ function handleMouseLeaveCompare() {
   $(`#${ticker}-compare-line`).removeClass('thick');
 }
 
+// mouseenter event listener on portfolio plot
 function handleMouseEnterPortfolio() {
   var ticker = $(this).attr('id').split('-')[0];
   $(`#${ticker}-portfolio-item`).addClass('hover');
@@ -477,6 +480,7 @@ function handleMouseEnterPortfolio() {
   $(`#${ticker}-portfolio-line`).addClass('thick');
 }
 
+// mouseleave event listener on portfolio plot
 function handleMouseLeavePortfolio() {
   var ticker = $(this).attr('id').split('-')[0];
   $(`#${ticker}-portfolio-item`).removeClass('hover');
