@@ -65,9 +65,9 @@ dom.buyButton = $('#buy-button');
 //////////////////////////////
 
 // constants
-  const COLORS = [
-  'red',
+const COLORS = [
   'blue',
+  'red',
   'green',
   'yellow',
   'purple',
