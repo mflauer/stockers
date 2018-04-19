@@ -120,14 +120,14 @@ function formatDate(date) {
 }
 
 // load graph data for section
-function getGraphData(location) {
-  if (location == 'portfolio') {
+function getGraphData(section) {
+  if (section == 'portfolio') {
     var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
-  } else if (location == 'compare') {
+  } else if (section == 'compare') {
     var tickers = data.getCompareTickers();
     var timeRange = compareTimeRange;
-  } else if (location == 'company') {
+  } else if (section == 'company') {
     var tickers = [companyTicker];
     var timeRange = companyTimeRange;
   }
@@ -164,17 +164,17 @@ function getGraphData(location) {
 }
 
 // add ticker stock to plot
-function plotStock(location, ticker, tickerString, color) {
-  var plotData = getGraphData(location);
-  if (location == 'portfolio') {
+function plotStock(section, ticker, tickerString, color, clear=false) {
+  var plotData = getGraphData(section);
+  if (section == 'portfolio') {
     var graph = dom.growthGraph;
     var xScale = growthX;
     var yScale = growthY;
-  } else if (location == 'compare') {
+  } else if (section == 'compare') {
     var graph = dom.compareGraph;
     var xScale = compareX;
     var yScale = compareY;
-  } else if (location == 'company') {
+  } else if (section == 'company') {
     var graph = dom.companyGraph;
     var xScale = companyX;
     var yScale = companyY;
@@ -192,45 +192,51 @@ function plotStock(location, ticker, tickerString, color) {
 
   // update current lines in plot
   var baseline = false;
-  graph.selectAll('*').each(function() {
-    var line = d3.select(this);
-    var id = line.attr('id');
-    if (id == `${location}-baseline`) {
-      baseline = true;
-      line.attr('d', startLine(plotData['dates']));
-    } else {
-      var company = id.split('-')[0];
-      line.attr('d', tickerLine(plotData['tickers'][company]));
-    }
-  });
+  if (clear) {
+    // new graph
+    graph.selectAll('*').remove();
+  } else {
+    graph.selectAll('*').each(function() {
+      var line = d3.select(this);
+      var id = line.attr('id');
+      if (id == `${section}-baseline`) {
+        baseline = true;
+        line.attr('d', startLine(plotData['dates']));
+      } else {
+        var company = id.split('-')[0];
+        line.attr('d', tickerLine(plotData['tickers'][company]));
+      }
+    });
+  }
 
   // draw baseline if not already in plot
   if (!baseline) {
     graph.append('path')
-      .attr('id', `${location}-baseline`)
+      .attr('id', `${section}-baseline`)
       .classed('thin', true)
       .attr('d', startLine(plotData['dates']));
   }
 
   // draw ticker line
   graph.append('path')
-    .attr('id', `${tickerString}-${location}-line`)
+    .attr('id', `${tickerString}-${section}-line`)
     .classed(color, true)
     .attr('d', tickerLine(plotData['tickers'][ticker]));
 }
 
 // redraw plot, optionally forcing all lines to have a color
-function updatePlot(location, color) {
-  var plotData = getGraphData(location);
-  if (location == 'portfolio') {
+function updatePlot(section, color) {
+  var plotData = getGraphData(section);
+  console.log(plotData['tickers']['GOOG']);
+  if (section == 'portfolio') {
     var graph = dom.growthGraph;
     var xScale = growthX;
     var yScale = growthY;
-  } else if (location == 'compare') {
+  } else if (section == 'compare') {
     var graph = dom.compareGraph;
     var xScale = compareX;
     var yScale = compareY;
-  } else if (location == 'company') {
+  } else if (section == 'company') {
     var graph = dom.companyGraph;
     var xScale = companyX;
     var yScale = companyY;
@@ -250,7 +256,8 @@ function updatePlot(location, color) {
   graph.selectAll('*').each(function() {
     var line = d3.select(this);
     var id = line.attr('id');
-    if (id == `${location}-baseline`) {
+    if (id == `${section}-baseline`) {
+      baseline = true;
       line.attr('d', startLine(plotData['dates']));
     } else {
       var company = id.split('-')[0];
@@ -296,11 +303,11 @@ function createCompanyClickListener(element, ticker) {
 }
 
 // creates click event listener for check mark buttons
-function createCheckClickListener(ticker, location) {
+function createCheckClickListener(ticker, section) {
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
 
-  if (location == 'portfolio') {
+  if (section == 'portfolio') {
     // pick color
     var color = COLORS[portfolioColor];
     portfolioColor += 1;
@@ -309,11 +316,11 @@ function createCheckClickListener(ticker, location) {
     }
 
     // create elements
-    createCompareItem(dom, ticker, location, color);
-    plotStock(location, ticker, tickerString, color);
+    createCompareItem(dom, ticker, section, color);
+    plotStock(section, ticker, tickerString, color);
     createPortfolioTableRow(dom, ticker, portfolioTimeRange);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
-  } else if (location == 'compare') {
+  } else if (section == 'compare') {
     // pick color
     var color = COLORS[compareColor];
     compareColor += 1;
@@ -322,8 +329,8 @@ function createCheckClickListener(ticker, location) {
     }
 
     // create elements
-    createCompareItem(dom, ticker, location, color);
-    plotStock(location, ticker, tickerString, color);
+    createCompareItem(dom, ticker, section, color);
+    plotStock(section, ticker, tickerString, color);
     createCompareTableRow(dom, ticker, compareTimeRange);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
 
@@ -333,18 +340,18 @@ function createCheckClickListener(ticker, location) {
       $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
     });
-  } else if (location == 'suggested') {
-    createCompareItem(dom, ticker, location);
+  } else if (section == 'suggested') {
+    createCompareItem(dom, ticker, section);
   }
-  createCompanyClickListener($(`#${tickerString}-${location}-item`), ticker);
+  createCompanyClickListener($(`#${tickerString}-${section}-item`), ticker);
 
-  if (location == 'button') {
+  if (section == 'button') {
     // element is entire compare button on company page, not just checkbox
     var element = dom.compareButton;
     // remove previous click event listeners
     element.off('click');
   } else {
-    var element = $(`#${tickerString}-check-${location}`);
+    var element = $(`#${tickerString}-check-${section}`);
   }
 
   element.click(function(e) {
@@ -361,16 +368,7 @@ function createCheckClickListener(ticker, location) {
     // show/hide row in compare table
     $(`#${tickerString}-compare-row`).toggleClass('hide');
 
-    // remove from suggested
-    if (data.getSuggestedTickers().includes(ticker)) {
-      data.removeSuggestedStock(ticker);
-      $(`#${tickerString}-suggested-item`).remove();
-      if (data.getSuggestedTickers() == 0) {
-        dom.suggestedLabel.addClass('hide');
-      }
-    }
-
-    if (location != 'compare' && !data.getCompareTickers().includes(ticker)) {
+    if (section != 'compare' && !data.getCompareTickers().includes(ticker)) {
       // add to compare
       data.addToCompareStocks(ticker);
       createCheckClickListener(ticker, 'compare')
@@ -380,14 +378,27 @@ function createCheckClickListener(ticker, location) {
       line.classed('hide', !line.classed('hide'));
     }
 
-
-    if (location == 'search') {
+    if (section == 'search') {
       dom.searchInput.focus();
-    } else if (location == 'company' || location == 'button') {
+    } else if (section == 'company' || section == 'button') {
       // make compare button green on company page
       dom.compareButton.toggleClass('positive');
       $(`#${tickerString}-check-company`).toggleClass('positive');
     }
+
+    // remove from suggested
+    if (data.getSuggestedTickers().includes(ticker)) {
+      data.removeSuggestedStock(ticker);
+      $(`#${tickerString}-suggested-item`).remove();
+      if (data.getSuggestedTickers() == 0) {
+        dom.suggestedLabel.addClass('hide');
+      }
+    }
+
+    // hide plot and table if no plots displayed
+    // if (data.getCompareTickers()) {
+    // 
+    // }
   });
 }
 
@@ -445,7 +456,7 @@ function loadCompanyPage(ticker) {
   
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
-  plotStock('company', ticker, tickerString, change < 0 ? 'red' : 'green')
+  plotStock('company', ticker, tickerString, change < 0 ? 'red' : 'green', true)
 }
 
 // update portfolio row
@@ -575,16 +586,16 @@ $('.selector>.item').click(function(e) {
   timeRangeElement.addClass('active');
 
   var timeRange = timeRangeElement.text();
-  var location = timeRangeElement.parent().attr('id').split('-')[0];
-  if (location == 'portfolio') {
+  var section = timeRangeElement.parent().attr('id').split('-')[0];
+  if (section == 'portfolio') {
     portfolioTimeRange = timeRange;
-    updatePlot(location);
+    updatePlot(section);
     data.getPortfolioTickers().map(x => updatePortfolioRow(x, portfolioTimeRange));
-  } else if (location == 'compare') {
+  } else if (section == 'compare') {
     compareTimeRange = timeRange;
-    updatePlot(location);
+    updatePlot(section);
     data.getCompareTickers().map(x => updateCompareRow(x, compareTimeRange));
-  } else if (location == 'company') {
+  } else if (section == 'company') {
     companyTimeRange = timeRange;
     updateCompanyPage(companyTicker, companyTimeRange);
   }

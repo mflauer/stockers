@@ -1,30 +1,30 @@
-function createCheckButton(ticker, location='compare', color='') {
+function createCheckButton(ticker, section='compare', color='') {
   var checked = data.getCompareChecked(ticker);
-  if (location == 'company' && checked) {
+  if (section == 'company' && checked) {
     color = 'positive';
   }
   return `
-    <div id="${ticker}-check-${location}" class="mini circular ui icon ${color} button">
+    <div id="${ticker}-check-${section}" class="mini circular ui icon ${color} button">
       <i class="${checked ? 'check' : ''} icon"></i>
     </div>
   `;
 }
 
-function createCompareItem(dom, ticker, location, color='') {
-  var isPortfolio = (location == 'portfolio');
+function createCompareItem(dom, ticker, section, color='') {
+  var isPortfolio = (section == 'portfolio');
   if (isPortfolio) {
     var element = dom.portfolioStocks;
     var icon = ''
-  } else if (location == 'compare') {
+  } else if (section == 'compare') {
     var element = dom.compareStocks;
     var icon = `<i id="${ticker}-remove" class="close link icon hide"></i>`;
-  } else if (location == 'suggested') {
+  } else if (section == 'suggested') {
     var element = dom.suggestedStocks;
     var icon = '';
   }
   element.append(`
-    <div id="${ticker}-${location}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui basic fluid ${color} left button">
-      ${isPortfolio ? '' : createCheckButton(ticker, location, color)}
+    <div id="${ticker}-${section}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui basic fluid ${color} left button">
+      ${isPortfolio ? '' : createCheckButton(ticker, section, color)}
       ${icon}
       <div class="baseline inline">
         ${ticker}
