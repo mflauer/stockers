@@ -458,35 +458,29 @@ function updateStackedPlot() {
 // mouseenter event listener on compare plot
 function handleMouseEnterCompare() {
   var ticker = $(this).attr('id').split('-')[0];
-  $(`#${ticker}-compare-item`).addClass('hover');
-  $(`#${ticker}-compare-row`).addClass('hover');
+  $(`#${ticker}-compare-item, #${ticker}-compare-row`).addClass('hover');
   $(`#${ticker}-compare-line`).addClass('thick');
 }
 
 // mouseleave event listener on compare plot
 function handleMouseLeaveCompare() {
   var ticker = $(this).attr('id').split('-')[0];
-  $(`#${ticker}-compare-item`).removeClass('hover');
-  $(`#${ticker}-compare-row`).removeClass('hover');
+  $(`#${ticker}-compare-item, #${ticker}-compare-row`).removeClass('hover');
   $(`#${ticker}-compare-line`).removeClass('thick');
 }
 
 // mouseenter event listener on portfolio plot
 function handleMouseEnterPortfolio() {
   var ticker = $(this).attr('id').split('-')[0];
-  $(`#${ticker}-portfolio-item`).addClass('hover');
-  $(`#${ticker}-volume-line`).addClass('thick');
-  $(`#${ticker}-volume-area`).addClass('hover');
-  $(`#${ticker}-portfolio-line`).addClass('thick');
+  $(`#${ticker}-portfolio-item, #${ticker}-volume-area`).addClass('hover');
+  $(`#${ticker}-volume-line, #${ticker}-portfolio-line`).addClass('thick');
 }
 
 // mouseleave event listener on portfolio plot
 function handleMouseLeavePortfolio() {
   var ticker = $(this).attr('id').split('-')[0];
-  $(`#${ticker}-portfolio-item`).removeClass('hover');
-  $(`#${ticker}-volume-line`).removeClass('thick');
-  $(`#${ticker}-volume-area`).removeClass('hover');
-  $(`#${ticker}-portfolio-line`).removeClass('thick');
+  $(`#${ticker}-portfolio-item, #${ticker}-volume-area`).removeClass('hover');
+  $(`#${ticker}-volume-line, #${ticker}-portfolio-line`).removeClass('thick');
 }
 
 // get color associated with change
