@@ -10,8 +10,10 @@ Once you have Sass installed, run `sass --sourcemap=none --watch ./scss:./` in t
 - !! value plot
 - ! hover item/row/line should hover all others
 - ! hover over plot should get date and show tooltip
+- better hover affordance on company items
 - sell functionality
 - extra line when first item in table is hidden
 - company page buttons move when hovered
-- ? better hover affordance on company buttons
+- resize graph when window is resized
+- dark theme
 - ? drag and drop to reorder compare companies

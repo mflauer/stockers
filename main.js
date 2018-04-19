@@ -164,7 +164,7 @@ function getGraphData(section) {
 }
 
 // add ticker stock to plot
-function plotStock(section, ticker, tickerString, color, clear=false) {
+function plotStockChange(section, ticker, tickerString, color, clear=false) {
   var plotData = getGraphData(section);
   if (section == 'portfolio') {
     var graph = dom.growthGraph;
@@ -225,7 +225,7 @@ function plotStock(section, ticker, tickerString, color, clear=false) {
 }
 
 // redraw plot, optionally forcing all lines to have a color
-function updatePlot(section, color) {
+function updateChangePlot(section, color) {
   var plotData = getGraphData(section);
   console.log(plotData['tickers']['GOOG']);
   if (section == 'portfolio') {
@@ -317,7 +317,7 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStock(section, ticker, tickerString, color);
+    plotStockChange(section, ticker, tickerString, color);
     createPortfolioTableRow(dom, ticker, portfolioTimeRange);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
   } else if (section == 'compare') {
@@ -330,7 +330,7 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStock(section, ticker, tickerString, color);
+    plotStockChange(section, ticker, tickerString, color);
     createCompareTableRow(dom, ticker, compareTimeRange);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
 
@@ -456,7 +456,7 @@ function loadCompanyPage(ticker) {
   
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
-  plotStock('company', ticker, tickerString, change < 0 ? 'red' : 'green', true)
+  plotStockChange('company', ticker, tickerString, change < 0 ? 'red' : 'green', true)
 }
 
 // update portfolio row
@@ -493,7 +493,7 @@ function updateCompanyPage(ticker, timeRange, hoverRange) {
   var change = data.getChange(ticker, timeRange);
   var stats = data.getStats(ticker, timeRange);
   
-  updatePlot('company', change < 0 ? 'red' : 'green');
+  updateChangePlot('company', change < 0 ? 'red' : 'green');
 
   dom.companyPrice.text(data.getPrice(ticker, hoverRange).withCommas());
   dom.companyChange.text(getChange(change));
@@ -589,11 +589,11 @@ $('.selector>.item').click(function(e) {
   var section = timeRangeElement.parent().attr('id').split('-')[0];
   if (section == 'portfolio') {
     portfolioTimeRange = timeRange;
-    updatePlot(section);
+    updateChangePlot(section);
     data.getPortfolioTickers().map(x => updatePortfolioRow(x, portfolioTimeRange));
   } else if (section == 'compare') {
     compareTimeRange = timeRange;
-    updatePlot(section);
+    updateChangePlot(section);
     data.getCompareTickers().map(x => updateCompareRow(x, compareTimeRange));
   } else if (section == 'company') {
     companyTimeRange = timeRange;
