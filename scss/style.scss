@@ -78,76 +78,52 @@ tr[id$="-compare-row"] {
 }
 
 .ui.basic.button {
-  &.red {
-    &.hover {
-      background-color: $light-red !important;
-    }
+  &.red.hover {
+    background-color: $light-red !important;
   }
 
-  &.orange {
-    &.hover {
-      background-color: $light-orange !important;
-    }
+  &.orange.hover {
+    background-color: $light-orange !important;
   }
 
-  &.yellow {
-    &.hover {
-      background-color: $light-yellow !important;
-    }
+  &.yellow.hover {
+    background-color: $light-yellow !important;
   }
 
-  &.olive {
-    &.hover {
-      background-color: $light-olive !important;
-    }
+  &.olive.hover {
+    background-color: $light-olive !important;
   }
 
-  &.green {
-    &.hover {
-      background-color: $light-green !important;
-    }
+  &.green.hover {
+    background-color: $light-green !important;
   }
 
-  &.teal {
-    &.hover {
-      background-color: $light-teal !important;
-    }
+  &.teal.hover {
+    background-color: $light-teal !important;
   }
 
-  &.blue {
-    &.hover {
-      background-color: $light-blue !important;
-    }
+  &.blue.hover {
+    background-color: $light-blue !important;
   }
 
-  &.violet {
-    &.hover {
-      background-color: $light-violet !important;
-    }
+  &.violet.hover {
+    background-color: $light-violet !important;
   }
 
-  &.purple {
-    &.hover {
-      background-color: $light-purple !important;
-    }
+  &.purple.hover {
+    background-color: $light-purple !important;
   }
 
-  &.pink {
-    &.hover {
-      background-color: $light-pink !important;
-    }
+  &.pink.hover {
+    background-color: $light-pink !important;
   }
 
-  &.brown {
-    &.hover {
-      background-color: $light-brown !important;
-    }
+  &.brown.hover {
+    background-color: $light-brown !important;
   }
 
-  &.grey {
-    &.hover {
-      background-color: $light-grey !important;
-    }
+  &.grey.hover {
+    background-color: $light-grey !important;
   }
 }
 
