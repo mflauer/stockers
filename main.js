@@ -274,14 +274,13 @@ function updateChangePlot(section, color) {
     var line = d3.select(this);
     var id = line.attr('id');
     if (id == `${section}-baseline`) {
-      baseline = true;
       line.attr('d', startLine(plotData['dates']));
     } else {
-      var company = id.split('-')[0];
+      var ticker = id.split('-')[0];
       if (color != undefined) {
         line.classed('red green', false).classed(color, true);
       }
-      line.attr('d', tickerLine(plotData['tickers'][company]));
+      line.attr('d', tickerLine(plotData['tickers'][ticker]));
     }
   });
 }
