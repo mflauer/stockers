@@ -25,6 +25,8 @@ $light-pink: rgba(224, 57, 151, .1);
 $light-brown: rgba(165, 103, 63, .1);
 $light-grey: rgba(118, 118, 118, .1);
 
+$opacity: .1;
+
 // STYLES
 table {
   border: none !important;
@@ -62,6 +64,86 @@ table {
 .compare-item {
   margin-bottom: 5px !important;
   position: relative;
+}
+
+tr[id$="-compare-row"] {
+  &.hover {
+    background-color: rgba(0,0,0,.05)!important
+  }
+}
+
+.ui.basic.button {
+  &.red {
+    &.hover {
+      background-color: $light-red !important;
+    }
+  }
+
+  &.orange {
+    &.hover {
+      background-color: $light-orange !important;
+    }
+  }
+
+  &.yellow {
+    &.hover {
+      background-color: $light-yellow !important;
+    }
+  }
+
+  &.olive {
+    &.hover {
+      background-color: $light-olive !important;
+    }
+  }
+
+  &.green {
+    &.hover {
+      background-color: $light-green !important;
+    }
+  }
+
+  &.teal {
+    &.hover {
+      background-color: $light-teal !important;
+    }
+  }
+
+  &.blue {
+    &.hover {
+      background-color: $light-blue !important;
+    }
+  }
+
+  &.violet {
+    &.hover {
+      background-color: $light-violet !important;
+    }
+  }
+
+  &.purple {
+    &.hover {
+      background-color: $light-purple !important;
+    }
+  }
+
+  &.pink {
+    &.hover {
+      background-color: $light-pink !important;
+    }
+  }
+
+  &.brown {
+    &.hover {
+      background-color: $light-brown !important;
+    }
+  }
+
+  &.grey {
+    &.hover {
+      background-color: $light-grey !important;
+    }
+  }
 }
 
 .close {

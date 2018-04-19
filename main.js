@@ -284,7 +284,9 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
   graph.append('path')
     .attr('id', `${tickerString}-${section}-line`)
     .classed(color, true)
-    .attr('d', tickerLine(plotData['tickers'][ticker]));
+    .attr('d', tickerLine(plotData['tickers'][ticker]))
+    .on("mouseover", handleMouseEnterCompare)
+    .on("mouseout", handleMouseLeaveCompare);;
 }
 
 // redraw change plot, optionally forcing all lines to have a color
@@ -449,6 +451,20 @@ function updateStackedPlot() {
   });
 }
 
+function handleMouseEnterCompare() {
+  var ticker = $(this).attr('id').split('-')[0];
+  $(`#${ticker}-compare-item`).addClass('hover');
+  $(`#${ticker}-compare-row`).addClass('hover');
+  $(`#${ticker}-compare-line`).addClass('thick');
+}
+
+function handleMouseLeaveCompare() {
+  var ticker = $(this).attr('id').split('-')[0];
+  $(`#${ticker}-compare-item`).removeClass('hover');
+  $(`#${ticker}-compare-row`).removeClass('hover');
+  $(`#${ticker}-compare-line`).removeClass('thick');
+}
+
 // get color associated with change
 function getColor(change) {
   if (change > 0) {
@@ -507,6 +523,7 @@ function createCheckClickListener(ticker, section) {
     plotStockChange(section, ticker, tickerString, color);
     createCompareTableRow(dom, ticker, compareTimeRange, color);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
+    addCompanyHoverHandlers(ticker, section)
 
     // create click event listener for removing stock
     $(`#${tickerString}-remove`).click(function() {
@@ -575,6 +592,14 @@ function createCheckClickListener(ticker, section) {
       // TODO
     }
   });
+}
+
+// add hover handlers for graph, item, and table row
+// associated with this ticker
+function addCompanyHoverHandlers(ticker) {
+  $(`#${ticker}-compare-item`).hover(handleMouseEnterCompare, handleMouseLeaveCompare);
+  $(`#${ticker}-compare-row`).hover(handleMouseEnterCompare, handleMouseLeaveCompare);
+  // plot hover set upon plot drawing
 }
 
 // populates company page content
