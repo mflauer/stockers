@@ -120,14 +120,14 @@ function formatDate(date) {
 }
 
 // load graph data for section
-function getGraphData(section) {
-  if (section == 'portfolio') {
+function getGraphData(location) {
+  if (location == 'portfolio') {
     var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
-  } else if (section == 'compare') {
+  } else if (location == 'compare') {
     var tickers = data.getCompareTickers();
     var timeRange = compareTimeRange;
-  } else if (section == 'company') {
+  } else if (location == 'company') {
     var tickers = [companyTicker];
     var timeRange = companyTimeRange;
   }
@@ -164,18 +164,18 @@ function getGraphData(section) {
 }
 
 // add ticker stock to plot
-function plotStock(section, ticker, color) {
-  var plotData = getGraphData(section);
-  if (section == 'portfolio') {
-    var element = dom.growthGraph;
+function plotStock(location, ticker, tickerString, color) {
+  var plotData = getGraphData(location);
+  if (location == 'portfolio') {
+    var graph = dom.growthGraph;
     var xScale = growthX;
     var yScale = growthY;
-  } else if (section == 'compare') {
-    var element = dom.compareGraph;
+  } else if (location == 'compare') {
+    var graph = dom.compareGraph;
     var xScale = compareX;
     var yScale = compareY;
-  } else if (section == 'company') {
-    var element = dom.companyGraph;
+  } else if (location == 'company') {
+    var graph = dom.companyGraph;
     var xScale = companyX;
     var yScale = companyY;
   }
@@ -192,10 +192,10 @@ function plotStock(section, ticker, color) {
 
   // update current lines in plot
   var baseline = false;
-  element.selectAll('*').each(function() {
+  graph.selectAll('*').each(function() {
     var line = d3.select(this);
     var id = line.attr('id');
-    if (id == `${section}-baseline`) {
+    if (id == `${location}-baseline`) {
       baseline = true;
       line.attr('d', startLine(plotData['dates']));
     } else {
@@ -206,32 +206,32 @@ function plotStock(section, ticker, color) {
 
   // draw baseline if not already in plot
   if (!baseline) {
-    element.append('path')
-      .attr('id', `${section}-baseline`)
+    graph.append('path')
+      .attr('id', `${location}-baseline`)
       .classed('thin', true)
       .attr('d', startLine(plotData['dates']));
   }
 
   // draw ticker line
-  element.append('path')
-    .attr('id', `${ticker}-${section}-line`)
+  graph.append('path')
+    .attr('id', `${tickerString}-${location}-line`)
     .classed(color, true)
     .attr('d', tickerLine(plotData['tickers'][ticker]));
 }
 
 // redraw plot, optionally forcing all lines to have a color
-function updatePlot(section, color) {
-  var plotData = getGraphData(section);
-  if (section == 'portfolio') {
-    var element = dom.growthGraph;
+function updatePlot(location, color) {
+  var plotData = getGraphData(location);
+  if (location == 'portfolio') {
+    var graph = dom.growthGraph;
     var xScale = growthX;
     var yScale = growthY;
-  } else if (section == 'compare') {
-    var element = dom.compareGraph;
+  } else if (location == 'compare') {
+    var graph = dom.compareGraph;
     var xScale = compareX;
     var yScale = compareY;
-  } else if (section == 'company') {
-    var element = dom.companyGraph;
+  } else if (location == 'company') {
+    var graph = dom.companyGraph;
     var xScale = companyX;
     var yScale = companyY;
   }
@@ -247,10 +247,10 @@ function updatePlot(section, color) {
     .y(function(d) { return yScale(d); });
 
   // update current lines in plot
-  element.selectAll('*').each(function() {
+  graph.selectAll('*').each(function() {
     var line = d3.select(this);
     var id = line.attr('id');
-    if (id == `${section}-baseline`) {
+    if (id == `${location}-baseline`) {
       line.attr('d', startLine(plotData['dates']));
     } else {
       var company = id.split('-')[0];
@@ -310,7 +310,7 @@ function createCheckClickListener(ticker, location) {
 
     // create elements
     createCompareItem(dom, ticker, location, color);
-    plotStock(location, ticker, color);
+    plotStock(location, ticker, tickerString, color);
     createPortfolioTableRow(dom, ticker, portfolioTimeRange);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
   } else if (location == 'compare') {
@@ -323,7 +323,7 @@ function createCheckClickListener(ticker, location) {
 
     // create elements
     createCompareItem(dom, ticker, location, color);
-    plotStock(location, ticker, color);
+    plotStock(location, ticker, tickerString, color);
     createCompareTableRow(dom, ticker, compareTimeRange);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
 
@@ -338,9 +338,10 @@ function createCheckClickListener(ticker, location) {
   }
   createCompanyClickListener($(`#${tickerString}-${location}-item`), ticker);
 
-  // element is entire compare button on company page, not just checkbox
   if (location == 'button') {
+    // element is entire compare button on company page, not just checkbox
     var element = dom.compareButton;
+    // remove previous click event listeners
     element.off('click');
   } else {
     var element = $(`#${tickerString}-check-${location}`);
@@ -359,8 +360,6 @@ function createCheckClickListener(ticker, location) {
 
     // show/hide row in compare table
     $(`#${tickerString}-compare-row`).toggleClass('hide');
-    
-    // TODO show/hide plot
 
     // remove from suggested
     if (data.getSuggestedTickers().includes(ticker)) {
@@ -371,11 +370,16 @@ function createCheckClickListener(ticker, location) {
       }
     }
 
-    // add to compare
     if (location != 'compare' && !data.getCompareTickers().includes(ticker)) {
+      // add to compare
       data.addToCompareStocks(ticker);
       createCheckClickListener(ticker, 'compare')
+    } else {
+      // show/hide plot
+      var line = d3.select(`#${tickerString}-compare-line`);
+      line.classed('hide', !line.classed('hide'));
     }
+
 
     if (location == 'search') {
       dom.searchInput.focus();
@@ -439,9 +443,10 @@ function loadCompanyPage(ticker) {
     companyY = d3.scaleLinear().range([dom.companyGraphContainer.height(), 0]);
   }
   
-  plotStock('company', ticker, change < 0 ? 'red' : 'green')
+  // escape . and ^ characters in tickers
+  var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
+  plotStock('company', ticker, tickerString, change < 0 ? 'red' : 'green')
 }
-
 
 // update portfolio row
 // hoverRange is only set when hovering
@@ -570,16 +575,16 @@ $('.selector>.item').click(function(e) {
   timeRangeElement.addClass('active');
 
   var timeRange = timeRangeElement.text();
-  var section = timeRangeElement.parent().attr('id').split('-')[0];
-  if (section == 'portfolio') {
+  var location = timeRangeElement.parent().attr('id').split('-')[0];
+  if (location == 'portfolio') {
     portfolioTimeRange = timeRange;
-    updatePlot(section);
+    updatePlot(location);
     data.getPortfolioTickers().map(x => updatePortfolioRow(x, portfolioTimeRange));
-  } else if (section == 'compare') {
+  } else if (location == 'compare') {
     compareTimeRange = timeRange;
-    updatePlot(section);
+    updatePlot(location);
     data.getCompareTickers().map(x => updateCompareRow(x, compareTimeRange));
-  } else if (section == 'company') {
+  } else if (location == 'company') {
     companyTimeRange = timeRange;
     updateCompanyPage(companyTicker, companyTimeRange);
   }
