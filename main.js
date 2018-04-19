@@ -68,15 +68,15 @@ dom.buyButton = $('#buy-button');
 const INIT_TIME_RANGE = '1D';
 const COLORS = [
   'red',
-  'orange',
-  'yellow',
-  'olive',
-  'green',
-  'teal',
   'blue',
-  'violet',
+  'green',
+  'yellow',
   'purple',
+  'orange',
+  'teal',
   'pink',
+  'violet',
+  'olive',
   'brown',
 ];
 
