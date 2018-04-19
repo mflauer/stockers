@@ -11,6 +11,18 @@ $purple: rgb(163, 51, 200);
 $pink: rgb(224, 57, 151);
 $brown: rgb(165, 103, 63);
 $grey: rgb(118, 118, 118);
+$light-red: rgba(219, 40, 40, .1);
+$light-orange: rgba(242, 113, 28, .1);
+$light-yellow: rgba(251, 189, 8, .1);
+$light-olive: rgba(181, 204, 24, .1);
+$light-green: rgba(33, 186, 69, .1);
+$light-teal: rgba(0, 181, 173, .1);
+$light-blue: rgba(33, 133, 208, .1);
+$light-violet: rgba(100, 53, 201, .1);
+$light-purple: rgba(163, 51, 200, .1);
+$light-pink: rgba(224, 57, 151, .1);
+$light-brown: rgba(165, 103, 63, .1);
+$light-grey: rgba(118, 118, 118, .1);
 
 // STYLES
 table {
@@ -229,7 +241,8 @@ path {
     stroke: $red;
 
     &.fill {
-      fill: $red;
+      stroke: none;
+      fill: $light-red;
     }
   }
 
@@ -237,7 +250,8 @@ path {
     stroke: $orange;
 
     &.fill {
-      fill: $orange;
+      stroke: none;
+      fill: $light-orange;
     }
   }
 
@@ -245,7 +259,8 @@ path {
     stroke: $yellow;
 
     &.fill {
-      fill: $yellow;
+      stroke: none;
+      fill: $light-yellow;
     }
   }
 
@@ -253,7 +268,8 @@ path {
     stroke: $olive;
 
     &.fill {
-      fill: $olive;
+      stroke: none;
+      fill: $light-olive;
     }
   }
 
@@ -261,7 +277,8 @@ path {
     stroke: $green;
 
     &.fill {
-      fill: $green;
+      stroke: none;
+      fill: $light-green;
     }
   }
 
@@ -269,7 +286,8 @@ path {
     stroke: $teal;
 
     &.fill {
-      fill: $teal;
+      stroke: none;
+      fill: $light-teal;
     }
   }
 
@@ -277,7 +295,8 @@ path {
     stroke: $blue;
 
     &.fill {
-      fill: $blue;
+      stroke: none;
+      fill: $light-blue;
     }
   }
 
@@ -285,7 +304,8 @@ path {
     stroke: $violet;
 
     &.fill {
-      fill: $violet;
+      stroke: none;
+      fill: $light-violet;
     }
   }
 
@@ -293,7 +313,8 @@ path {
     stroke: $purple;
 
     &.fill {
-      fill: $purple;
+      stroke: none;
+      fill: $light-purple;
     }
   }
 
@@ -301,7 +322,8 @@ path {
     stroke: $pink;
 
     &.fill {
-      fill: $pink;
+      stroke: none;
+      fill: $light-pink;
     }
   }
 
@@ -309,7 +331,8 @@ path {
     stroke: $brown;
 
     &.fill {
-      fill: $brown;
+      stroke: none;
+      fill: $light-brown;
     }
   }
 }
