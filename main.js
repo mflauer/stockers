@@ -281,7 +281,9 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
   graph.append('path')
     .attr('id', `${tickerString}-${section}-line`)
     .classed(color, true)
-    .attr('d', tickerLine(plotData['tickers'][ticker]));
+    .attr('d', tickerLine(plotData['tickers'][ticker]))
+    .on("mouseover", handleMouseEnterCompare)
+    .on("mouseout", handleMouseLeaveCompare);
 }
 
 // redraw change plot, optionally forcing all lines to have a color
@@ -391,14 +393,18 @@ function plotStockStacked(ticker, tickerString, color) {
   graph.insert('path', ':nth-child(2)')
     .attr('id', `${tickerString}-volume-line`)
     .classed(color, true)
-    .attr('d', tickerLine(tickerData));
+    .attr('d', tickerLine(tickerData))
+    .on("mouseover", handleMouseEnterPortfolio)
+    .on("mouseout", handleMouseLeavePortfolio);
 
   // draw area
   graph.insert('path', ':nth-child(2)')
     .attr('id', `${tickerString}-volume-area`)
     .classed(color, true)
     .classed('fill', true)
-    .attr('d', area(tickerData));
+    .attr('d', area(tickerData))
+    .on("mouseover", handleMouseEnterPortfolio)
+    .on("mouseout", handleMouseLeavePortfolio);
 }
 
 // redraw stacked plot
@@ -444,6 +450,34 @@ function updateStackedPlot() {
       }
     }
   });
+}
+
+// mouseenter event listener on compare plot
+function handleMouseEnterCompare() {
+  var ticker = $(this).attr('id').split('-')[0];
+  $(`#${ticker}-compare-item, #${ticker}-compare-row`).addClass('hover');
+  $(`#${ticker}-compare-line`).addClass('thick');
+}
+
+// mouseleave event listener on compare plot
+function handleMouseLeaveCompare() {
+  var ticker = $(this).attr('id').split('-')[0];
+  $(`#${ticker}-compare-item, #${ticker}-compare-row`).removeClass('hover');
+  $(`#${ticker}-compare-line`).removeClass('thick');
+}
+
+// mouseenter event listener on portfolio plot
+function handleMouseEnterPortfolio() {
+  var ticker = $(this).attr('id').split('-')[0];
+  $(`#${ticker}-portfolio-item, #${ticker}-volume-area`).addClass('hover');
+  $(`#${ticker}-volume-line, #${ticker}-portfolio-line`).addClass('thick');
+}
+
+// mouseleave event listener on portfolio plot
+function handleMouseLeavePortfolio() {
+  var ticker = $(this).attr('id').split('-')[0];
+  $(`#${ticker}-portfolio-item, #${ticker}-volume-area`).removeClass('hover');
+  $(`#${ticker}-volume-line, #${ticker}-portfolio-line`).removeClass('thick');
 }
 
 // get color associated with change
@@ -502,6 +536,7 @@ function createCheckClickListener(ticker, section) {
     plotStockChange(section, ticker, tickerString, color);
     createPortfolioTableRow(dom, ticker, portfolioTimeRange, color);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
+    addCompanyHoverHandlers(ticker, section);
   } else if (section == 'compare') {
     // show section
     dom.compareHidden.removeClass('hide');
@@ -524,6 +559,7 @@ function createCheckClickListener(ticker, section) {
     plotStockChange(section, ticker, tickerString, color);
     createCompareTableRow(dom, ticker, compareTimeRange, color);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
+    addCompanyHoverHandlers(ticker, section);
 
     // create click event listener for removing stock
     $(`#${tickerString}-remove`).click(function() {
@@ -600,6 +636,20 @@ function createCheckClickListener(ticker, section) {
       dom.compareHidden.removeClass('hide');
     }
   });
+}
+
+// add hover handlers for graph, item, and table row
+// associated with this ticker
+function addCompanyHoverHandlers(ticker, section) {
+  if (section == 'compare') {
+    $(`#${ticker}-compare-item`).hover(handleMouseEnterCompare, handleMouseLeaveCompare);
+    $(`#${ticker}-compare-row`).hover(handleMouseEnterCompare, handleMouseLeaveCompare);
+    // plot hover set upon plot drawing
+  } else if (section == 'portfolio') {
+    $(`#${ticker}-portfolio-item`).hover(handleMouseEnterPortfolio, handleMouseLeavePortfolio);
+    // plot hover (for both plots) set upon plot drawing
+  }
+  
 }
 
 // populates company page content
