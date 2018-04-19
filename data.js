@@ -2,6 +2,10 @@ Number.prototype.withCommas = function() {
   return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+String.prototype.withCommas = function() {
+  return this;
+}
+
 class Data {
   constructor() {
     // Stock data API key (https://www.alphavantage.co/)
@@ -225,6 +229,11 @@ class Data {
         shares += changes[i]['amount'];
       }
       total = shares * price;
+
+      if (total == 0) {
+        var initial = this.PORTFOLIO_STOCKS[ticker][0];
+        total = initial.amount * initial.price;
+      }
     }
     return total;
   }
@@ -232,14 +241,11 @@ class Data {
   getPortfolioChange(ticker, timeRange) {
     // compare current value with value at start of timeRange
     var start = this.getPortfolioValue(ticker, timeRange);
-    if (start == 0) {
-      // change is infinite
-      return '—';
-    }
     return 100 * ((this.getPortfolioValue(ticker) / start) - 1);
   }
 
   getPortfolioPercent(ticker, timeRange) {
+    // get percentage at start of timeRange
     var total = this.getPortfolioValue(undefined, timeRange);
     if (total == 0) {
       // portfolio is empty

@@ -155,7 +155,7 @@ function getGraphData(section) {
 
     var tickerData = stockData.map(function(x) {
       var value = parseFloat(x[close]);
-      return value == 0 ? null : 100 * ((parseFloat(x[close]) / first) - 1);
+      return value == 0 ? null : 100 * ((value / first) - 1);
     }).reverse();
     plotData['tickers'][tickers[t]] = tickerData;
 
