@@ -2,11 +2,15 @@ Number.prototype.withCommas = function() {
   return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+String.prototype.withCommas = function() {
+  return this;
+}
+
 class Data {
   constructor() {
     // Stock data API key (https://www.alphavantage.co/)
     // this.API_KEY = 'MIRLW3E1H4871KNW';
-    
+
     this.COMPANIES = ALL_COMPANIES;
     this.STOCK_DATA = {
       'AAPL': {
@@ -112,51 +116,57 @@ class Data {
     if (timeRange in this.TIME_RANGE_INTERVAL) {
       return this.TIME_RANGE_INTERVAL[timeRange];
     } else {
+      // timeRange is already timeRange object
       return timeRange;
     }
   }
 
   getCurrentTime() {
+    // current frozen time
     return '2018-04-06T15:05:00';
   }
 
   getStockData(ticker) {
-    if (ticker in this.STOCK_DATA) {
-      return this.STOCK_DATA[ticker];
-    } else {
-      return this.STOCK_DATA[Object.keys(this.STOCK_DATA)[Math.floor(Math.random() * 4)]];
+    if (!(ticker in this.STOCK_DATA)) {
+      // store dummy data for ticker
+      this.STOCK_DATA[ticker] = this.STOCK_DATA[Object.keys(this.STOCK_DATA)[Math.floor(Math.random() * 4)]];
     }
+    return this.STOCK_DATA[ticker];
   }
 
   getPrice(ticker, timeRange) {
     var stockData = this.getStockData(ticker);
     if (timeRange != undefined) {
+      // get price at start of timeRange
       var time = this.getTime(timeRange);
       var close = time.interval == 'min' ? 'close' : 'adjusted close'
-      return parseFloat(stockData[time.interval][time.n - 1][close]);
+      var price = parseFloat(stockData[time.interval][time.n - 1][close]);
+      if (price == 0) {
+        // find first non-zero element
+        price = parseFloat(stockData[time.interval].slice().reverse().find(function(e) { return e[close] > 0; })[close]);
+      }
+      return price
     } else {
+      // get current price
       return parseFloat(stockData['min'][0]['close']);
     }
   }
 
   getChange(ticker, timeRange) {
-    var start = this.getPrice(ticker, timeRange);
-    if (start == 0) {
-      return '—';
-    }
-    return 100 * ((this.getPrice(ticker) / start) - 1);
+    // compare current price with price at start of timeRange
+    return 100 * ((this.getPrice(ticker) / this.getPrice(ticker, timeRange)) - 1);
   }
 
   getStats(ticker, timeRange) {
     var time = this.getTime(timeRange);
     var stockData = this.getStockData(ticker);
-    var highs = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['high'])));
-    var lows = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['low'])));
+    var close = time.interval == 'min' ? 'close' : 'adjusted close'
+    var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x[close])));
     
     return {
-      open : this.getPrice(ticker, timeRange),
-      high : Math.max(...highs),
-      low : Math.min(...lows),
+      start : this.getPrice(ticker, timeRange),
+      high : Math.max(...closes.filter(Boolean)),
+      low : Math.min(...closes.filter(Boolean)),
     };
   }
 
@@ -196,41 +206,78 @@ class Data {
     return Object.keys(this.PORTFOLIO_STOCKS).sort();
   }
 
+  getPortfolioData(ticker) {
+    var stockData = this.getStockData(ticker);
+    var changes = this.PORTFOLIO_STOCKS[ticker];
+    var portfolioData = {
+      'min' : [],
+      'day' : [],
+      'week' : [],
+    };
+
+    for (var interval in portfolioData) {
+      var close = interval == 'min' ? 'close' : 'adjusted close'
+      var shares = 0;
+      var i = 0;
+      var date = new Date(changes[i]['date']);
+      portfolioData[interval] = stockData[interval].slice().reverse().map(function(x) {
+        if (i < changes.length && new Date(x['date']) >= new Date(changes[i]['date'])) {
+          shares += parseInt(changes[i]['amount']);
+          i += 1;
+        }
+        var y = Object.assign({}, x);
+        y[close] = parseFloat(x[close]) * shares;
+        return y;
+      }).reverse();
+    }
+
+    return portfolioData;
+  }
+
   getPortfolioValue(ticker, timeRange) {
     var total = 0;
     if (ticker == undefined) {
+      // return sum of values for each stock in portfolio
       for (ticker in this.PORTFOLIO_STOCKS) {
         total += this.getPortfolioValue(ticker, timeRange);
       }
     } else {
+      // return value of individual stock in portfolio
       var changes = this.PORTFOLIO_STOCKS[ticker];
       var shares = 0;
       var price = this.getPrice(ticker, timeRange);
       for (var i = 0; i < changes.length; i++) {
         if (timeRange != undefined) {
+          // get value of individual stock at start of timeRange
           var time = this.getTime(timeRange);
-          if (new Date(changes[i]['date']) > new Date(this.getStockData(ticker)[time.interval][time.n - 1]['date'])) {
+          if (new Date(changes[i]['date']) >= new Date(this.getStockData(ticker)[time.interval][time.n - 1]['date'])) {
             break;
           }
         }
         shares += changes[i]['amount'];
       }
       total = shares * price;
+
+      // find first purchase of stock
+      if (total == 0) {
+        var initial = this.PORTFOLIO_STOCKS[ticker][0];
+        total = initial.amount * initial.price;
+      }
     }
     return total;
   }
 
   getPortfolioChange(ticker, timeRange) {
+    // compare current value with value at start of timeRange
     var start = this.getPortfolioValue(ticker, timeRange);
-    if (start == 0) {
-      return '—';
-    }
     return 100 * ((this.getPortfolioValue(ticker) / start) - 1);
   }
 
   getPortfolioPercent(ticker, timeRange) {
+    // get percentage at start of timeRange
     var total = this.getPortfolioValue(undefined, timeRange);
     if (total == 0) {
+      // portfolio is empty
       return '—';
     } else {
       return 100 * (this.getPortfolioValue(ticker, timeRange) / total);
@@ -241,6 +288,7 @@ class Data {
     if (shares > 0) {
       var newStock = false;
       if (!(ticker in this.PORTFOLIO_STOCKS)) {
+        // create new stock in portfolio
         this.PORTFOLIO_STOCKS[ticker] = [];
         newStock = true;
       }
@@ -251,6 +299,10 @@ class Data {
       });
       return newStock;
     }
+  }
+
+  sellStock(ticker, shares) {
+    // TODO
   }
 
   getCompareTickers() {

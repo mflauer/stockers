@@ -11,7 +11,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
-  <script src="stock.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
 </head>
 
 <body>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="twelve wide column">
-          <div id="portfolio-selector" class="ui text compact menu selector">
+          <div id="portfolio-selector" class="ui secondary pointing compact menu selector">
             <a class="active item">1D</a>
             <a class="item">5D</a>
             <a class="item">1M</a>
@@ -48,8 +48,12 @@
             <a class="item">1Y</a>
             <a class="item">5Y</a>
           </div>
-          <div style="height: 300px; width: 100%; border: 1px solid black;">Volume plot</div>
-          <div style="height: 300px; width: 100%; border: 1px solid black;">Growth plot</div>
+          <svg id="value-graph-container" class="graph-container">
+            <g id="value-graph"></g>
+          </svg>
+          <svg id="growth-graph-container" class="graph-container">
+            <g id="growth-graph"></g>
+          </svg>
           <table class="ui basic selectable fixed compact table">
             <thead>
               <tr>
@@ -78,7 +82,7 @@
             </div>
             <div class="results"></div>
           </div>
-          <div id="compare-selector" class="ui text compact menu selector">
+          <div id="compare-selector" class="ui secondary pointing compact menu selector">
             <a class="active item">1D</a>
             <a class="item">5D</a>
             <a class="item">1M</a>
@@ -87,7 +91,9 @@
             <a class="item">1Y</a>
             <a class="item">5Y</a>
           </div>
-          <div style="height: 300px; width: 100%; border: 1px solid black;">Compare plot</div>
+          <svg id="compare-graph-container" class="graph-container">
+            <g id="compare-graph"></g>
+          </svg>
           <table class="ui basic selectable fixed compact table">
             <thead>
               <tr>
@@ -102,6 +108,7 @@
               <!-- stocks dynamically added -->
             </tbody>
           </table>
+
         </div>
         <div class="four wide column">
           <div class="right">
@@ -137,7 +144,7 @@
           </div>
         </div>
       </div>
-      <div id="company-selector" class="ui text compact menu selector">
+      <div id="company-selector" class="ui secondary pointing compact menu selector">
         <a class="active item">1D</a>
         <a class="item">5D</a>
         <a class="item">1M</a>
@@ -146,10 +153,19 @@
         <a class="item">1Y</a>
         <a class="item">5Y</a>
       </div>
-      <div style="height: 300px; width: 100%; border: 1px solid black;">Plot</div>
-      <div class="ui large header">
+      <svg id="company-graph-container" class="graph-container">
+        <g id="company-graph"></g>
+      </svg>
+      <div id="company-header" class="ui large header middle inline">
         <div id="company-ticker"></div>
         <div id="company-name" class="sub header"></div>
+      </div>
+      <div class="ui horizontal small statistic middle inline">
+        <div class="value">$<span id="company-price"></span></div>
+        <div class="label">
+          <i class="caret icon"></i>
+          <span id="company-change"></span>
+        </div>
       </div>
       <p id="blurb"></p>
       <div class="ui centered grid">
@@ -176,8 +192,8 @@
           <table class="stats-table ui very basic compact table">
             <tbody>
               <tr>
-                <th>Open</th>
-                <td>$<span id="open"></span></td>
+                <th>Start</th>
+                <td>$<span id="start"></span></td>
               </tr>
               <tr>
                 <th>High</th>
@@ -215,19 +231,22 @@
       <div class="ui three column grid">
         <div class="column">
           <div class="ui segment">
-            <img style="width: 100%" src="assets/logo.svg"/>
+            <img class="ui fluid image" src="assets/text-logo.svg"
+                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
             <h5 class="ui header">Article 1</h5>
           </div>
         </div>
         <div class="column">
           <div class="ui segment">
-            <img style="width: 100%" src="assets/logo.svg"/>
+            <img class="ui fluid image" src="assets/text-logo.svg"
+                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
             <h5 class="ui header">Article 2</h5>
           </div>
         </div>
         <div class="column">
           <div class="ui segment">
-            <img style="width: 100%" src="assets/logo.svg"/>
+            <img class="ui fluid image" src="assets/text-logo.svg"
+                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
             <h5 class="ui header">Article 3</h5>
           </div>
         </div>

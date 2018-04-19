@@ -1,6 +1,16 @@
 // CONSTANTS
-$green: rgb(33, 186, 69);
 $red: rgb(219, 40, 40);
+$orange: rgb(242, 113, 28);
+$yellow: rgb(251, 189, 8);
+$olive: rgb(181, 204, 24);
+$green: rgb(33, 186, 69);
+$teal: rgb(0, 181, 173);
+$blue: rgb(33, 133, 208);
+$violet: rgb(100, 53, 201);
+$purple: rgb(163, 51, 200);
+$pink: rgb(224, 57, 151);
+$brown: rgb(165, 103, 63);
+$grey: rgb(118, 118, 118);
 
 // STYLES
 table {
@@ -48,16 +58,108 @@ table {
   margin-right: 0px !important;
 }
 
-.green {
-  color: $green;
-}
-
 .red {
   color: $red;
+
+  &:hover {
+    color: $red;
+  }
+}
+
+.orange {
+  color: $orange;
+
+  &:hover {
+    color: $orange;
+  }
+}
+
+.yellow {
+  color: $yellow;
+
+  &:hover {
+    color: $yellow;
+  }
+}
+
+.olive {
+  color: $olive;
+
+  &:hover {
+    color: $olive;
+  }
+}
+
+.green {
+  color: $green;
+
+  &:hover {
+    color: $green;
+  }
+}
+
+.teal {
+  color: $teal;
+
+  &:hover {
+    color: $teal;
+  }
+}
+
+.blue {
+  color: $blue;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+.violet {
+  color: $violet;
+
+  &:hover {
+    color: $violet;
+  }
+}
+
+.purple {
+  color: $purple;
+
+  &:hover {
+    color: $purple;
+  }
+}
+
+.pink {
+  color: $pink;
+
+  &:hover {
+    color: $pink;
+  }
+}
+
+.brown {
+  color: $brown;
+
+  &:hover {
+    color: $brown;
+  }
+}
+
+.grey {
+  color: $grey;
+
+  &:hover {
+    color: $grey;
+  }
 }
 
 .ui.button:hover .icon.button {
   opacity: 1;
+}
+
+i.caret.icon {
+  margin: 0 !important;
 }
 
 .stats-table {
@@ -69,12 +171,35 @@ table {
   }
 }
 
+.label {
+  margin-left: 1em !important;
+
+  &.red {
+    color: $red !important;
+  }
+
+  &.green {
+    color: $green !important;
+  }
+}
+
+.graph-container {
+  width: 100%;
+  height: 30vh;
+  margin-top: 1em;
+  padding: 2px;
+}
+
 #compare-stocks {
   margin-top: 5px;
 }
 
 #company-buy-button {
   padding: 1.1em 1.5em;
+}
+
+#company-header {
+  margin: 1rem 2rem 1rem 0;
 }
 
 #buy-shares-container {
@@ -84,4 +209,76 @@ table {
 
 #buy-divider {
   margin: 1.25rem 0;
+}
+
+path {
+  fill: none;
+  stroke: $grey;
+  stroke-width: 2;
+
+  &.baseline {
+    stroke-width: 1;
+    stroke-dasharray: 10, 15;
+  }
+
+  &.thick {
+    stroke-width: 3;
+  }
+
+  &.red {
+    stroke: $red;
+  }
+
+  &.orange {
+    stroke: $orange;
+  }
+
+  &.yellow {
+    stroke: $yellow;
+  }
+
+  &.olive {
+    stroke: $olive;
+  }
+
+  &.green {
+    stroke: $green;
+  }
+
+  &.teal {
+    stroke: $teal;
+  }
+
+  &.blue {
+    stroke: $blue;
+  }
+
+  &.violet {
+    stroke: $violet;
+  }
+
+  &.purple {
+    stroke: $purple;
+  }
+
+  &.pink {
+    stroke: $pink;
+  }
+
+  &.brown {
+    stroke: $brown;
+  }
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
 }
