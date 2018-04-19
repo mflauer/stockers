@@ -261,6 +261,13 @@ path {
     path.brown.hover {
       fill: #a5673f; }
 
+rect[id$="overlay"] {
+  fill: none;
+  pointer-events: all; }
+
+rect[id$="hover-rect"] {
+  fill: #21ba45; }
+
 text.baseline-label {
   fill: #767676;
   font-size: 12px; }

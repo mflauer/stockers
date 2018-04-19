@@ -12,6 +12,7 @@ $pink: rgb(224, 57, 151);
 $brown: rgb(165, 103, 63);
 $grey: rgb(118, 118, 118);
 $white: rgb(255, 255, 255);
+$transparent: rgba(255, 255, 255, .9);
 
 $background: 255;
 $alpha: .2;
@@ -460,6 +461,15 @@ path {
       fill: $brown;
     }
   }
+}
+
+rect[id$="overlay"] {
+  fill: none;
+  pointer-events: all;
+}
+
+rect[id$="hover-rect"] {
+  fill: $green;
 }
 
 text.baseline-label {
