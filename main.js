@@ -68,6 +68,8 @@ dom.buyButton = $('#buy-button');
 //////////////////////////////
 
 // constants
+const GRAPH_X_MARGIN = 25;
+const GRAPH_Y_MARGIN = 5;
 const COLORS = [
   'blue',
   'red',
@@ -268,7 +270,10 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
       if (id == `${section}-baseline`) {
         baseline = true;
         line.attr('d', startLine(plotData['dates']));
-      } else {
+      } else if (id == `${section}-baseline-label`) {
+        line.attr('x', xScale(0) - GRAPH_X_MARGIN)
+          .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+      } else if (id.endsWith(`${section}-line`)) {
         var company = id.split('-')[0];
         line.attr('d', tickerLine(plotData['tickers'][company]));
       }
@@ -277,6 +282,12 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
 
   // draw baseline if not already in plot
   if (!baseline) {
+    graph.append('text')
+      .attr('id', `${section}-baseline-label`)
+      .attr('x', xScale(0) - GRAPH_X_MARGIN)
+      .attr('y', yScale(0) + 4)
+      .classed('baseline-label', true)
+      .text('0%');
     graph.append('path')
       .attr('id', `${section}-baseline`)
       .classed('baseline', true)
@@ -329,7 +340,10 @@ function updateChangePlot(section, color) {
     var id = line.attr('id');
     if (id == `${section}-baseline`) {
       line.attr('d', startLine(plotData['dates']));
-    } else {
+    } else if (id == `${section}-baseline-label`) {
+      line.attr('x', xScale(0) - GRAPH_X_MARGIN)
+        .attr('y', yScale(0) + 5);
+    } else if (id.endsWith(`${section}-line`)) {
       var ticker = id.split('-')[0];
       if (color != undefined) {
         line.classed('red green', false).classed(color, true);
@@ -371,10 +385,13 @@ function plotStockStacked(ticker, tickerString, color) {
   graph.selectAll('*').each(function() {
     var line = d3.select(this);
     var id = line.attr('id');
-    if (id == `volume-baseline`) {
+    if (id == 'volume-baseline') {
       baseline = true;
       line.attr('d', startLine(plotData['dates']));
-    } else {
+    } else if (id == 'volume-baseline-label') {
+      line.attr('x', xScale(0) - GRAPH_X_MARGIN)
+        .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+    } else if (id.endsWith('volume-line')) {
       var idArray = id.split('-');
       var company = idArray[0];
       if (idArray[2] == 'line') {
@@ -387,8 +404,14 @@ function plotStockStacked(ticker, tickerString, color) {
 
   // draw baseline if not already in plot
   if (!baseline) {
+    graph.append('text')
+      .attr('id', 'volume-baseline-label')
+      .attr('x', xScale(0) - GRAPH_X_MARGIN)
+      .attr('y', yScale(0) + 4)
+      .classed('baseline-label', true)
+      .text('$0');
     graph.append('path')
-      .attr('id', `volume-baseline`)
+      .attr('id', 'volume-baseline')
       .classed('baseline', true)
       .attr('d', startLine(plotData['dates']));
   }
@@ -444,9 +467,12 @@ function updateStackedPlot() {
   graph.selectAll('*').each(function() {
     var line = d3.select(this);
     var id = line.attr('id');
-    if (id == `volume-baseline`) {
+    if (id == 'volume-baseline') {
       line.attr('d', startLine(plotData['dates']));
-    } else {
+    } else if (id == 'volume-baseline-label') {
+      line.attr('x', xScale(0) - GRAPH_X_MARGIN)
+        .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+    } else if (id.endsWith('volume-area') || id.endsWith('volume-line')) {
       var idArray = id.split('-');
       var company = idArray[0];
       if (idArray[2] == 'line') {
@@ -524,10 +550,10 @@ function createCheckClickListener(ticker, section) {
 
     // set scale of portfolio page plots
     if (volumeX == undefined || volumeY == undefined || growthX == undefined || growthY == undefined) {
-      volumeX = d3.scaleTime().range([10, dom.volumeGraphContainer.width()]);
-      volumeY = d3.scaleLinear().range([dom.volumeGraphContainer.height(), 0]);
-      growthX = d3.scaleTime().range([10, dom.growthGraphContainer.width()]);
-      growthY = d3.scaleLinear().range([dom.growthGraphContainer.height(), 0]);
+      volumeX = d3.scaleTime().range([GRAPH_X_MARGIN, dom.volumeGraphContainer.width()]);
+      volumeY = d3.scaleLinear().range([dom.volumeGraphContainer.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN]);
+      growthX = d3.scaleTime().range([GRAPH_X_MARGIN, dom.growthGraphContainer.width()]);
+      growthY = d3.scaleLinear().range([dom.growthGraphContainer.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN]);
     }
 
     // pick color
@@ -549,8 +575,8 @@ function createCheckClickListener(ticker, section) {
 
     // set scale of compare page plot
     if (compareX == undefined || compareY == undefined) {
-      compareX = d3.scaleTime().range([10, dom.compareGraphContainer.width()]);
-      compareY = d3.scaleLinear().range([dom.compareGraphContainer.height(), 0]);
+      compareX = d3.scaleTime().range([GRAPH_X_MARGIN, dom.compareGraphContainer.width()]);
+      compareY = d3.scaleLinear().range([dom.compareGraphContainer.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN]);
     }
 
     // pick color
@@ -705,8 +731,8 @@ function loadCompanyPage(ticker) {
   
   // set scale of company page plot
   if (companyX == undefined || companyY == undefined) {
-    companyX = d3.scaleTime().range([10, dom.companyGraphContainer.width()]);
-    companyY = d3.scaleLinear().range([dom.companyGraphContainer.height(), 0]);
+    companyX = d3.scaleTime().range([GRAPH_X_MARGIN, dom.companyGraphContainer.width()]);
+    companyY = d3.scaleLinear().range([dom.companyGraphContainer.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN]);
   }
   
   // escape . and ^ characters in tickers

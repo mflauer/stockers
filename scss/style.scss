@@ -449,6 +449,11 @@ path {
   }
 }
 
+text.baseline-label {
+  fill: $grey;
+  font-size: 12px;
+}
+
 div.tooltip {
   position: absolute;
   text-align: center;

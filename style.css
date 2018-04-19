@@ -252,6 +252,10 @@ path {
     path.brown.hover {
       fill: #a5673f; }
 
+text.baseline-label {
+  fill: #767676;
+  font-size: 12px; }
+
 div.tooltip {
   position: absolute;
   text-align: center;
