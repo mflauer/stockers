@@ -68,7 +68,7 @@ dom.buyButton = $('#buy-button');
 //////////////////////////////
 
 // constants
-const GRAPH_X_MARGIN = 25;
+const GRAPH_X_MARGIN = 20;
 const GRAPH_Y_MARGIN = 5;
 const COLORS = [
   'blue',
@@ -272,7 +272,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
         line.attr('d', startLine(plotData['dates']));
       } else if (id == `${section}-baseline-label`) {
         line.attr('x', xScale(0) - GRAPH_X_MARGIN)
-          .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+          .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
       } else if (id.endsWith(`${section}-line`)) {
         var company = id.split('-')[0];
         line.attr('d', tickerLine(plotData['tickers'][company]));
@@ -342,7 +342,7 @@ function updateChangePlot(section, color) {
       line.attr('d', startLine(plotData['dates']));
     } else if (id == `${section}-baseline-label`) {
       line.attr('x', xScale(0) - GRAPH_X_MARGIN)
-        .attr('y', yScale(0) + 5);
+        .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
     } else if (id.endsWith(`${section}-line`)) {
       var ticker = id.split('-')[0];
       if (color != undefined) {
@@ -390,7 +390,7 @@ function plotStockStacked(ticker, tickerString, color) {
       line.attr('d', startLine(plotData['dates']));
     } else if (id == 'volume-baseline-label') {
       line.attr('x', xScale(0) - GRAPH_X_MARGIN)
-        .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+        .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
     } else if (id.endsWith('volume-line')) {
       var idArray = id.split('-');
       var company = idArray[0];
@@ -471,7 +471,7 @@ function updateStackedPlot() {
       line.attr('d', startLine(plotData['dates']));
     } else if (id == 'volume-baseline-label') {
       line.attr('x', xScale(0) - GRAPH_X_MARGIN)
-        .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+        .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
     } else if (id.endsWith('volume-area') || id.endsWith('volume-line')) {
       var idArray = id.split('-');
       var company = idArray[0];
