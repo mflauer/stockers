@@ -65,8 +65,7 @@ dom.buyButton = $('#buy-button');
 //////////////////////////////
 
 // constants
-const INIT_TIME_RANGE = '1D';
-const COLORS = [
+  const COLORS = [
   'red',
   'blue',
   'green',
@@ -90,7 +89,8 @@ var volumeX = d3.scaleTime().range([0, dom.volumeGraphContainer.width()]),
     companyX, companyY;
 
 // graph data
-var portfolioTimeRange = compareTimeRange = companyTimeRange = INIT_TIME_RANGE,
+var portfolioTimeRange = '1Y',
+    compareTimeRange = companyTimeRange = '1D',
     companyTicker;
 
 // next color to use for section
@@ -352,7 +352,10 @@ function plotStockStacked(ticker, tickerString, color) {
   var area = d3.area()
     .x(function(d, i) { return xScale(i); })
     .y0(dom.volumeGraphContainer.height())
-    .y1(function(d) { return yScale(d); });
+    .y1(function(d) { return yScale(d); })
+    .defined(function(d) {
+      return d != null;
+    });
 
   // update current lines in plot
   var baseline = false;
@@ -384,13 +387,13 @@ function plotStockStacked(ticker, tickerString, color) {
   var tickerData = plotData['tickers'][ticker];
 
   // draw ticker line
-  graph.append('path')
+  graph.insert('path', ':nth-child(2)')
     .attr('id', `${tickerString}-volume-line`)
     .classed(color, true)
     .attr('d', tickerLine(tickerData));
 
   // draw area
-  graph.append('path')
+  graph.insert('path', ':nth-child(2)')
     .attr('id', `${tickerString}-volume-area`)
     .classed(color, true)
     .classed('fill', true)
@@ -419,7 +422,10 @@ function updateStackedPlot() {
     var area = d3.area()
       .x(function(d, i) { return xScale(i); })
       .y0(dom.volumeGraphContainer.height())
-      .y1(function(d) { return yScale(d); });
+      .y1(function(d) { return yScale(d); })
+      .defined(function(d) {
+        return d != null;
+      });
 
   // update current lines in plot
   graph.selectAll('*').each(function() {
