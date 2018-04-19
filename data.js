@@ -202,7 +202,7 @@ class Data {
 
   getPortfolioTickers() {
     var stocks = this.PORTFOLIO_STOCKS;
-    return Object.keys(this.PORTFOLIO_STOCKS).sort(function(a, b) {
+    return Object.keys(stocks).sort(function(a, b) {
       var aDate = new Date(stocks[a][0]['date']);
       var bDate = new Date(stocks[b][0]['date']);
       if (aDate < bDate) {
