@@ -261,6 +261,9 @@ function updateChangePlot(section, color) {
       line.attr('d', startLine(plotData['dates']));
     } else {
       var company = id.split('-')[0];
+      if (color != undefined) {
+        line.classed('red green', false).classed(color, true);
+      }
       line.attr('d', tickerLine(plotData['tickers'][company]));
     }
   });
