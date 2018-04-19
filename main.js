@@ -68,7 +68,7 @@ dom.buyButton = $('#buy-button');
 //////////////////////////////
 
 // constants
-const GRAPH_X_MARGIN = 25;
+const GRAPH_X_MARGIN = 20;
 const GRAPH_Y_MARGIN = 5;
 const COLORS = [
   'blue',
@@ -272,7 +272,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
         line.attr('d', startLine(plotData['dates']));
       } else if (id == `${section}-baseline-label`) {
         line.attr('x', xScale(0) - GRAPH_X_MARGIN)
-          .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+          .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
       } else if (id.endsWith(`${section}-line`)) {
         var company = id.split('-')[0];
         line.attr('d', tickerLine(plotData['tickers'][company]));
@@ -365,7 +365,7 @@ function updateChangePlot(section, color) {
       line.attr('d', startLine(plotData['dates']));
     } else if (id == `${section}-baseline-label`) {
       line.attr('x', xScale(0) - GRAPH_X_MARGIN)
-        .attr('y', yScale(0) + 5);
+        .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
     } else if (id.endsWith(`${section}-line`)) {
       var ticker = id.split('-')[0];
       if (color != undefined) {
@@ -413,7 +413,7 @@ function plotStockStacked(ticker, tickerString, color) {
       line.attr('d', startLine(plotData['dates']));
     } else if (id == 'volume-baseline-label') {
       line.attr('x', xScale(0) - GRAPH_X_MARGIN)
-        .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+        .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
     } else if (id.endsWith('volume-line')) {
       var idArray = id.split('-');
       var company = idArray[0];
@@ -480,7 +480,7 @@ function updateStackedPlot() {
       });
     var area = d3.area()
       .x(function(d, i) { return xScale(i); })
-      .y0(dom.volumeGraphContainer.height())
+      .y0(dom.volumeGraphContainer.height() - GRAPH_Y_MARGIN)
       .y1(function(d) { return yScale(d); })
       .defined(function(d) {
         return d != null;
@@ -494,7 +494,7 @@ function updateStackedPlot() {
       line.attr('d', startLine(plotData['dates']));
     } else if (id == 'volume-baseline-label') {
       line.attr('x', xScale(0) - GRAPH_X_MARGIN)
-        .attr('y', yScale(0) + GRAPH_Y_MARGIN);
+        .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
     } else if (id.endsWith('volume-area') || id.endsWith('volume-line')) {
       var idArray = id.split('-');
       var company = idArray[0];
@@ -882,7 +882,7 @@ $(document).click(function(e) {
 });
 
 // time range selectors
-$('.selector>.item').click(function(e) {
+$('.selector>.right.menu>.item, .selector>.item').click(function(e) {
   var timeRangeElement = $(e.target);
 
   // remove 'active' class from other time range menu items
@@ -890,7 +890,7 @@ $('.selector>.item').click(function(e) {
   timeRangeElement.addClass('active');
 
   var timeRange = timeRangeElement.text();
-  var section = timeRangeElement.parent().attr('id').split('-')[0];
+  var section = timeRangeElement.closest('.selector').attr('id').split('-')[0];
   if (section == 'portfolio') {
     portfolioTimeRange = timeRange;
     updateChangePlot(section);

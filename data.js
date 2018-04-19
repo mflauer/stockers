@@ -1,4 +1,4 @@
-Number.prototype.withCommas = function() {
+  Number.prototype.withCommas = function() {
   return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -87,8 +87,8 @@ class Data {
       ],
       'AMZN' : [
         {
-          'date': '2018-02-23T10:45:00',
-          'price': 1469.92,
+          'date': '2017-10-20T10:45:00',
+          'price': 992.92,
           'amount': 1,
         },
       ],

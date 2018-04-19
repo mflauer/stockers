@@ -71,62 +71,6 @@ table {
   position: relative;
 }
 
-tr[id$="-row"] {
-  &.hover {
-    background-color: rgba(0,0,0,.05) !important;
-  }
-}
-
-.ui.basic.button {
-  &.red.hover {
-    background-color: $light-red !important;
-  }
-
-  &.orange.hover {
-    background-color: $light-orange !important;
-  }
-
-  &.yellow.hover {
-    background-color: $light-yellow !important;
-  }
-
-  &.olive.hover {
-    background-color: $light-olive !important;
-  }
-
-  &.green.hover {
-    background-color: $light-green !important;
-  }
-
-  &.teal.hover {
-    background-color: $light-teal !important;
-  }
-
-  &.blue.hover {
-    background-color: $light-blue !important;
-  }
-
-  &.violet.hover {
-    background-color: $light-violet !important;
-  }
-
-  &.purple.hover {
-    background-color: $light-purple !important;
-  }
-
-  &.pink.hover {
-    background-color: $light-pink !important;
-  }
-
-  &.brown.hover {
-    background-color: $light-brown !important;
-  }
-
-  &.grey.hover {
-    background-color: $light-grey !important;
-  }
-}
-
 .close {
   position: absolute;
   top: 5px;
@@ -234,6 +178,63 @@ tr[id$="-row"] {
   color: $white !important;
 }
 
+
+tr[id$="-row"] {
+  &.hover {
+    background-color: rgba(0,0,0,.05) !important;
+  }
+}
+
+.ui.basic.button {
+  &.red.hover {
+    background-color: $light-red !important;
+  }
+
+  &.orange.hover {
+    background-color: $light-orange !important;
+  }
+
+  &.yellow.hover {
+    background-color: $light-yellow !important;
+  }
+
+  &.olive.hover {
+    background-color: $light-olive !important;
+  }
+
+  &.green.hover {
+    background-color: $light-green !important;
+  }
+
+  &.teal.hover {
+    background-color: $light-teal !important;
+  }
+
+  &.blue.hover {
+    background-color: $light-blue !important;
+  }
+
+  &.violet.hover {
+    background-color: $light-violet !important;
+  }
+
+  &.purple.hover {
+    background-color: $light-purple !important;
+  }
+
+  &.pink.hover {
+    background-color: $light-pink !important;
+  }
+
+  &.brown.hover {
+    background-color: $light-brown !important;
+  }
+
+  &.grey.hover {
+    background-color: $light-grey !important;
+  }
+}
+
 .ui.button:hover .icon.button {
   opacity: 1;
 }
@@ -263,11 +264,19 @@ i.caret.icon {
   }
 }
 
+.ui.menu.selector .item {
+  padding: .75em !important;
+}
+
 .graph-container {
   width: 100%;
   height: 30vh;
-  margin-top: 2em;
+  margin-bottom: 1em;
   padding: 2px;
+}
+
+table {
+  margin-top: 0 !important;
 }
 
 #compare-stocks {
@@ -276,6 +285,10 @@ i.caret.icon {
 
 #company-buy-button {
   padding: 1.1em 1.5em;
+}
+
+#company-selector {
+  margin-top: -2.5em;
 }
 
 #company-header {
