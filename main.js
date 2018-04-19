@@ -117,7 +117,7 @@ function formatDate(date) {
 }
 
 // load graph data
-function getGraphData(section, percentage=false) {
+function getGraphData(section) {
   if (section == 'portfolio') {
     var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
@@ -149,12 +149,8 @@ function getGraphData(section, percentage=false) {
       plotData['dates'] = dates;
     }
     
-    if (tickers.length > 1 || percentage) {
-      var first = parseFloat(stockData.slice(-1)[0][close]);
-      var tickerData = stockData.map(x => 100 * ((parseFloat(x[close]) / first) - 1)).reverse();
-    } else {
-      var tickerData = stockData.map(x => parseFloat(x[close])).reverse();
-    }
+    var first = parseFloat(stockData.slice(-1)[0][close]);
+    var tickerData = stockData.map(x => 100 * ((parseFloat(x[close]) / first) - 1)).reverse();
 
     var dataMin = Math.min(...tickerData);
     var dataMax = Math.max(...tickerData);
@@ -171,7 +167,7 @@ function getGraphData(section, percentage=false) {
 }
 
 // plot graph
-function plotStock(section, ticker, color) {
+function plotStock(section, color, ticker) {
   if (section == 'portfolio') {
     var plotData = portfolioGraphData;
     var xScale = portfolioX;
@@ -188,11 +184,9 @@ function plotStock(section, ticker, color) {
     var yScale = companyY;
   }
 
-  var tickerData = plotData[ticker];
-
   var startLine = d3.line()
     .x(function(d, i) { return xScale(i); })
-    .y(function(d) { return yScale(tickerData[0]); });
+    .y(function(d) { return yScale(0.); });
   var tickerLine = d3.line()
     .x(function(d, i) { return xScale(i); })
     .y(function(d) { return yScale(d); });
@@ -203,24 +197,30 @@ function plotStock(section, ticker, color) {
     var id = line.attr('id');
     if (id == `start-${section}-line`) {
       baseline = true;
-      line.attr('d', startLine(tickerData));
+      line.attr('d', startLine(plotData['dates']));
     } else {
       var company = id.split('-')[0];
+      if (ticker == undefined) {
+        line.classed('red green', false).classed(color, true);
+      }
       line.attr('d', tickerLine(plotData[company]));
     }
   });
 
-  if (!baseline) {
-    element.append('path')
-      .attr('id', `start-${section}-line`)
-      .attr('class', 'thin')
-      .attr('d', startLine(tickerData));
-  }
+  if (ticker != undefined) {
+    var tickerData = plotData[ticker];
+    if (!baseline) {
+      element.append('path')
+        .attr('id', `start-${section}-line`)
+        .classed('thin', true)
+        .attr('d', startLine(tickerData));
+    }
 
-  element.append('path')
-    .attr('id', `${ticker}-${section}-line`)
-    .attr('class', color)
-    .attr('d', tickerLine(tickerData));
+    element.append('path')
+      .attr('id', `${ticker}-${section}-line`)
+      .classed(color, true)
+      .attr('d', tickerLine(tickerData));
+  }
 }
 
 // get change value
@@ -279,7 +279,7 @@ function createCheckClickListener(ticker, location) {
   } else if (location == 'compare') {
     var color = COLORS[compareColor];
     createCompareItem(dom, ticker, location, color);
-    plotStock(location, ticker, color);
+    plotStock(location, color, ticker);
     compareColor += 1;
     if (compareColor == COLORS.length) {
       compareColor = 0;
@@ -357,7 +357,7 @@ function loadCompanyPage(ticker) {
   }
   companyGraphData = getGraphData('company');
   var change = data.getChange(ticker, companyTimeRange);
-  plotStock('company', ticker, change < 0 ? 'red' : 'green');
+  plotStock('company', change < 0 ? 'red' : 'green', ticker);
 
   dom.companyTicker.text(ticker);
   dom.companyName.text(data.getCompany(ticker));
@@ -418,7 +418,7 @@ function updateCompanyPage(ticker, timeRange, hoverRange) {
   dom.companyPrice.text(data.getPrice(ticker, hoverRange).withCommas());
   
   var change = data.getChange(ticker, timeRange);
-  plotStock('company', ticker, change < 0 ? 'red' : 'green');
+  plotStock('company', change < 0 ? 'red' : 'green');
   dom.companyChange.text(getChange(change));
   dom.companyChange.siblings().removeClass('up down').addClass(getArrow(change));
   dom.companyChange.parent().removeClass('green red').addClass(getColor(change));
