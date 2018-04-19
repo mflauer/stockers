@@ -98,7 +98,7 @@ table {
     color: #767676; }
 
 .white {
-  color: white; }
+  color: white !important; }
 
 .ui.button:hover .icon.button {
   opacity: 1; }
