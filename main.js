@@ -91,7 +91,7 @@ var valueX = d3.scaleTime().range([0, dom.valueGraphContainer.width()]),
 
 // graph data
 var portfolioTimeRange = compareTimeRange = companyTimeRange = INIT_TIME_RANGE,
-    portfolioGraphData, compareGraphData, companyGraphData, companyTicker;
+    companyTicker;
 
 // next color to use for section
 var portfolioColor = 0;
@@ -119,15 +119,18 @@ function formatDate(date) {
   return str = [year, month, day, time].join('-');
 }
 
-// load graph data for section
-function getGraphData(section) {
+// load change plot for section
+function getChangePlotData(section) {
   if (section == 'portfolio') {
+    var f = 'getPortfolioData';
     var tickers = data.getPortfolioTickers();
     var timeRange = portfolioTimeRange;
   } else if (section == 'compare') {
+    var f = 'getStockData';
     var tickers = data.getCompareTickers();
     var timeRange = compareTimeRange;
   } else if (section == 'company') {
+    var f = 'getStockData';
     var tickers = [companyTicker];
     var timeRange = companyTimeRange;
   }
@@ -139,18 +142,18 @@ function getGraphData(section) {
   var max = -Infinity;
 
   for (var t in tickers) {
-    var stockData = data.getStockData(tickers[t])[time.interval].slice(0, time.n);
-    
+    var stockData = data[f](tickers[t])[time.interval].slice(0, time.n);
+
     // populate dates
     if (t == 0) {
       plotData['dates'] = stockData.map(x => Date.parse(x['date'])).reverse();
     }
-    
+
     // always scale based on value of first item
     var first = parseFloat(stockData.slice(-1)[0][close]);
     if (first == 0) {
       // find first non-zero element
-      first = stockData.slice().reverse().find(function(e) { return e[close] > 0; })[close];
+      first = stockData.slice().reverse().find(function(e) { return parseFloat(e[close]) > 0; })[close];
     }
 
     var tickerData = stockData.map(function(x) {
@@ -173,7 +176,7 @@ function getGraphData(section) {
 
 // add ticker stock to plot
 function plotStockChange(section, ticker, tickerString, color, clear=false) {
-  var plotData = getGraphData(section);
+  var plotData = getChangePlotData(section);
   if (section == 'portfolio') {
     var graph = dom.growthGraph;
     var xScale = growthX;
@@ -237,7 +240,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
 
 // redraw plot, optionally forcing all lines to have a color
 function updateChangePlot(section, color) {
-  var plotData = getGraphData(section);
+  var plotData = getChangePlotData(section);
   if (section == 'portfolio') {
     var graph = dom.growthGraph;
     var xScale = growthX;

@@ -206,6 +206,34 @@ class Data {
     return Object.keys(this.PORTFOLIO_STOCKS).sort();
   }
 
+  getPortfolioData(ticker) {
+    var stockData = this.getStockData(ticker);
+    var changes = this.PORTFOLIO_STOCKS[ticker];
+    var portfolioData = {
+      'min' : [],
+      'day' : [],
+      'week' : [],
+    };
+
+    for (var interval in portfolioData) {
+      var close = interval == 'min' ? 'close' : 'adjusted close'
+      var shares = 0;
+      var i = 0;
+      var date = new Date(changes[i]['date']);
+      portfolioData[interval] = stockData[interval].slice().reverse().map(function(x) {
+        if (i < changes.length && new Date(x['date']) > new Date(changes[i]['date'])) {
+          shares += parseInt(changes[i]['amount']);
+          i += 1;
+        }
+        var y = Object.assign({}, x);
+        y[close] = parseFloat(x[close]) * shares;
+        return y;
+      }).reverse();
+    }
+
+    return portfolioData;
+  }
+
   getPortfolioValue(ticker, timeRange) {
     var total = 0;
     if (ticker == undefined) {
@@ -230,6 +258,7 @@ class Data {
       }
       total = shares * price;
 
+      // find first purchase of stock
       if (total == 0) {
         var initial = this.PORTFOLIO_STOCKS[ticker][0];
         total = initial.amount * initial.price;
@@ -270,6 +299,10 @@ class Data {
       });
       return newStock;
     }
+  }
+
+  sellStock(ticker, shares) {
+    // TODO
   }
 
   getCompareTickers() {
