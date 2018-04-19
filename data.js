@@ -221,7 +221,7 @@ class Data {
       var i = 0;
       var date = new Date(changes[i]['date']);
       portfolioData[interval] = stockData[interval].slice().reverse().map(function(x) {
-        if (i < changes.length && new Date(x['date']) > new Date(changes[i]['date'])) {
+        if (i < changes.length && new Date(x['date']) >= new Date(changes[i]['date'])) {
           shares += parseInt(changes[i]['amount']);
           i += 1;
         }
@@ -250,7 +250,7 @@ class Data {
         if (timeRange != undefined) {
           // get value of individual stock at start of timeRange
           var time = this.getTime(timeRange);
-          if (new Date(changes[i]['date']) > new Date(this.getStockData(ticker)[time.interval][time.n - 1]['date'])) {
+          if (new Date(changes[i]['date']) >= new Date(this.getStockData(ticker)[time.interval][time.n - 1]['date'])) {
             break;
           }
         }
