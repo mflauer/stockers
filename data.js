@@ -201,7 +201,18 @@ class Data {
   }
 
   getPortfolioTickers() {
-    return Object.keys(this.PORTFOLIO_STOCKS).sort();
+    var stocks = this.PORTFOLIO_STOCKS;
+    return Object.keys(this.PORTFOLIO_STOCKS).sort(function(a, b) {
+      var aDate = new Date(stocks[a][0]['date']);
+      var bDate = new Date(stocks[b][0]['date']);
+      if (aDate < bDate) {
+        return -1;
+      } else if (aDate > bDate) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   getPortfolioData(ticker) {

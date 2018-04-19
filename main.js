@@ -83,7 +83,7 @@ const COLORS = [
 ];
 
 // graph axes
-var volumeX, volumeY, growthX, growthY, compareX, compareY,   companyX, companyY;
+var volumeX, volumeY, growthX, growthY, compareX, compareY, companyX, companyY;
 
 // graph data
 var portfolioTimeRange = '1Y',
