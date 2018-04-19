@@ -859,7 +859,7 @@ $(document).click(function(e) {
 });
 
 // time range selectors
-$('.selector>.item').click(function(e) {
+$('.selector>.right.menu>.item, .selector>.item').click(function(e) {
   var timeRangeElement = $(e.target);
 
   // remove 'active' class from other time range menu items
@@ -867,7 +867,7 @@ $('.selector>.item').click(function(e) {
   timeRangeElement.addClass('active');
 
   var timeRange = timeRangeElement.text();
-  var section = timeRangeElement.parent().attr('id').split('-')[0];
+  var section = timeRangeElement.closest('.selector').attr('id').split('-')[0];
   if (section == 'portfolio') {
     portfolioTimeRange = timeRange;
     updateChangePlot(section);
