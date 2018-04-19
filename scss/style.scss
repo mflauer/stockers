@@ -167,6 +167,10 @@ table {
   }
 }
 
+.white {
+  color: $white;
+}
+
 .ui.button:hover .icon.button {
   opacity: 1;
 }
