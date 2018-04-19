@@ -518,9 +518,9 @@ function createCheckClickListener(ticker, section) {
 
     // set scale of portfolio page plots
     if (volumeX == undefined || volumeY == undefined || growthX == undefined || growthY == undefined) {
-      volumeX = d3.scaleTime().range([0, dom.volumeGraphContainer.width()]);
+      volumeX = d3.scaleTime().range([10, dom.volumeGraphContainer.width()]);
       volumeY = d3.scaleLinear().range([dom.volumeGraphContainer.height(), 0]);
-      growthX = d3.scaleTime().range([0, dom.growthGraphContainer.width()]);
+      growthX = d3.scaleTime().range([10, dom.growthGraphContainer.width()]);
       growthY = d3.scaleLinear().range([dom.growthGraphContainer.height(), 0]);
     }
 
@@ -543,7 +543,7 @@ function createCheckClickListener(ticker, section) {
 
     // set scale of compare page plot
     if (compareX == undefined || compareY == undefined) {
-      compareX = d3.scaleTime().range([0, dom.compareGraphContainer.width()]);
+      compareX = d3.scaleTime().range([10, dom.compareGraphContainer.width()]);
       compareY = d3.scaleLinear().range([dom.compareGraphContainer.height(), 0]);
     }
 
@@ -698,7 +698,7 @@ function loadCompanyPage(ticker) {
   
   // set scale of company page plot
   if (companyX == undefined || companyY == undefined) {
-    companyX = d3.scaleTime().range([0, dom.companyGraphContainer.width()]);
+    companyX = d3.scaleTime().range([10, dom.companyGraphContainer.width()]);
     companyY = d3.scaleLinear().range([dom.companyGraphContainer.height(), 0]);
   }
   
