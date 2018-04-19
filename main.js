@@ -148,7 +148,15 @@ function getGraphData(section) {
     
     // always scale based on value of first item
     var first = parseFloat(stockData.slice(-1)[0][close]);
-    var tickerData = stockData.map(x => 100 * ((parseFloat(x[close]) / first) - 1)).reverse();
+    if (first == 0) {
+      // find first non-zero element
+      first = stockData.slice().reverse().find(function(e) { return e[close] > 0; })[close];
+    }
+
+    var tickerData = stockData.map(function(x) {
+      var value = parseFloat(x[close]);
+      return value == 0 ? null : 100 * ((parseFloat(x[close]) / first) - 1);
+    }).reverse();
     plotData['tickers'][tickers[t]] = tickerData;
 
     var dataMin = Math.min(...tickerData);
@@ -188,7 +196,10 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
     .y(function(d) { return yScale(0.); });
   var tickerLine = d3.line()
     .x(function(d, i) { return xScale(i); })
-    .y(function(d) { return yScale(d); });
+    .y(function(d) { return yScale(d); })
+    .defined(function(d) {
+      return d != null;
+    });
 
   // update current lines in plot
   var baseline = false;
@@ -227,7 +238,6 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
 // redraw plot, optionally forcing all lines to have a color
 function updateChangePlot(section, color) {
   var plotData = getGraphData(section);
-  console.log(plotData['tickers']['GOOG']);
   if (section == 'portfolio') {
     var graph = dom.growthGraph;
     var xScale = growthX;
@@ -250,7 +260,10 @@ function updateChangePlot(section, color) {
     .y(function(d) { return yScale(0.); });
   var tickerLine = d3.line()
     .x(function(d, i) { return xScale(i); })
-    .y(function(d) { return yScale(d); });
+    .y(function(d) { return yScale(d); })
+    .defined(function(d) {
+      return d != null;
+    });
 
   // update current lines in plot
   graph.selectAll('*').each(function() {
@@ -267,37 +280,6 @@ function updateChangePlot(section, color) {
       line.attr('d', tickerLine(plotData['tickers'][company]));
     }
   });
-}
-
-// get change value
-function getChange(change) {
-  if (change > 0 || change < 0) {
-    return change.withCommas() + '%';
-  } else {
-    return change;
-  }
-}
-
-// get arrow direction for change value
-function getArrow(change) {
-  if (change > 0) {
-    return 'up';
-  } else if (change < 0) {
-    return 'down'
-  } else {
-    return '';
-  }
-}
-
-// get color for change value
-function getColor(change) {
-  if (change > 0) {
-    return 'green';
-  } else if (change < 0) {
-    return 'red'
-  } else {
-    return '';
-  }
 }
 
 // click event to load company page
@@ -432,14 +414,14 @@ function loadCompanyPage(ticker) {
   dom.companyTicker.text(ticker);
   dom.companyName.text(data.getCompany(ticker));
   dom.companyPrice.text(data.getPrice(ticker).withCommas());
-  dom.companyChange.text(getChange(change));
-  dom.companyChange.siblings().removeClass('up down').addClass(getArrow(change));
-  dom.companyChange.parent().removeClass('green red').addClass(getColor(change));
+  dom.companyChange.text(change.withCommas());
+  dom.companyChange.siblings().removeClass('up down').addClass(change > 0 ? 'up' : 'down');
+  dom.companyChange.parent().removeClass('green red').addClass(change > 0 ? 'green' : 'red');
   dom.companyBlurb.text(data.getBlurb(ticker));
   dom.companyCEO.text(data.getCEO(ticker));
   dom.companyFounded.text(data.getFounded(ticker));
   dom.companyHeadquarters.text(data.getHeadquarters(ticker));
-  dom.companyStart.text(stats.open.withCommas());
+  dom.companyStart.text(stats.start.withCommas());
   dom.companyHigh.text(stats.high.withCommas());
   dom.companyLow.text(stats.low.withCommas());
   dom.companyMktCap.text(data.getMktCap(ticker));
@@ -459,7 +441,7 @@ function loadCompanyPage(ticker) {
   
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
-  plotStockChange('company', ticker, tickerString, change < 0 ? 'red' : 'green', true)
+  plotStockChange('company', ticker, tickerString, change > 0 ? 'green' : 'red', true)
 }
 
 // update portfolio row
@@ -471,9 +453,9 @@ function updatePortfolioRow(ticker, timeRange, hoverRange) {
   
   $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
   $(`#${ticker}-portfolio-percent`).text(data.getPortfolioPercent(ticker, hoverRange).withCommas());
-  element.text(getChange(change));
-  element.siblings().removeClass('up down').addClass(getArrow(change));
-  element.parent().removeClass('green red').addClass(getColor(change));
+  element.text(change.withCommas());
+  element.siblings().removeClass('up down').addClass(change > 0 ? 'up' : 'down');
+  element.parent().removeClass('green red').addClass(change > 0 ? 'green' : 'red');
 }
 
 // update compare row
@@ -484,9 +466,9 @@ function updateCompareRow(ticker, timeRange, hoverRange) {
   var element = $(`#${ticker}-compare-change`);
 
   $(`#${ticker}-compare-price`).text(data.getPrice(ticker, hoverRange).withCommas());
-  element.text(getChange(change));
-  element.siblings().removeClass('up down').addClass(getArrow(change));
-  element.parent().removeClass('green red').addClass(getColor(change));
+  element.text(change.withCommas());
+  element.siblings().removeClass('up down').addClass(change > 0 ? 'up' : 'down');
+  element.parent().removeClass('green red').addClass(change > 0 ? 'green' : 'red');
 }
 
 // update company page
@@ -496,13 +478,13 @@ function updateCompanyPage(ticker, timeRange, hoverRange) {
   var change = data.getChange(ticker, timeRange);
   var stats = data.getStats(ticker, timeRange);
   
-  updateChangePlot('company', change < 0 ? 'red' : 'green');
+  updateChangePlot('company', change > 0 ? 'green' : 'red');
 
   dom.companyPrice.text(data.getPrice(ticker, hoverRange).withCommas());
-  dom.companyChange.text(getChange(change));
-  dom.companyChange.siblings().removeClass('up down').addClass(getArrow(change));
-  dom.companyChange.parent().removeClass('green red').addClass(getColor(change));
-  dom.companyStart.text(stats.open.withCommas(timeRange));
+  dom.companyChange.text(change.withCommas());
+  dom.companyChange.siblings().removeClass('up down').addClass(change > 0 ? 'up' : 'down');
+  dom.companyChange.parent().removeClass('green red').addClass(change > 0 ? 'green' : 'red');
+  dom.companyStart.text(stats.start.withCommas(timeRange));
   dom.companyHigh.text(stats.high.withCommas(timeRange));
   dom.companyLow.text(stats.low.withCommas(timeRange));
 }

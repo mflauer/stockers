@@ -136,7 +136,12 @@ class Data {
       // get price at start of timeRange
       var time = this.getTime(timeRange);
       var close = time.interval == 'min' ? 'close' : 'adjusted close'
-      return parseFloat(stockData[time.interval][time.n - 1][close]);
+      var price = parseFloat(stockData[time.interval][time.n - 1][close]);
+      if (price == 0) {
+        // find first non-zero element
+        price = parseFloat(stockData[time.interval].slice().reverse().find(function(e) { return e[close] > 0; })[close]);
+      }
+      return price
     } else {
       // get current price
       return parseFloat(stockData['min'][0]['close']);
@@ -145,25 +150,19 @@ class Data {
 
   getChange(ticker, timeRange) {
     // compare current price with price at start of timeRange
-    var start = this.getPrice(ticker, timeRange);
-    if (start == 0) {
-      // change is infinite
-      return '—';
-    }
-    return 100 * ((this.getPrice(ticker) / start) - 1);
+    return 100 * ((this.getPrice(ticker) / this.getPrice(ticker, timeRange)) - 1);
   }
 
   getStats(ticker, timeRange) {
     var time = this.getTime(timeRange);
     var stockData = this.getStockData(ticker);
-    // get all highs and lows over timeRange
-    var highs = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['high'])));
-    var lows = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x['low'])));
+    var close = time.interval == 'min' ? 'close' : 'adjusted close'
+    var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x[close])));
     
     return {
-      open : this.getPrice(ticker, timeRange),
-      high : Math.max(...highs),
-      low : Math.min(...lows),
+      start : this.getPrice(ticker, timeRange),
+      high : Math.max(...closes.filter(Boolean)),
+      low : Math.min(...closes.filter(Boolean)),
     };
   }
 
