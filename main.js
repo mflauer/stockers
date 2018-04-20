@@ -72,9 +72,9 @@ dom.buyButton = $('#buy-button');
 //////////////////////////////
 
 // constants
-const GRAPH_LEFT_MARGIN = 20;
-const GRAPH_RIGHT_MARGIN = 1;
+const GRAPH_X_MARGIN = 20;
 const GRAPH_Y_MARGIN = 10;
+const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 5;
 const COLORS = [
   'blue',
@@ -271,7 +271,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
 
   // rescale plots
   var xScale = d3.scaleLinear()
-    .range([GRAPH_LEFT_MARGIN, container.width() - GRAPH_RIGHT_MARGIN])
+    .range([GRAPH_X_MARGIN, container.width()])
     .domain([0, plotData['dates'].length - 1]);
   var yScale = d3.scaleLinear()
     .range([container.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN])
@@ -305,7 +305,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .attr('y1', yScale(0))
       .attr('y2', yScale(0));
     hover.select(`#${graphName}-baseline-label`)
-      .attr('x', xScale(0) - GRAPH_LEFT_MARGIN)
+      .attr('x', xScale(0) - GRAPH_X_MARGIN)
       .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1);
     graph.select(`#${graphName}-capture`)
       .on('mousemove', handleMouseMove(graphName, xScale));
@@ -337,7 +337,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     graph.append('rect')
       .attr('id', `${graphName}-capture`)
       .attr('x', xScale(0))
-      .attr('width', container.width() - GRAPH_LEFT_MARGIN - GRAPH_RIGHT_MARGIN)
+      .attr('width', container.width() - GRAPH_X_MARGIN)
       .attr('height', container.height())
       .on('mousemove', handleMouseMove(graphName, xScale))
       .on('mouseleave', handleMouseLeave(graphName))
@@ -345,11 +345,11 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
         // custom event for handling linked hover bars
         var x = d3.event.detail.x;
         d3.select(`#${graphName}-hover-rect`)
-          .attr('width', x + HOVER_MARGIN - GRAPH_LEFT_MARGIN)
+          .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN)
           .classed('hide', false);
         d3.select(`#${graphName}-hover-line`)
-          .attr('x1', x)
-          .attr('x2', x)
+          .attr('x1', x - HOVER_BAR_MARGIN)
+          .attr('x2', x - HOVER_BAR_MARGIN)
           .classed('hide', false);
       });
 
@@ -372,7 +372,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     // add baseline and baseline label
     hover.append('text')
       .attr('id', `${graphName}-baseline-label`)
-      .attr('x', xScale(0) - GRAPH_LEFT_MARGIN)
+      .attr('x', xScale(0) - GRAPH_X_MARGIN)
       .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1)
       .classed('baseline-label', true)
       .text(drawArea ? '$0' : '0%');
@@ -380,7 +380,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .attr('id', `${graphName}-baseline`)
       .attr('x1', xScale(0))
       .attr('y1', yScale(0))
-      .attr('x2', container.width() - GRAPH_RIGHT_MARGIN)
+      .attr('x2', container.width())
       .attr('y2', yScale(0))
       .classed('baseline', true)
       .on('mousemove', handleMouseMove(graphName, xScale));
@@ -498,11 +498,11 @@ function handleMouseMove(graphName, xScale) {
 
     // show hover line
     d3.select(`#${graphName}-hover-rect`)
-      .attr('width', x + HOVER_MARGIN - GRAPH_LEFT_MARGIN)
+      .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN)
       .classed('hide', false);
     d3.select(`#${graphName}-hover-line`)
-      .attr('x1', x)
-      .attr('x2', x)
+      .attr('x1', x - HOVER_BAR_MARGIN)
+      .attr('x2', x - HOVER_BAR_MARGIN)
       .classed('hide', false);
 
     // hover on linked graph
