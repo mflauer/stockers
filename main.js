@@ -313,6 +313,7 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
       .attr('width', container.width() - GRAPH_X_MARGIN)
       .attr('height', container.height())
       .on('mousemove', function() {
+        console.log(d3.mouse(graph.node()));
         var x = d3.mouse(graph.node())[0];
         d3.select(`#${section}-hover-rect`)
           .classed('hide', false)
@@ -521,7 +522,7 @@ function handleMouseEnterCompare() {
   $(`#${ticker}-compare-item, #${ticker}-compare-row`).addClass('hover');
   var element = d3.select(`#${ticker}-compare-line`).classed('thick', true).node();
   element.parentNode.appendChild(element);
-  d3.select(`#${idArray[1]}-overlay`).dispatch('mousemove');
+  $(`#${idArray[1]}-overlay`).mousemove();
 }
 
 // mouseleave event listener on compare plot
@@ -540,7 +541,7 @@ function handleMouseEnterPortfolio() {
   $(`#${ticker}-volume-line`).addClass('thick');
   var element = d3.select(`#${ticker}-portfolio-line`).classed('thick', true).node();
   element.parentNode.appendChild(element);
-  d3.select(`#${idArray[1]}-overlay`).dispatch('mousemove');
+  $(`#${idArray[1]}-overlay`).mousemove();
 }
 
 // mouseleave event listener on portfolio plot
