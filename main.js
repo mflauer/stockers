@@ -514,7 +514,6 @@ function handleMouseMove(graphName, xScale) {
       interval: time.interval,
       period: time.period,
     };
-    console.log(hoverRange)
     updateData(section, hoverRange, hoverRange);
   }
 }
