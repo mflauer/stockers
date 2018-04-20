@@ -176,13 +176,11 @@ table {
 
 path {
   fill: none;
-  stroke: #767676;
   stroke-width: 2; }
-  path.baseline {
-    stroke-width: 1;
-    stroke-dasharray: 10, 15; }
   path.thick {
     stroke-width: 3; }
+  path.fill {
+    pointer-events: all; }
   path.red {
     stroke: #db2828; }
     path.red.fill {
@@ -261,12 +259,22 @@ path {
     path.brown.hover {
       fill: #a5673f; }
 
-rect[id$="overlay"] {
+rect[id$="capture"] {
   fill: none;
   pointer-events: all; }
-
 rect[id$="hover-rect"] {
-  fill: #21ba45; }
+  fill: rgba(255, 255, 255, 0.95);
+  pointer-events: none; }
+
+line {
+  stroke: #767676; }
+  line[id$="baseline"] {
+    stroke-width: 1;
+    stroke-dasharray: 10, 15; }
+  line[id$="hover-line"] {
+    stroke: #767676;
+    stroke-width: 2;
+    pointer-events: none; }
 
 text.baseline-label {
   fill: #767676;
