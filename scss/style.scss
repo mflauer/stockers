@@ -11,6 +11,27 @@ $purple: rgb(163, 51, 200);
 $pink: rgb(224, 57, 151);
 $brown: rgb(165, 103, 63);
 $grey: rgb(118, 118, 118);
+$white: rgb(255, 255, 255);
+$transparent: rgba(255, 255, 255, .9);
+
+$background: 255;
+$alpha: .2;
+$light-factor: $background*(1-$alpha);
+
+$light-red: rgb($light-factor + 219*$alpha, $light-factor + 40*$alpha, $light-factor + 40*$alpha);
+$light-orange: rgb($light-factor + 242*$alpha, $light-factor + 113*$alpha, $light-factor + 28*$alpha);
+$light-yellow: rgb($light-factor + 251*$alpha, $light-factor + 189*$alpha, $light-factor + 8*$alpha);
+$light-olive: rgb($light-factor + 181*$alpha, $light-factor + 204*$alpha, $light-factor + 24*$alpha);
+$light-green: rgb($light-factor + 33*$alpha, $light-factor + 186*$alpha, $light-factor + 69*$alpha);
+$light-teal: rgb($light-factor + 0*$alpha, $light-factor + 181*$alpha, $light-factor + 173*$alpha);
+$light-blue: rgb($light-factor + 33*$alpha, $light-factor + 133*$alpha, $light-factor + 208*$alpha);
+$light-violet: rgb($light-factor + 100*$alpha, $light-factor + 53*$alpha, $light-factor + 201*$alpha);
+$light-purple: rgb($light-factor + 163*$alpha, $light-factor + 51*$alpha, $light-factor + 200*$alpha);
+$light-pink: rgb($light-factor + 224*$alpha, $light-factor + 57*$alpha, $light-factor + 151*$alpha);
+$light-brown: rgb($light-factor + 165*$alpha, $light-factor + 103*$alpha, $light-factor + 63*$alpha);
+$light-grey: rgb($light-factor + 118*$alpha, $light-factor + 118*$alpha, $light-factor + 118*$alpha);
+
+$opacity: .1;
 
 // STYLES
 table {
@@ -154,6 +175,67 @@ table {
   }
 }
 
+.white {
+  color: $white !important;
+}
+
+
+tr[id$="-row"] {
+  &.hover {
+    background-color: rgba(0,0,0,.05) !important;
+  }
+}
+
+.ui.basic.button {
+  &.red.hover {
+    background-color: $light-red !important;
+  }
+
+  &.orange.hover {
+    background-color: $light-orange !important;
+  }
+
+  &.yellow.hover {
+    background-color: $light-yellow !important;
+  }
+
+  &.olive.hover {
+    background-color: $light-olive !important;
+  }
+
+  &.green.hover {
+    background-color: $light-green !important;
+  }
+
+  &.teal.hover {
+    background-color: $light-teal !important;
+  }
+
+  &.blue.hover {
+    background-color: $light-blue !important;
+  }
+
+  &.violet.hover {
+    background-color: $light-violet !important;
+  }
+
+  &.purple.hover {
+    background-color: $light-purple !important;
+  }
+
+  &.pink.hover {
+    background-color: $light-pink !important;
+  }
+
+  &.brown.hover {
+    background-color: $light-brown !important;
+  }
+
+  &.grey.hover {
+    background-color: $light-grey !important;
+  }
+}
+
 .ui.button:hover .icon.button {
   opacity: 1;
 }
@@ -183,11 +265,19 @@ i.caret.icon {
   }
 }
 
+.ui.menu.selector .item {
+  padding: .75em !important;
+}
+
 .graph-container {
   width: 100%;
   height: 30vh;
-  margin-top: 1em;
+  margin-bottom: 1em;
   padding: 2px;
+}
+
+table {
+  margin-top: 0 !important;
 }
 
 #compare-stocks {
@@ -196,6 +286,10 @@ i.caret.icon {
 
 #company-buy-button {
   padding: 1.1em 1.5em;
+}
+
+#company-selector {
+  margin-top: -2.5em;
 }
 
 #company-header {
@@ -227,47 +321,160 @@ path {
 
   &.red {
     stroke: $red;
+
+    &.fill {
+      stroke: none;
+      fill: $light-red;
+    }
+
+    &.hover {
+      fill: $red;
+    }
   }
 
   &.orange {
     stroke: $orange;
+
+    &.fill {
+      stroke: none;
+      fill: $light-orange;
+    }
+
+    &.hover {
+      fill: $orange;
+    }
   }
 
   &.yellow {
     stroke: $yellow;
+
+    &.fill {
+      stroke: none;
+      fill: $light-yellow;
+    }
+
+    &.hover {
+      fill: $yellow;
+    }
   }
 
   &.olive {
     stroke: $olive;
+
+    &.fill {
+      stroke: none;
+      fill: $light-olive;
+    }
+
+    &.hover {
+      fill: $olive;
+    }
   }
 
   &.green {
     stroke: $green;
+
+    &.fill {
+      stroke: none;
+      fill: $light-green;
+    }
+
+    &.hover {
+      fill: $green;
+    }
   }
 
   &.teal {
     stroke: $teal;
+
+    &.fill {
+      stroke: none;
+      fill: $light-teal;
+    }
+
+    &.hover {
+      fill: $teal;
+    }
   }
 
   &.blue {
     stroke: $blue;
+
+    &.fill {
+      stroke: none;
+      fill: $light-blue;
+    }
+
+    &.hover {
+      fill: $blue;
+    }
   }
 
   &.violet {
     stroke: $violet;
+
+    &.fill {
+      stroke: none;
+      fill: $light-violet;
+    }
+
+    &.hover {
+      fill: $violet;
+    }
   }
 
   &.purple {
     stroke: $purple;
+
+    &.fill {
+      stroke: none;
+      fill: $light-purple;
+    }
+
+    &.hover {
+      fill: $purple;
+    }
   }
 
   &.pink {
     stroke: $pink;
+
+    &.fill {
+      stroke: none;
+      fill: $light-pink;
+    }
+
+    &.hover {
+      fill: $pink;
+    }
   }
 
   &.brown {
     stroke: $brown;
+
+    &.fill {
+      stroke: none;
+      fill: $light-brown;
+    }
+
+    &.hover {
+      fill: $brown;
+    }
   }
+}
+
+rect[id$="overlay"] {
+  fill: none;
+  pointer-events: all;
+}
+
+rect[id$="hover-rect"] {
+  fill: $green;
+}
+
+text.baseline-label {
+  fill: $grey;
+  font-size: 12px;
 }
 
 div.tooltip {

@@ -26,7 +26,7 @@
   </div>
 
   <div class="ui divided padded grid">
-    <div class="eight wide column">
+    <div id="portfolio-hidden" class="eight wide column hide">
       <h2 class="ui center aligned header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
@@ -39,17 +39,19 @@
           </div>
         </div>
         <div class="twelve wide column">
-          <div id="portfolio-selector" class="ui secondary pointing compact menu selector">
-            <a class="active item">1D</a>
-            <a class="item">5D</a>
-            <a class="item">1M</a>
-            <a class="item">3M</a>
-            <a class="item">6M</a>
-            <a class="item">1Y</a>
-            <a class="item">5Y</a>
+          <div id="portfolio-selector" class="ui secondary pointing menu selector">
+            <div class="right menu">
+              <a class="item">1D</a>
+              <a class="item">5D</a>
+              <a class="item">1M</a>
+              <a class="item">3M</a>
+              <a class="item">6M</a>
+              <a class="active item">1Y</a>
+              <a class="item">5Y</a>
+            </div>
           </div>
-          <svg id="value-graph-container" class="graph-container">
-            <g id="value-graph"></g>
+          <svg id="volume-graph-container" class="graph-container">
+            <g id="volume-graph"></g>
           </svg>
           <div id='tooltip'></div>
           <svg id="growth-graph-container" class="graph-container">
@@ -84,20 +86,26 @@
             </div>
             <div class="results"></div>
           </div>
-          <div id="compare-selector" class="ui secondary pointing compact menu selector">
-            <a class="active item">1D</a>
-            <a class="item">5D</a>
-            <a class="item">1M</a>
-            <a class="item">3M</a>
-            <a class="item">6M</a>
-            <a class="item">1Y</a>
-            <a class="item">5Y</a>
+          <div id="compare-selector" class="ui secondary pointing right menu selector hide compare-hidden">
+            <div class="right menu">
+              <a class="active item">1D</a>
+              <a class="item">5D</a>
+              <a class="item">1M</a>
+              <a class="item">3M</a>
+              <a class="item">6M</a>
+              <a class="item">1Y</a>
+              <a class="item">5Y</a>
+            </div>
           </div>
-          <svg id="compare-graph-container" class="graph-container">
+          <svg id="compare-graph-container" class="graph-container hide compare-hidden">
             <g id="compare-graph"></g>
           </svg>
+<<<<<<< HEAD
           <div id='tooltip'></div>
           <table class="ui basic selectable fixed compact table">
+=======
+          <table class="ui basic selectable fixed compact table hide compare-hidden">
+>>>>>>> aae63bfe9f732fd281b1e70a813914f88ec2755a
             <thead>
               <tr>
                 <th>Name</th>
@@ -114,11 +122,11 @@
 
         </div>
         <div class="four wide column">
-          <div class="right">
+          <div id="compare-buttons" class="right hide compare-hidden">
             <a id="edit-button" href="#" class="">Edit</a>
             <a id="done-button" href="#" class="hide">Done</a>
           </div>
-          <div id="compare-stocks">
+          <div id="compare-stocks" class="hide compare-hidden">
             <!-- stocks dynamically added -->
           </div>
           <h5 id="suggested-label" class="ui header">
@@ -147,7 +155,7 @@
           </div>
         </div>
       </div>
-      <div id="company-selector" class="ui secondary pointing compact menu selector">
+      <div id="company-selector" class="ui secondary pointing menu selector">
         <a class="active item">1D</a>
         <a class="item">5D</a>
         <a class="item">1M</a>
@@ -234,23 +242,29 @@
       <div class="ui three column grid">
         <div class="column">
           <div class="ui segment">
-            <img class="ui fluid image" src="assets/text-logo.svg"
-                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
-            <h5 class="ui header">Article 1</h5>
+            <a href="https://www.reuters.com/article/us-usa-stocks/apple-philip-morris-chip-stocks-lead-wall-street-slide-idUSKBN1HQ1LK" target="_blank">
+              <img class="ui fluid image" src="assets/articles/article-1.png"
+                   onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
+              <h5 class="ui header">Apple, Philip Morris, chip stocks lead Wall Street slide</h5>
+            </a>
           </div>
         </div>
         <div class="column">
           <div class="ui segment">
-            <img class="ui fluid image" src="assets/text-logo.svg"
-                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
-            <h5 class="ui header">Article 2</h5>
+            <a href="https://www.investors.com/etfs-and-funds/etfs/apple-stock-relative-strength-powershares-momentum-etf/" target="_blank">
+              <img class="ui fluid image" src="assets/articles/article-2.png"
+                   onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
+              <h5 class="ui header">Apple, Intel Weigh On Dow And Nasdaq As Chip Stocks Get...</h5>
+            </a>
           </div>
         </div>
         <div class="column">
           <div class="ui segment">
-            <img class="ui fluid image" src="assets/text-logo.svg"
-                 onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
-            <h5 class="ui header">Article 3</h5>
+            <a href="https://www.nasdaq.com/article/why-did-apple-and-nvidia-stock-open-lower-on-thursday-cm950281" target="_blank">
+              <img class="ui fluid image" src="assets/articles/article-3.png"
+                   onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
+              <h5 class="ui header">Why Did Apple and Nvidia Stock Open Lower on Thursday?</h5>
+            </a>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-Number.prototype.withCommas = function() {
+  Number.prototype.withCommas = function() {
   return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -63,13 +63,13 @@ class Data {
       },
     };
     this.TIME_RANGE_INTERVAL = {
-      '1D': { n: 68, interval: 'min' },
-      '5D': { n: 384, interval: 'min' },
-      '1M': { n: 21, interval: 'day' },
-      '3M': { n: 63, interval: 'day' },
-      '6M': { n: 26, interval: 'week' },
-      '1Y': { n: 52, interval: 'week' },
-      '5Y': { n: 260, interval: 'week' },
+      '1D': { n: 68, interval: 'min', period: 1 },
+      '5D': { n: 384, interval: 'min', period: 4 },
+      '1M': { n: 21, interval: 'day', period: 1 },
+      '3M': { n: 63, interval: 'day', period: 1 },
+      '6M': { n: 26, interval: 'week', period: 1 },
+      '1Y': { n: 52, interval: 'week', period: 1 },
+      '5Y': { n: 260, interval: 'week', period: 2 },
     }
 
     this.PORTFOLIO_STOCKS = {
@@ -77,26 +77,24 @@ class Data {
         {
           'date': '2017-05-12T12:30:00',
           'price': 153.78,
-          'amount': 6,
+          'amount': 10,
         },
         {
           'date': '2017-12-22T13:15:00',
           'price': 176.29,
-          'amount': -3,
+          'amount': -5,
         },
       ],
       'AMZN' : [
         {
-          'date': '2018-02-23T10:45:00',
-          'price': 1469.92,
-          'amount': 2,
+          'date': '2017-10-20T10:45:00',
+          'price': 992.92,
+          'amount': 1,
         },
       ],
     };
-    this.COMPARE_STOCKS = {
-      'AAPL': { isChecked: true },
-    };
-    this.SUGGESTED_STOCKS = ['AMZN', 'FB', 'GOOG'];
+    this.COMPARE_STOCKS = {};
+    this.SUGGESTED_STOCKS = ['AAPL',  'AMZN', 'FB', 'GOOG'];
   }
 
   getSearchContent() {
@@ -203,7 +201,18 @@ class Data {
   }
 
   getPortfolioTickers() {
-    return Object.keys(this.PORTFOLIO_STOCKS).sort();
+    var stocks = this.PORTFOLIO_STOCKS;
+    return Object.keys(stocks).sort(function(a, b) {
+      var aDate = new Date(stocks[a][0]['date']);
+      var bDate = new Date(stocks[b][0]['date']);
+      if (aDate < bDate) {
+        return -1;
+      } else if (aDate > bDate) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   getPortfolioData(ticker) {
@@ -310,8 +319,17 @@ class Data {
   }
 
   getCompareChecked(ticker) {
-    if (ticker in this.COMPARE_STOCKS) {
-      return this.COMPARE_STOCKS[ticker.toUpperCase()].isChecked;
+    if (ticker == undefined) {
+      // check if any company is checked
+      for (ticker in this.COMPARE_STOCKS) {
+        if (this.COMPARE_STOCKS[ticker].isChecked) {
+          return true;
+        }
+      }
+      return false;
+    } else if (ticker in this.COMPARE_STOCKS) {
+      // check is specific company is checked
+      return this.COMPARE_STOCKS[ticker].isChecked;
     }
     return false;
   }
