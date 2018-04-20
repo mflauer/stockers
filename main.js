@@ -73,8 +73,8 @@ dom.buyButton = $('#buy-button');
 
 // constants
 const GRAPH_X_MARGIN = 20;
-const GRAPH_Y_MARGIN = 5;
-const HOVER_MARGIN = 2;
+const GRAPH_Y_MARGIN = 10;
+const HOVER_MARGIN = 5;
 const COLORS = [
   'blue',
   'red',
@@ -159,9 +159,6 @@ function getStackedPlotData() {
     max = dataMax > max ? dataMax : max;
   }
 
-  plotData['totals'] = totals.map(function(x) {
-    return x == 0 ? null : x;
-  }).reverse();
   plotData['min'] = min;
   plotData['max'] = max;
 
@@ -288,14 +285,14 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .attr('y2', yScale(0));
     hover.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
-      .attr('y', yScale(0) + GRAPH_Y_MARGIN - 1);
+      .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1);
     graph.selectAll(`[id$='${graphName}-line'`).each(function() {
       var element = d3.select(this);
       var company = element.attr('id').split('-')[0];
       if (forceColor != undefined) {
         element.classed('red green', false).classed(forceColor, true);
       }
-      element.attr('d', tickerLine(company == 'totals' ? plotData['totals'] : plotData['tickers'][company]));
+      element.attr('d', tickerLine(plotData['tickers'][company]));
     });
     if (drawArea) {
       graph.selectAll(`[id$='${graphName}-area'`).each(function() {
@@ -321,12 +318,12 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
         // show hover line
         var x = d3.mouse(graph.node())[0];
         d3.select(`#${graphName}-hover-rect`)
-          .classed('hide', false)
-          .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN);
+          .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN)
+          .classed('hide', false);
         d3.select(`#${graphName}-hover-line`)
-          .classed('hide', false)
           .attr('x1', x)
-          .attr('x2', x);
+          .attr('x2', x)
+          .classed('hide', false);
       })
       .on('mouseleave', function() {
         // remove hover line
@@ -356,9 +353,9 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     hover.append('text')
       .attr('id', `${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
-      .attr('y', yScale(0) + 4)
+      .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1)
       .classed('baseline-label', true)
-      .text('0%');
+      .text(drawArea ? '$0' : '0%');
     hover.append('line')
       .attr('id', `${graphName}-baseline`)
       .attr('x1', xScale(0))
@@ -374,26 +371,27 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
 
     if (drawArea) {
       // draw area
-      graph.insert('path', ':nth-child(2)')
+      graph.insert('path', '#volume-capture + path')
         .attr('id', `${tickerString}-volume-area`)
+        .attr('d', area(tickerData))
         .classed(color, true)
         .classed('fill', true)
-        .attr('d', area(tickerData))
         .on('mouseover', handleMouseOver(graphName))
         .on('mouseleave', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName));
 
       // draw total line
-      graph.append('path')
-        .attr('id', `totals-${graphName}-line`)
-        .attr('d', tickerLine(plotData['totals']))
+      graph.insert('path', ':first-child')
+        .attr('id', `${tickerString}-volume-line`)
+        .attr('d', tickerLine(tickerData))
+        .classed('very thick', true)
         .on('mousemove', handleMouseMove(graphName));
     } else {
       // draw ticker line
       graph.append('path')
         .attr('id', `${tickerString}-${graphName}-line`)
-        .classed(color, true)
         .attr('d', tickerLine(tickerData))
+        .classed(color, true)
         .on('mouseover', handleMouseOver(graphName))
         .on('mouseleave', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName));

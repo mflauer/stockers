@@ -149,8 +149,7 @@ i.caret.icon {
 .graph-container {
   width: 100%;
   height: 30vh;
-  margin-bottom: 1em;
-  padding: 2px; }
+  margin-bottom: 1em; }
 
 table {
   margin-top: 0 !important; }
@@ -180,6 +179,8 @@ path {
   stroke-width: 2; }
   path.thick {
     stroke-width: 3; }
+    path.thick.very {
+      stroke-width: 4; }
   path.fill {
     pointer-events: all; }
   path.red {
@@ -271,7 +272,7 @@ line {
   stroke: #767676; }
   line[id$="baseline"] {
     stroke-width: 1;
-    stroke-dasharray: 10, 15; }
+    stroke-dasharray: 9, 12; }
   line[id$="hover-line"] {
     stroke-width: 2;
     pointer-events: none; }
