@@ -328,7 +328,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
           .attr('x1', x)
           .attr('x2', x);
       })
-      .on('mouseout', function() {
+      .on('mouseleave', function() {
         // remove hover line
         d3.select(`#${graphName}-hover-rect`)
           .classed('hide', true);
@@ -365,7 +365,8 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .attr('y1', yScale(0))
       .attr('x2', container.width())
       .attr('y2', yScale(0))
-      .classed('baseline', true);
+      .classed('baseline', true)
+      .on('mousemove', handleMouseMove(graphName));
   }
 
   if (ticker != undefined) {
@@ -378,8 +379,8 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
         .classed(color, true)
         .classed('fill', true)
         .attr('d', area(tickerData))
-        .on('mouseover', handleMouseEnter(graphName))
-        .on('mouseout', handleMouseLeave(graphName))
+        .on('mouseover', handleMouseOver(graphName))
+        .on('mouseleave', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName));
 
       // draw total line
@@ -393,15 +394,15 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
         .attr('id', `${tickerString}-${graphName}-line`)
         .classed(color, true)
         .attr('d', tickerLine(tickerData))
-        .on('mouseover', handleMouseEnter(graphName))
-        .on('mouseout', handleMouseLeave(graphName))
+        .on('mouseover', handleMouseOver(graphName))
+        .on('mouseleave', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName));
     }
   }
 }
 
-// mouseenter event listener on plot line
-function handleMouseEnter(graphName) {
+// mouseover event listener on plot line
+function handleMouseOver(graphName) {
   if (graphName == 'company') {
     return null
   } else {
@@ -447,7 +448,7 @@ function handleMouseLeave(graphName) {
       }
 
       // leave capture if haven't
-      d3.select(`#${graphName}-capture`).node().dispatchEvent(new MouseEvent('mouseout'));
+      d3.select(`#${graphName}-capture`).node().dispatchEvent(new MouseEvent('mouseleave'));
     }
   }
 }
@@ -615,7 +616,7 @@ function createCheckClickListener(ticker, section) {
 // add hover handlers for graph, item, and table row associated with this ticker
 function addCompanyHoverHandlers(ticker, section) {
   var graphName = section == 'portfolio' ? 'growth' : section;
-  $(`#${ticker}-${section}-item, #${ticker}-${section}-row`).hover(handleMouseEnter(graphName), handleMouseLeave(graphName));  
+  $(`#${ticker}-${section}-item, #${ticker}-${section}-row`).hover(handleMouseOver(graphName), handleMouseLeave(graphName));  
 }
 
 // populates company page content
