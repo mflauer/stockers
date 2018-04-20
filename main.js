@@ -411,14 +411,6 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
   }
 }
 
-// remove ticker stock from compare plot
-// optionally force color of existing lines or clear the plot
-function removeCompareStock(tickerString) {
-  var graph = dom.compareGraph;
-  graph.select(`#${tickerString}-compare-line`).remove();
-  plotStock('compare');
-}
-
 // mouseover event listener on plot line
 function handleMouseOver(graphName) {
   if (graphName == 'company') {
