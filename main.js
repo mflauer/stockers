@@ -230,12 +230,9 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
     var container = dom.growthGraphContainer
     var xScale = growthX;
     var yScale = growthY;
-<<<<<<< HEAD
-
-=======
     var mouseEnterHandler = handleMouseEnterPortfolio;
     var mouseLeaveHandler = handleMouseLeavePortfolio;
->>>>>>> aae63bfe9f732fd281b1e70a813914f88ec2755a
+
   } else if (section == 'compare') {
     var graph = dom.compareGraph;
     var container = dom.compareGraphContainer
@@ -310,8 +307,6 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
       .classed('baseline', true)
       .attr('d', startLine(plotData['dates']));
 
-<<<<<<< HEAD
-=======
     // add overlay
     graph.append('rect')
       .attr('id', `${section}-overlay`)
@@ -329,7 +324,6 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
         d3.select(`#${section}-hover-rect`)
           .classed('hide', true);
       });
->>>>>>> aae63bfe9f732fd281b1e70a813914f88ec2755a
   }
 
   // draw ticker line
