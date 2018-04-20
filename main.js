@@ -301,7 +301,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1);
     graph.select(`#${graphName}-capture`)
       .on('mousemove', handleMouseMove(graphName, xScale));
-    graph.selectAll(`[id$='${graphName}-line'`).each(function() {
+    graph.selectAll(`[id$='${graphName}-line']`).each(function() {
       var element = d3.select(this);
       var company = element.attr('id').split('-')[0];
       if (forceColor != undefined) {
@@ -311,7 +311,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
         .on('mousemove', handleMouseMove(graphName, xScale));;
     });
     if (drawArea) {
-      graph.selectAll(`[id$='${graphName}-area'`).each(function() {
+      graph.selectAll(`[id$='${graphName}-area']`).each(function() {
         var element = d3.select(this);
         var company = element.attr('id').split('-')[0];
         if (forceColor != undefined) {
