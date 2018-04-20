@@ -176,6 +176,7 @@ table {
 
 path {
   fill: none;
+  stroke: #767676;
   stroke-width: 2; }
   path.thick {
     stroke-width: 3; }
@@ -272,7 +273,6 @@ line {
     stroke-width: 1;
     stroke-dasharray: 10, 15; }
   line[id$="hover-line"] {
-    stroke: #767676;
     stroke-width: 2;
     pointer-events: none; }
 

@@ -130,7 +130,7 @@ function getStackedPlotData() {
   var close = time.interval == 'min' ? 'close' : 'adjusted close'
   var min = 0;
   var max = 0;
-  var values;
+  var totals;
 
   for (var t in tickers) {
     var stockData = data.getPortfolioData(tickers[t])[time.interval].slice(0, time.n).filter(function(x, i) {
@@ -141,7 +141,7 @@ function getStackedPlotData() {
     if (t == 0) {
       var dates = stockData.map(x => Date.parse(x['date'])).reverse();
       plotData['dates'] = dates;
-      values = Array(dates.length).fill(0);
+      totals = Array(dates.length).fill(0);
     }
 
     var tickerData = stockData.map(function(x, i) {
@@ -149,8 +149,8 @@ function getStackedPlotData() {
       if (value == 0) {
         return null
       } else {
-        values[i] += value;
-        return values[i];
+        totals[i] += value;
+        return totals[i];
       }
     }).reverse();
     plotData['tickers'][tickers[t]] = tickerData;
@@ -159,6 +159,9 @@ function getStackedPlotData() {
     max = dataMax > max ? dataMax : max;
   }
 
+  plotData['totals'] = totals.map(function(x) {
+    return x == 0 ? null : x;
+  }).reverse();
   plotData['min'] = min;
   plotData['max'] = max;
 
@@ -225,9 +228,9 @@ function getChangePlotData(graphName) {
   return plotData;
 }
 
-// add ticker stock to change plot
+// add ticker stock to plot
 // optionally force color of existing lines or clear the plot
-function plotStockChange(graphName, ticker, tickerString, color, forceColor, clear=false) {
+function plotStock(graphName, ticker, tickerString, color, forceColor, clear=false) {
   var plotData = getChangePlotData(graphName);
   var drawArea = graphName == 'volume';
   if (drawArea) {
@@ -292,7 +295,7 @@ function plotStockChange(graphName, ticker, tickerString, color, forceColor, cle
       if (forceColor != undefined) {
         element.classed('red green', false).classed(forceColor, true);
       }
-      element.attr('d', tickerLine(plotData['tickers'][company]));
+      element.attr('d', tickerLine(company == 'totals' ? plotData['totals'] : plotData['tickers'][company]));
     });
     if (drawArea) {
       graph.selectAll(`[id$='${graphName}-area'`).each(function() {
@@ -326,13 +329,11 @@ function plotStockChange(graphName, ticker, tickerString, color, forceColor, cle
           .attr('x2', x);
       })
       .on('mouseout', function() {
-        if (d3.event.relatedTarget && !d3.event.relatedTarget.id.endsWith(`${graphName}-line`)) {
-          // remove hover line
-          d3.select(`#${graphName}-hover-rect`)
-            .classed('hide', true);
-          d3.select(`#${graphName}-hover-line`)
-            .classed('hide', true);
-        }
+        // remove hover line
+        d3.select(`#${graphName}-hover-rect`)
+          .classed('hide', true);
+        d3.select(`#${graphName}-hover-line`)
+          .classed('hide', true);
       });
 
     // add hover line
@@ -380,6 +381,12 @@ function plotStockChange(graphName, ticker, tickerString, color, forceColor, cle
         .on('mouseover', handleMouseEnter(graphName))
         .on('mouseout', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName));
+
+      // draw total line
+      graph.append('path')
+        .attr('id', `totals-${graphName}-line`)
+        .attr('d', tickerLine(plotData['totals']))
+        .on('mousemove', handleMouseMove(graphName));
     } else {
       // draw ticker line
       graph.append('path')
@@ -399,17 +406,13 @@ function handleMouseEnter(graphName) {
     return null
   } else {
     return function() {
-      if (graphName == 'volume') {
-        console.log("HELLO")
-      }
       var ticker = $(this).attr('id').split('-')[0];
       var section = (graphName == 'volume' || graphName == 'growth') ? 'portfolio' : graphName;
 
       // hover line and move to front
-      if (graphName != 'volume') {
-        var element = d3.select(`#${ticker}-${graphName}-line`).classed('thick', true).node();
-        element.parentNode.appendChild(element);
-      }
+      var lineName = graphName == 'volume' ? 'growth' : graphName;
+      var element = d3.select(`#${ticker}-${lineName}-line`).classed('thick', true).node();
+      element.parentNode.appendChild(element);
 
       // hover item and row
       $(`#${ticker}-${section}-item, #${ticker}-${section}-row`).addClass('hover');
@@ -432,9 +435,8 @@ function handleMouseLeave(graphName) {
       var section = (graphName == 'volume' || graphName == 'growth') ? 'portfolio' : graphName;
 
       // unhover line
-      if (graphName != 'volume') {
-        var element = d3.select(`#${ticker}-${graphName}-line`).classed('thick', false).node();
-      }
+      var lineName = graphName == 'volume' ? 'growth' : graphName;
+      var element = d3.select(`#${ticker}-${lineName}-line`).classed('thick', false).node();
 
       // unhover item and row
       $(`#${ticker}-${section}-item, #${ticker}-${section}-row`).removeClass('hover');
@@ -443,6 +445,9 @@ function handleMouseLeave(graphName) {
       if (section == 'portfolio') {
         $(`#${ticker}-volume-area`).removeClass('hover');
       }
+
+      // leave capture if haven't
+      d3.select(`#${graphName}-capture`).node().dispatchEvent(new MouseEvent('mouseout'));
     }
   }
 }
@@ -507,8 +512,8 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStockChange('volume', ticker, tickerString, color);
-    plotStockChange('growth', ticker, tickerString, color);
+    plotStock('volume', ticker, tickerString, color);
+    plotStock('growth', ticker, tickerString, color);
     createPortfolioTableRow(dom, ticker, portfolioTimeRange, color);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
     addCompanyHoverHandlers(ticker, section);
@@ -525,7 +530,7 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStockChange(section, ticker, tickerString, color);
+    plotStock(section, ticker, tickerString, color);
     createCompareTableRow(dom, ticker, compareTimeRange, color);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
     addCompanyHoverHandlers(ticker, section);
@@ -659,7 +664,7 @@ function loadCompanyPage(ticker) {
   
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
-  plotStockChange('company', ticker, tickerString, getColor(change), undefined, true)
+  plotStock('company', ticker, tickerString, getColor(change), undefined, true)
 }
 
 // update portfolio row
@@ -696,7 +701,7 @@ function updateCompanyPage(ticker, timeRange, hoverRange) {
   var change = data.getChange(ticker, timeRange);
   var stats = data.getStats(ticker, timeRange);
   
-  plotStockChange('company', undefined, undefined, undefined, getColor(change));
+  plotStock('company', undefined, undefined, undefined, getColor(change));
 
   dom.companyPrice.text(data.getPrice(ticker, hoverRange).withCommas());
   dom.companyChange.text(change.withCommas());
@@ -792,12 +797,12 @@ $('.selector>.right.menu>.item, .selector>.item').click(function(e) {
   var section = timeRangeElement.closest('.selector').attr('id').split('-')[0];
   if (section == 'portfolio') {
     portfolioTimeRange = timeRange;
-    plotStockChange('volume');
-    plotStockChange('growth');
+    plotStock('volume');
+    plotStock('growth');
     data.getPortfolioTickers().map(x => updatePortfolioRow(x, portfolioTimeRange));
   } else if (section == 'compare') {
     compareTimeRange = timeRange;
-    plotStockChange(section);
+    plotStock(section);
     data.getCompareTickers().map(x => updateCompareRow(x, compareTimeRange));
   } else if (section == 'company') {
     companyTimeRange = timeRange;
@@ -849,8 +854,8 @@ dom.buyButton.click(function() {
   if (newStock) {
     createCheckClickListener(companyTicker, 'portfolio');
   } else {
-    plotStockChange('volume');
-    plotStockChange('growth');
+    plotStock('volume');
+    plotStock('growth');
     updatePortfolioRow(companyTicker, portfolioTimeRange);
   }
 });

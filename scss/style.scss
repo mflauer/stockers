@@ -307,6 +307,7 @@ table {
 
 path {
   fill: none;
+  stroke: $grey;
   stroke-width: 2;
 
   &.thick {
@@ -466,7 +467,7 @@ rect {
     fill: none;
     pointer-events: all;
   }
-  
+
   &[id$="hover-rect"] {
     fill: $transparent;
     pointer-events: none;
@@ -482,7 +483,6 @@ line {
   }
 
   &[id$="hover-line"] {
-    stroke: $grey;
     stroke-width: 2;
     pointer-events: none;
   }
