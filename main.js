@@ -200,10 +200,6 @@ function getChangePlotData(graphName) {
   var dates = [];
 
   for (var t in tickers) {
-    if (graphName == 'compare' && !data.getCompareChecked(tickers[t])) {
-      continue;
-    }
-
     var stockData = data[f](tickers[t])[time.interval].slice(0, time.n).filter(function(x, i) {
       return i % time.period == 0;
     });
@@ -227,10 +223,11 @@ function getChangePlotData(graphName) {
     }).reverse();
     plotData['tickers'][tickers[t]] = tickerData;
 
+    var changesRanges = (graphName != 'compare' || data.getCompareChecked(tickers[t]));
     var dataMin = Math.min(...tickerData);
     var dataMax = Math.max(...tickerData);
-    min = dataMin < min ? dataMin : min;
-    max = dataMax > max ? dataMax : max;
+    min = (changesRanges && dataMin < min) ? dataMin : min;
+    max = (changesRanges && dataMax > max) ? dataMax : max;
   }
 
   plotData['dates'] = dates;
@@ -254,6 +251,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     var hover = dom.growthHover;
     var container = dom.growthGraphContainer;
   } else if (graphName == 'compare') {
+    if (!data.getCompareChecked()) { return; }
     var graph = dom.compareGraph;
     var hover = dom.compareHover;
     var container = dom.compareGraphContainer;
@@ -261,12 +259,6 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     var graph = dom.companyGraph;
     var hover = dom.companyHover;
     var container = dom.companyGraphContainer;
-  }
-
-  if (plotData['dates'].length == 0) {
-    graph.selectAll('*').remove();
-    hover.selectAll('*').remove();
-    return;
   }
 
   // rescale plots
@@ -603,8 +595,12 @@ function createCheckClickListener(ticker, section) {
       d3.select(`#${tickerString}-compare-line`).remove();
 
       if (data.getCompareTickers().length == 0) {
+        // hide all if no compare tickers
         dom.doneButton.click();
         dom.compareHidden.addClass('hide');
+      } else if (!data.getCompareChecked()) {
+        // hide plot and table if no plots displayed
+        dom.compareHidden.not(dom.compareButtons).not(dom.compareStocks).addClass('hide');
       }
     });
   } else if (section == 'suggested') {
@@ -623,6 +619,7 @@ function createCheckClickListener(ticker, section) {
 
   element.click(function(e) {
     $(this).blur();
+    dom.doneButton.click();
     e.stopPropagation();
 
     data.toggleCompareChecked(ticker);
@@ -639,14 +636,11 @@ function createCheckClickListener(ticker, section) {
       // add to compare
       data.addToCompareStocks(ticker);
       createCheckClickListener(ticker, 'compare')
-    } else if (!data.getCompareChecked()) {
-      // hide plot and table if no plots displayed
-      dom.compareHidden.not(dom.compareButtons).not(dom.compareStocks).addClass('hide');
     } else {
       dom.compareHidden.removeClass('hide');
       // show/hide plot
       $(`#${tickerString}-compare-line`).toggleClass('hide');
-      data.getCompareChecked(ticker) ? plotStock('compare', ticker, tickerString, color) : removeCompareStock(tickerString);
+      plotStock('compare');
     }
 
     if (section == 'search') {
@@ -664,6 +658,11 @@ function createCheckClickListener(ticker, section) {
       if (data.getSuggestedTickers() == 0) {
         dom.suggestedLabel.addClass('hide');
       }
+    }
+
+    // hide plot and table if no plots displayed
+    if (!data.getCompareChecked()) {
+      dom.compareHidden.not(dom.compareButtons).not(dom.compareStocks).addClass('hide');
     }
   });
 }
