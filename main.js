@@ -325,13 +325,35 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
           .attr('x1', x)
           .attr('x2', x)
           .classed('hide', false);
+        
+        if (graphName == 'volume') {
+          $('#growth-hover-rect, #growth-hover-line').removeClass('hide');
+          d3.select('#growth-capture').dispatch('outsidemove', { detail: { x: x } });
+        } else if (graphName == 'growth') {
+          $('#volume-hover-rect, #volume-hover-line').removeClass('hide');
+          d3.select('#volume-capture').dispatch('outsidemove', { detail: { x: x } });
+        }
       })
       .on('mouseleave', function() {
         // remove hover line
+        $(`#${graphName}-hover-rect`).addClass('hide');
+        $(`#${graphName}-hover-line`).addClass('hide');
+
+        if (graphName == 'volume') {
+          $('#growth-hover-rect, #growth-hover-line').addClass('hide');
+        } else if (graphName == 'growth') {
+          $('#volume-hover-rect, #volume-hover-line').addClass('hide');
+        }
+      })
+      .on('outsidemove', function() {
+        var x = d3.event.detail.x;
         d3.select(`#${graphName}-hover-rect`)
-          .classed('hide', true);
+          .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN)
+          .classed('hide', false);
         d3.select(`#${graphName}-hover-line`)
-          .classed('hide', true);
+          .attr('x1', x)
+          .attr('x2', x)
+          .classed('hide', false);
       });
 
     // add hover line
@@ -421,6 +443,13 @@ function handleMouseOver(graphName) {
       if (section == 'portfolio') {
         $(`#${ticker}-volume-area`).addClass('hover');
       }
+
+      // show other hover bar
+      if (graphName == 'volume') {
+        $('#growth-hover-rect, #growth-hover-line').removeClass('hide');
+      } else if (graphName == 'growth') {
+        $('#volume-hover-rect, #volume-hover-line').removeClass('hide');
+      }
     }
   }
 }
@@ -436,7 +465,7 @@ function handleMouseLeave(graphName) {
 
       // unhover line
       var lineName = graphName == 'volume' ? 'growth' : graphName;
-      var element = d3.select(`#${ticker}-${lineName}-line`).classed('thick', false).node();
+      $(`#${ticker}-${lineName}-line`).removeClass('thick');
 
       // unhover item and row
       $(`#${ticker}-${section}-item, #${ticker}-${section}-row`).removeClass('hover');
@@ -444,6 +473,13 @@ function handleMouseLeave(graphName) {
       // unhover volume area
       if (section == 'portfolio') {
         $(`#${ticker}-volume-area`).removeClass('hover');
+      }
+
+      // hide other hover bar
+      if (graphName == 'volume') {
+        $('#growth-hover-rect, #growth-hover-line').addClass('hide');
+      } else if (graphName == 'growth') {
+        $('#volume-hover-rect, #volume-hover-line').addClass('hide');
       }
 
       // leave capture if haven't
@@ -464,6 +500,14 @@ function handleMouseMove(graphName) {
       .classed('hide', false)
       .attr('x1', x)
       .attr('x2', x);
+
+    if (graphName == 'volume') {
+      $('#growth-hover-rect, #growth-hover-line').removeClass('hide');
+      d3.select('#growth-capture').dispatch('outsidemove', { detail: { x: x } });
+    } else if (graphName == 'growth') {
+      $('#volume-hover-rect, #volume-hover-line').removeClass('hide');
+      d3.select('#volume-capture').dispatch('outsidemove', { detail: { x: x } });
+    }
   }
 }
 

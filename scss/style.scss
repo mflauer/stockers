@@ -31,7 +31,6 @@ $light-pink: rgb($light-factor + 224*$alpha, $light-factor + 57*$alpha, $light-f
 $light-brown: rgb($light-factor + 165*$alpha, $light-factor + 103*$alpha, $light-factor + 63*$alpha);
 $light-grey: rgb($light-factor + 118*$alpha, $light-factor + 118*$alpha, $light-factor + 118*$alpha);
 
-$opacity: .1;
 
 // STYLES
 table {
@@ -271,8 +270,15 @@ i.caret.icon {
 
 .graph-container {
   width: 100%;
-  height: 30vh;
   margin-bottom: 1em;
+
+  &.portfolio {
+    height: 25vh;
+  }
+
+  &.compare {
+    height: 40vh;
+  }
 }
 
 table {
