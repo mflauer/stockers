@@ -153,6 +153,8 @@ i.caret.icon {
     height: 25vh; }
   .graph-container.compare {
     height: 40vh; }
+  .graph-container.company {
+    height: 30vh; }
 
 table {
   margin-top: 0 !important; }
@@ -275,7 +277,7 @@ line {
   stroke: #767676; }
   line[id$="baseline"] {
     stroke-width: 1;
-    stroke-dasharray: 9, 12; }
+    stroke-dasharray: 10, 10; }
   line[id$="hover-line"] {
     stroke-width: 2;
     pointer-events: none; }

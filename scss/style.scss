@@ -279,6 +279,10 @@ i.caret.icon {
   &.compare {
     height: 40vh;
   }
+
+  &.company {
+    height: 30vh;
+  }
 }
 
 table {
@@ -488,7 +492,7 @@ line {
 
   &[id$="baseline"] {
     stroke-width: 1;
-    stroke-dasharray: 9, 12;
+    stroke-dasharray: 10, 10;
   }
 
   &[id$="hover-line"] {
