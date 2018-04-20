@@ -144,12 +144,13 @@ function getStackedPlotData() {
       totals = Array(dates.length).fill(0);
     }
 
-    var tickerData = stockData.map(function(x, i) {
-      var value = parseFloat(x[close]);
-      if (value == 0) {
+
+    var tickerData = stockData.map(x => parseFloat(x[close]))
+    tickerData = tickerData.map(function(x, i) {
+      if (x == 0 && i > 1 && tickerData[i - 1] == 0) {
         return null
       } else {
-        totals[i] += value;
+        totals[i] += x;
         return totals[i];
       }
     }).reverse();

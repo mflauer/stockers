@@ -300,7 +300,15 @@ class Data {
         // create new stock in portfolio
         this.PORTFOLIO_STOCKS[ticker] = [];
         newStock = true;
+      } else {
+        var time = this.getCurrentTime();
+        var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
+        if (latest['date'] == time) {
+          latest['amount'] += shares;
+          return false;
+        }
       }
+      
       this.PORTFOLIO_STOCKS[ticker].push({
         'date': this.getCurrentTime(),
         'price': this.getPrice(ticker),
