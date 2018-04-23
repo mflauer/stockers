@@ -161,6 +161,9 @@ i.caret.icon {
 #company-buy-button {
   padding: 1.1em 1.5em; }
 
+#company-sell-button {
+  padding: 1.1em 1.5em; }
+
 #company-selector {
   margin-top: -2.5em; }
 
@@ -281,25 +284,3 @@ line {
 text.baseline-label {
   fill: #767676;
   font-size: 12px; }
-<<<<<<< HEAD
-
-#tooltip {
-  position: absolute;
-  text-align: center;
-  padding: 5px;
-  font: 12px sans-serif;
-  background: none;}
-
-#tipBox {
-  opacity: 0;
-  width: 100%;
-  height: 30vh;
-}
-
-.toolTipLine {
-  stroke: black;
-  height: 30vh;
-  opacity: 1;
-}
-=======
->>>>>>> 87674c4a44f4eab0bb100359d0e3d9b17a2dcb09

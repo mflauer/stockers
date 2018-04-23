@@ -41,6 +41,7 @@ dom.compareTable = $('#compare-table');
 dom.companyPage = $('#company-page');
 dom.compareButton = $('#compare-button');
 dom.companyBuyButton = $('#company-buy-button');
+dom.companySellButton = $('#company-sell-button');
 dom.companySelector = $('#company-selector');
 dom.companyTicker = $('#company-ticker');
 dom.companyName = $('#company-name');
@@ -686,6 +687,16 @@ function loadCompanyPage(ticker) {
   }
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
+
+  console.log(data.getPortfolioTickers());
+  console.log(companyTicker);
+
+  if (data.getPortfolioTickers().includes(companyTicker)) {
+    dom.companySellButton.removeClass('hide');
+  } else {
+    dom.companySellButton.addClass('hide');
+  }
+
 
   // populate company information
   var change = data.getChange(ticker, timeRange);
