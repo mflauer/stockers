@@ -1,4 +1,4 @@
-Number.prototype.withCommas = function() {
+  Number.prototype.withCommas = function() {
   return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -63,13 +63,13 @@ class Data {
       },
     };
     this.TIME_RANGE_INTERVAL = {
-      '1D': { n: 68, interval: 'min' },
-      '5D': { n: 384, interval: 'min' },
-      '1M': { n: 21, interval: 'day' },
-      '3M': { n: 63, interval: 'day' },
-      '6M': { n: 26, interval: 'week' },
-      '1Y': { n: 52, interval: 'week' },
-      '5Y': { n: 260, interval: 'week' },
+      '1D': { n: 68, interval: 'min', period: 1 },
+      '5D': { n: 384, interval: 'min', period: 4 },
+      '1M': { n: 21, interval: 'day', period: 1 },
+      '3M': { n: 63, interval: 'day', period: 1 },
+      '6M': { n: 26, interval: 'week', period: 1 },
+      '1Y': { n: 52, interval: 'week', period: 1 },
+      '5Y': { n: 260, interval: 'week', period: 2 },
     }
 
     this.PORTFOLIO_STOCKS = {
@@ -77,26 +77,24 @@ class Data {
         {
           'date': '2017-05-12T12:30:00',
           'price': 153.78,
-          'amount': 6,
+          'amount': 10,
         },
         {
           'date': '2017-12-22T13:15:00',
           'price': 176.29,
-          'amount': -3,
+          'amount': -5,
         },
       ],
       'AMZN' : [
         {
-          'date': '2018-02-23T10:45:00',
-          'price': 1469.92,
-          'amount': 2,
+          'date': '2017-10-20T10:45:00',
+          'price': 992.92,
+          'amount': 1,
         },
       ],
     };
-    this.COMPARE_STOCKS = {
-      'AAPL': { isChecked: true },
-    };
-    this.SUGGESTED_STOCKS = ['AMZN', 'FB', 'GOOG'];
+    this.COMPARE_STOCKS = {};
+    this.SUGGESTED_STOCKS = ['AAPL',  'AMZN', 'FB', 'GOOG'];
   }
 
   getSearchContent() {
@@ -140,7 +138,10 @@ class Data {
       // get price at start of timeRange
       var time = this.getTime(timeRange);
       var close = time.interval == 'min' ? 'close' : 'adjusted close'
-      var price = parseFloat(stockData[time.interval][time.n - 1][close]);
+      if (time.n - time.period == 0) {
+        return parseFloat(stockData['min'][0]['close']);
+      }
+      var price = parseFloat(stockData[time.interval][time.n - time.period][close]);
       if (price == 0) {
         // find first non-zero element
         price = parseFloat(stockData[time.interval].slice().reverse().find(function(e) { return e[close] > 0; })[close]);
@@ -203,7 +204,18 @@ class Data {
   }
 
   getPortfolioTickers() {
-    return Object.keys(this.PORTFOLIO_STOCKS).sort();
+    var stocks = this.PORTFOLIO_STOCKS;
+    return Object.keys(stocks).sort(function(a, b) {
+      var aDate = new Date(stocks[a][0]['date']);
+      var bDate = new Date(stocks[b][0]['date']);
+      if (aDate < bDate) {
+        return -1;
+      } else if (aDate > bDate) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   getPortfolioData(ticker) {
@@ -234,12 +246,12 @@ class Data {
     return portfolioData;
   }
 
-  getPortfolioValue(ticker, timeRange) {
+  getPortfolioValue(ticker, timeRange, first=true) {
     var total = 0;
     if (ticker == undefined) {
       // return sum of values for each stock in portfolio
       for (ticker in this.PORTFOLIO_STOCKS) {
-        total += this.getPortfolioValue(ticker, timeRange);
+        total += this.getPortfolioValue(ticker, timeRange, first);
       }
     } else {
       // return value of individual stock in portfolio
@@ -250,7 +262,7 @@ class Data {
         if (timeRange != undefined) {
           // get value of individual stock at start of timeRange
           var time = this.getTime(timeRange);
-          if (new Date(changes[i]['date']) >= new Date(this.getStockData(ticker)[time.interval][time.n - 1]['date'])) {
+          if (new Date(changes[i]['date']) >= new Date(this.getStockData(ticker)[time.interval][time.n - time.period]['date'])) {
             break;
           }
         }
@@ -259,7 +271,7 @@ class Data {
       total = shares * price;
 
       // find first purchase of stock
-      if (total == 0) {
+      if (total == 0 && first) {
         var initial = this.PORTFOLIO_STOCKS[ticker][0];
         total = initial.amount * initial.price;
       }
@@ -269,18 +281,17 @@ class Data {
 
   getPortfolioChange(ticker, timeRange) {
     // compare current value with value at start of timeRange
-    var start = this.getPortfolioValue(ticker, timeRange);
-    return 100 * ((this.getPortfolioValue(ticker) / start) - 1);
+    return 100 * ((this.getPortfolioValue(ticker) / this.getPortfolioValue(ticker, timeRange)) - 1);
   }
 
   getPortfolioPercent(ticker, timeRange) {
     // get percentage at start of timeRange
-    var total = this.getPortfolioValue(undefined, timeRange);
+    var total = this.getPortfolioValue(undefined, timeRange, false);
     if (total == 0) {
       // portfolio is empty
       return '—';
     } else {
-      return 100 * (this.getPortfolioValue(ticker, timeRange) / total);
+      return 100 * (this.getPortfolioValue(ticker, timeRange, false) / total);
     }
   }
 
@@ -291,7 +302,15 @@ class Data {
         // create new stock in portfolio
         this.PORTFOLIO_STOCKS[ticker] = [];
         newStock = true;
+      } else {
+        var time = this.getCurrentTime();
+        var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
+        if (latest['date'] == time) {
+          latest['amount'] += shares;
+          return false;
+        }
       }
+      
       this.PORTFOLIO_STOCKS[ticker].push({
         'date': this.getCurrentTime(),
         'price': this.getPrice(ticker),
@@ -310,8 +329,17 @@ class Data {
   }
 
   getCompareChecked(ticker) {
-    if (ticker in this.COMPARE_STOCKS) {
-      return this.COMPARE_STOCKS[ticker.toUpperCase()].isChecked;
+    if (ticker == undefined) {
+      // check if any company is checked
+      for (ticker in this.COMPARE_STOCKS) {
+        if (this.COMPARE_STOCKS[ticker].isChecked) {
+          return true;
+        }
+      }
+      return false;
+    } else if (ticker in this.COMPARE_STOCKS) {
+      // check is specific company is checked
+      return this.COMPARE_STOCKS[ticker].isChecked;
     }
     return false;
   }

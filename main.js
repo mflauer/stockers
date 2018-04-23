@@ -6,14 +6,19 @@ dom = {};
 // graphs
 dom.volumeGraphContainer = $('#volume-graph-container');
 dom.volumeGraph = d3.select('#volume-graph');
+dom.volumeHover = d3.select('#volume-hover');
 dom.growthGraphContainer = $('#growth-graph-container');
 dom.growthGraph = d3.select('#growth-graph');
+dom.growthHover = d3.select('#growth-hover');
 dom.compareGraphContainer = $('#compare-graph-container');
 dom.compareGraph = d3.select('#compare-graph');
+dom.compareHover = d3.select('#compare-hover');
 dom.companyGraphContainer = $('#company-graph-container');
 dom.companyGraph = d3.select('#company-graph');
+dom.companyHover = d3.select('#company-hover');
 
 // portfolio
+dom.portfolioHidden = $('#portfolio-hidden');
 dom.portfolioValue = $('#portfolio-value');
 dom.portfolioStocks = $('#portfolio-stocks');
 dom.portfolioTable = $('#portfolio-table');
@@ -23,6 +28,8 @@ dom.search = $('#search');
 dom.searchInput = $('#search-input');
 
 // compare
+dom.compareHidden = $('.compare-hidden');
+dom.compareButtons = $('#compare-buttons');
 dom.editButton = $('#edit-button');
 dom.doneButton = $('#done-button');
 dom.compareStocks = $('#compare-stocks');
@@ -65,6 +72,10 @@ dom.buyButton = $('#buy-button');
 //////////////////////////////
 
 // constants
+const GRAPH_X_MARGIN = 20;
+const GRAPH_Y_MARGIN = 10;
+const HOVER_BAR_MARGIN = 1;
+const HOVER_MARGIN = 5;
 const COLORS = [
   'blue',
   'red',
@@ -79,19 +90,13 @@ const COLORS = [
   'brown',
 ];
 
-// graph axes
-var volumeX = d3.scaleTime().range([0, dom.volumeGraphContainer.width()]),
-    volumeY = d3.scaleLinear().range([dom.volumeGraphContainer.height(), 0]),
-    growthX = d3.scaleTime().range([0, dom.growthGraphContainer.width()]),
-    growthY = d3.scaleLinear().range([dom.growthGraphContainer.height(), 0]),
-    compareX = d3.scaleTime().range([0, dom.compareGraphContainer.width()]),
-    compareY = d3.scaleLinear().range([dom.compareGraphContainer.height(), 0]),
-    companyX, companyY;
-
 // graph data
-var portfolioTimeRange = '1Y',
-    compareTimeRange = companyTimeRange = '1D',
-    companyTicker;
+var sectionTimeRanges = {
+  'portfolio' : '1Y',
+  'compare' : '1D',
+  'company' : '1D'
+};
+var companyTicker;
 
 // next color to use for section
 var portfolioColor = 0;
@@ -104,6 +109,11 @@ var editing = false;
 //////////////////////////////
 // HELPER FUNCTIONS
 //////////////////////////////
+
+// get section of a graph
+function getSection(graphName) {
+  return (graphName == 'volume' || graphName == 'growth') ? 'portfolio' : graphName;
+}
 
 // formats date TODO: not used
 function formatDate(date) {
@@ -122,32 +132,35 @@ function formatDate(date) {
 // load change plot for section
 function getStackedPlotData() {
   var tickers = data.getPortfolioTickers();
-  var timeRange = portfolioTimeRange;
+  var timeRange = sectionTimeRanges['portfolio'];
 
   var plotData = { 'tickers': [] };
   var time = data.getTime(timeRange);
   var close = time.interval == 'min' ? 'close' : 'adjusted close'
   var min = 0;
   var max = 0;
-  var values;
+  var dates = [];
+  var totals;
 
   for (var t in tickers) {
-    var stockData = data.getPortfolioData(tickers[t])[time.interval].slice(0, time.n);
+    var stockData = data.getPortfolioData(tickers[t])[time.interval].slice(0, time.n).filter(function(x, i) {
+      return i % time.period == 0;
+    });
 
     // populate dates
-    if (t == 0) {
-      var dates = stockData.map(x => Date.parse(x['date'])).reverse();
-      plotData['dates'] = dates;
-      values = Array(dates.length).fill(0);
+    if (dates.length == 0) {
+      dates = stockData.map(x => Date.parse(x['date'])).reverse();
+      totals = Array(dates.length).fill(0);
     }
 
-    var tickerData = stockData.map(function(x, i) {
-      var value = parseFloat(x[close]);
-      if (value == 0) {
+
+    var tickerData = stockData.map(x => parseFloat(x[close]))
+    tickerData = tickerData.map(function(x, i) {
+      if (x == 0 && i > 1 && tickerData[i - 1] == 0) {
         return null
       } else {
-        values[i] += value;
-        return values[i];
+        totals[i] += x;
+        return totals[i];
       }
     }).reverse();
     plotData['tickers'][tickers[t]] = tickerData;
@@ -156,6 +169,7 @@ function getStackedPlotData() {
     max = dataMax > max ? dataMax : max;
   }
 
+  plotData['dates'] = dates;
   plotData['min'] = min;
   plotData['max'] = max;
 
@@ -163,33 +177,36 @@ function getStackedPlotData() {
 }
 
 // load change plot for section
-function getChangePlotData(section) {
-  if (section == 'portfolio') {
+function getChangePlotData(graphName) {
+  if (graphName == 'volume') {
+    return getStackedPlotData();
+  } else if (graphName == 'growth') {
     var f = 'getPortfolioData';
     var tickers = data.getPortfolioTickers();
-    var timeRange = portfolioTimeRange;
-  } else if (section == 'compare') {
+  } else if (graphName == 'compare') {
     var f = 'getStockData';
     var tickers = data.getCompareTickers();
-    var timeRange = compareTimeRange;
-  } else if (section == 'company') {
+  } else if (graphName == 'company') {
     var f = 'getStockData';
     var tickers = [companyTicker];
-    var timeRange = companyTimeRange;
   }
 
-  var plotData = { 'tickers': [] };
+  var plotData = { 'tickers': {} };
+  var timeRange = sectionTimeRanges[getSection(graphName)];
   var time = data.getTime(timeRange);
   var close = time.interval == 'min' ? 'close' : 'adjusted close'
   var min = Infinity;
   var max = -Infinity;
+  var dates = [];
 
   for (var t in tickers) {
-    var stockData = data[f](tickers[t])[time.interval].slice(0, time.n);
+    var stockData = data[f](tickers[t])[time.interval].slice(0, time.n).filter(function(x, i) {
+      return i % time.period == 0;
+    });
 
     // populate dates
-    if (t == 0) {
-      plotData['dates'] = stockData.map(x => Date.parse(x['date'])).reverse();
+    if (dates.length == 0) {
+      dates = stockData.map(x => Date.parse(x['date'])).reverse();
     }
 
     // always scale based on value of first item
@@ -206,39 +223,51 @@ function getChangePlotData(section) {
     }).reverse();
     plotData['tickers'][tickers[t]] = tickerData;
 
+    var changesRanges = (graphName != 'compare' || data.getCompareChecked(tickers[t]));
     var dataMin = Math.min(...tickerData);
     var dataMax = Math.max(...tickerData);
-    min = dataMin < min ? dataMin : min;
-    max = dataMax > max ? dataMax : max;
+    min = (changesRanges && dataMin < min) ? dataMin : min;
+    max = (changesRanges && dataMax > max) ? dataMax : max;
   }
 
+  plotData['dates'] = dates;
   plotData['min'] = min;
   plotData['max'] = max;
 
   return plotData;
 }
 
-// add ticker stock to change plot
-function plotStockChange(section, ticker, tickerString, color, clear=false) {
-  var plotData = getChangePlotData(section);
-  if (section == 'portfolio') {
-    plotStockStacked(ticker, tickerString, color);
+// add ticker stock to plot
+// optionally force color of existing lines or clear the plot
+function plotStock(graphName, ticker, tickerString, color, forceColor, clear=false) {
+  var plotData = getChangePlotData(graphName);
+  var drawArea = graphName == 'volume';
+  if (drawArea) {
+    var graph = dom.volumeGraph;
+    var hover = dom.volumeHover;
+    var container = dom.volumeGraphContainer;
+  } else if (graphName == 'growth') {
     var graph = dom.growthGraph;
-    var xScale = growthX;
-    var yScale = growthY;
-  } else if (section == 'compare') {
+    var hover = dom.growthHover;
+    var container = dom.growthGraphContainer;
+  } else if (graphName == 'compare') {
+    if (!data.getCompareChecked()) { return; }
     var graph = dom.compareGraph;
-    var xScale = compareX;
-    var yScale = compareY;
-  } else if (section == 'company') {
+    var hover = dom.compareHover;
+    var container = dom.compareGraphContainer;
+  } else if (graphName == 'company') {
     var graph = dom.companyGraph;
-    var xScale = companyX;
-    var yScale = companyY;
+    var hover = dom.companyHover;
+    var container = dom.companyGraphContainer;
   }
 
   // rescale plots
-  xScale.domain([0, plotData['dates'].length - 1]);
-  yScale.domain([plotData['min'], plotData['max']]);
+  var xScale = d3.scaleLinear()
+    .range([GRAPH_X_MARGIN, container.width()])
+    .domain([0, plotData['dates'].length - 1]);
+  var yScale = d3.scaleLinear()
+    .range([container.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN])
+    .domain([plotData['min'], plotData['max']]);
   var startLine = d3.line()
     .x(function(d, i) { return xScale(i); })
     .y(function(d) { return yScale(0.); });
@@ -248,201 +277,237 @@ function plotStockChange(section, ticker, tickerString, color, clear=false) {
     .defined(function(d) {
       return d != null;
     });
-
-  // update current lines in plot
-  var baseline = false;
-  if (clear) {
-    // new graph
-    graph.selectAll('*').remove();
-  } else {
-    graph.selectAll('*').each(function() {
-      var line = d3.select(this);
-      var id = line.attr('id');
-      if (id == `${section}-baseline`) {
-        baseline = true;
-        line.attr('d', startLine(plotData['dates']));
-      } else {
-        var company = id.split('-')[0];
-        line.attr('d', tickerLine(plotData['tickers'][company]));
-      }
-    });
-  }
-
-  // draw baseline if not already in plot
-  if (!baseline) {
-    graph.append('path')
-      .attr('id', `${section}-baseline`)
-      .classed('baseline', true)
-      .attr('d', startLine(plotData['dates']));
-  }
-
-  // draw ticker line
-  graph.append('path')
-    .attr('id', `${tickerString}-${section}-line`)
-    .classed(color, true)
-    .attr('d', tickerLine(plotData['tickers'][ticker]));
-}
-
-// redraw change plot, optionally forcing all lines to have a color
-function updateChangePlot(section, color) {
-  var plotData = getChangePlotData(section);
-  if (section == 'portfolio') {
-    updateStackedPlot();
-    var graph = dom.growthGraph;
-    var xScale = growthX;
-    var yScale = growthY;
-  } else if (section == 'compare') {
-    var graph = dom.compareGraph;
-    var xScale = compareX;
-    var yScale = compareY;
-  } else if (section == 'company') {
-    var graph = dom.companyGraph;
-    var xScale = companyX;
-    var yScale = companyY;
-  }
-
-  // rescale plots
-  xScale.domain([0, plotData['dates'].length - 1]);
-  yScale.domain([plotData['min'], plotData['max']]);
-  var startLine = d3.line()
-    .x(function(d, i) { return xScale(i); })
-    .y(function(d) { return yScale(0.); });
-  var tickerLine = d3.line()
-    .x(function(d, i) { return xScale(i); })
-    .y(function(d) { return yScale(d); })
-    .defined(function(d) {
-      return d != null;
-    });
-
-  // update current lines in plot
-  graph.selectAll('*').each(function() {
-    var line = d3.select(this);
-    var id = line.attr('id');
-    if (id == `${section}-baseline`) {
-      line.attr('d', startLine(plotData['dates']));
-    } else {
-      var ticker = id.split('-')[0];
-      if (color != undefined) {
-        line.classed('red green', false).classed(color, true);
-      }
-      line.attr('d', tickerLine(plotData['tickers'][ticker]));
-    }
-  });
-}
-
-// add ticker stock to stacked plot
-function plotStockStacked(ticker, tickerString, color) {
-  var plotData = getStackedPlotData();
-  var graph = dom.volumeGraph;
-  var xScale = volumeX;
-  var yScale = volumeY;
-
-  // rescale plots
-  xScale.domain([0, plotData['dates'].length - 1]);
-  yScale.domain([plotData['min'], plotData['max']]);
-  var startLine = d3.line()
-    .x(function(d, i) { return xScale(i); })
-    .y(function(d) { return yScale(0.); });
-  var tickerLine = d3.line()
-    .x(function(d, i) { return xScale(i); })
-    .y(function(d) { return yScale(d); })
-    .defined(function(d) {
-      return d != null;
-    });
-  var area = d3.area()
-    .x(function(d, i) { return xScale(i); })
-    .y0(dom.volumeGraphContainer.height())
-    .y1(function(d) { return yScale(d); })
-    .defined(function(d) {
-      return d != null;
-    });
-
-  // update current lines in plot
-  var baseline = false;
-  graph.selectAll('*').each(function() {
-    var line = d3.select(this);
-    var id = line.attr('id');
-    if (id == `volume-baseline`) {
-      baseline = true;
-      line.attr('d', startLine(plotData['dates']));
-    } else {
-      var idArray = id.split('-');
-      var company = idArray[0];
-      if (idArray[2] == 'line') {
-        line.attr('d', tickerLine(plotData['tickers'][company]));
-      } else if (idArray[2] == 'area') {
-        line.attr('d', area(plotData['tickers'][company]));
-      }
-    }
-  });
-
-  // draw baseline if not already in plot
-  if (!baseline) {
-    graph.append('path')
-      .attr('id', `volume-baseline`)
-      .classed('baseline', true)
-      .attr('d', startLine(plotData['dates']));
-  }
-
-  var tickerData = plotData['tickers'][ticker];
-
-  // draw ticker line
-  graph.insert('path', ':nth-child(2)')
-    .attr('id', `${tickerString}-volume-line`)
-    .classed(color, true)
-    .attr('d', tickerLine(tickerData));
-
-  // draw area
-  graph.insert('path', ':nth-child(2)')
-    .attr('id', `${tickerString}-volume-area`)
-    .classed(color, true)
-    .classed('fill', true)
-    .attr('d', area(tickerData));
-}
-
-// redraw stacked plot
-function updateStackedPlot() {
-  var plotData = getStackedPlotData();
-  var graph = dom.volumeGraph;
-  var xScale = growthX;
-  var yScale = growthY;
-
-  // rescale plots
-    xScale.domain([0, plotData['dates'].length - 1]);
-    yScale.domain([plotData['min'], plotData['max']]);
-    var startLine = d3.line()
-      .x(function(d, i) { return xScale(i); })
-      .y(function(d) { return yScale(0.); });
-    var tickerLine = d3.line()
-      .x(function(d, i) { return xScale(i); })
-      .y(function(d) { return yScale(d); })
-      .defined(function(d) {
-        return d != null;
-      });
+  if (drawArea) {
     var area = d3.area()
       .x(function(d, i) { return xScale(i); })
-      .y0(dom.volumeGraphContainer.height())
+      .y0(container.height() - GRAPH_Y_MARGIN)
       .y1(function(d) { return yScale(d); })
       .defined(function(d) {
         return d != null;
       });
+  }
 
   // update current lines in plot
-  graph.selectAll('*').each(function() {
-    var line = d3.select(this);
-    var id = line.attr('id');
-    if (id == `volume-baseline`) {
-      line.attr('d', startLine(plotData['dates']));
+  if (clear) {
+    // new graph
+    graph.selectAll('*').remove();
+    hover.selectAll('*').remove();
+  } else {
+    hover.select(`#${graphName}-baseline`)
+      .attr('y1', yScale(0))
+      .attr('y2', yScale(0));
+    hover.select(`#${graphName}-baseline-label`)
+      .attr('x', xScale(0) - GRAPH_X_MARGIN)
+      .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1);
+    graph.select(`#${graphName}-capture`)
+      .on('mousemove', handleMouseMove(graphName, xScale));
+    graph.selectAll(`[id$='${graphName}-line']`).each(function() {
+      var element = d3.select(this);
+      var company = element.attr('id').split('-')[0];
+      if (forceColor != undefined) {
+        element.classed('red green', false).classed(forceColor, true);
+      }
+      element.attr('d', tickerLine(plotData['tickers'][company]))
+        .on('mousemove', handleMouseMove(graphName, xScale));;
+    });
+    if (drawArea) {
+      graph.selectAll(`[id$='${graphName}-area']`).each(function() {
+        var element = d3.select(this);
+        var company = element.attr('id').split('-')[0];
+        if (forceColor != undefined) {
+          element.classed('red green', false).classed(forceColor, true);
+        }
+        element.attr('d', area(plotData['tickers'][company]))
+          .on('mousemove', handleMouseMove(graphName, xScale));;
+      });
+    }
+  }
+
+  // if hover hasn't been drawn
+  if (hover.node().children.length == 0) {
+    // add capture
+    graph.append('rect')
+      .attr('id', `${graphName}-capture`)
+      .attr('x', xScale(0))
+      .attr('width', container.width() - GRAPH_X_MARGIN)
+      .attr('height', container.height())
+      .on('mousemove', handleMouseMove(graphName, xScale))
+      .on('mouseleave', handleMouseLeave(graphName))
+      .on('outsidemove', function() {
+        // custom event for handling linked hover bars
+        var x = d3.event.detail.x;
+        d3.select(`#${graphName}-hover-rect`)
+          .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN)
+          .classed('hide', false);
+        d3.select(`#${graphName}-hover-line`)
+          .attr('x1', x - HOVER_BAR_MARGIN)
+          .attr('x2', x - HOVER_BAR_MARGIN)
+          .classed('hide', false);
+      });
+
+    // add hover line
+    hover.append('rect')
+      .attr('id', `${graphName}-hover-rect`)
+      .attr('x', xScale(0) - HOVER_MARGIN)
+      .attr('y', 0)
+      .attr('width', 0)
+      .attr('height', container.height())
+      .classed('hide', true);
+    hover.append('line')
+      .attr('id', `${graphName}-hover-line`)
+      .attr('x1', xScale(0) - HOVER_MARGIN)
+      .attr('y1', 0)
+      .attr('x2', xScale(0) - HOVER_MARGIN)
+      .attr('y2', container.height())
+      .classed('hide', true);
+
+    // add baseline and baseline label
+    hover.append('text')
+      .attr('id', `${graphName}-baseline-label`)
+      .attr('x', xScale(0) - GRAPH_X_MARGIN)
+      .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1)
+      .classed('baseline-label', true)
+      .text(drawArea ? '$0' : '0%');
+    hover.append('line')
+      .attr('id', `${graphName}-baseline`)
+      .attr('x1', xScale(0))
+      .attr('y1', yScale(0))
+      .attr('x2', container.width())
+      .attr('y2', yScale(0))
+      .classed('baseline', true)
+      .on('mousemove', handleMouseMove(graphName, xScale));
+  }
+
+  if (ticker != undefined) {
+    var tickerData = plotData['tickers'][ticker];
+
+    if (drawArea) {
+      // draw area
+      graph.insert('path', '#volume-capture + path')
+        .attr('id', `${tickerString}-volume-area`)
+        .attr('d', area(tickerData))
+        .classed(color, true)
+        .classed('fill', true)
+        .on('mouseover', handleMouseOver(graphName))
+        .on('mouseleave', handleMouseLeave(graphName))
+        .on('mousemove', handleMouseMove(graphName, xScale));
+
+      // draw total line
+      graph.insert('path', ':first-child')
+        .attr('id', `${tickerString}-volume-line`)
+        .attr('d', tickerLine(tickerData))
+        .classed('very thick', true)
+        .on('mousemove', handleMouseMove(graphName, xScale));
     } else {
-      var idArray = id.split('-');
-      var company = idArray[0];
-      if (idArray[2] == 'line') {
-        line.attr('d', tickerLine(plotData['tickers'][company]));
-      } else if (idArray[2] == 'area') {
-        line.attr('d', area(plotData['tickers'][company]));
+      // draw ticker line
+      graph.append('path')
+        .attr('id', `${tickerString}-${graphName}-line`)
+        .attr('d', tickerLine(tickerData))
+        .classed(color, true)
+        .on('mouseover', handleMouseOver(graphName))
+        .on('mouseleave', handleMouseLeave(graphName))
+        .on('mousemove', handleMouseMove(graphName, xScale));
+    }
+  }
+}
+
+// mouseover event listener on plot line
+function handleMouseOver(graphName) {
+  if (graphName == 'company') {
+    return null
+  } else {
+    return function() {
+      var ticker = $(this).attr('id').split('-')[0];
+      var section = getSection(graphName);
+
+      // hover line and move to front
+      var lineName = graphName == 'volume' ? 'growth' : graphName;
+      if (data.getCompareChecked(ticker)) {
+        var element = d3.select(`#${ticker}-${lineName}-line`).classed('thick', true).node();
+        element.parentNode.appendChild(element);
+      }
+
+      // hover item and row
+      $(`#${ticker}-${section}-item, #${ticker}-${section}-row`).addClass('hover');
+
+      // hover volume area
+      if (section == 'portfolio') {
+        $(`#${ticker}-volume-area`).addClass('hover');
       }
     }
-  });
+  }
+}
+
+// mouseleave event listener on plot line
+function handleMouseLeave(graphName) {
+  return function() {
+    var ticker = $(this).attr('id').split('-')[0];
+    var section = getSection(graphName);
+
+    // unhover line
+    var lineName = graphName == 'volume' ? 'growth' : graphName;
+    $(`#${ticker}-${lineName}-line`).removeClass('thick');
+
+    // unhover item and row
+    $(`#${ticker}-${section}-item, #${ticker}-${section}-row`).removeClass('hover');
+
+    // unhover volume area
+    if (section == 'portfolio') {
+      $(`#${ticker}-volume-area`).removeClass('hover');
+    }
+
+    // remove hover bar
+    $(`#${graphName}-hover-rect`).addClass('hide');
+    $(`#${graphName}-hover-line`).addClass('hide');
+
+    // remove linked hover bar
+    if (graphName == 'volume') {
+      $('#growth-hover-rect, #growth-hover-line').addClass('hide');
+    } else if (graphName == 'growth') {
+      $('#volume-hover-rect, #volume-hover-line').addClass('hide');
+    }
+
+    // reset data
+    updateData(section, sectionTimeRanges[section]);
+  }
+}
+
+// mousemove event listener on plot line
+function handleMouseMove(graphName, xScale) {        
+  return function() {
+    var graph = d3.select(`#${graphName}-graph`);
+    var mouseX = d3.mouse(graph.node())[0];
+    var i = Math.round(xScale.invert(mouseX));
+    var x = xScale(i);
+
+    // show hover line
+    d3.select(`#${graphName}-hover-rect`)
+      .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN)
+      .classed('hide', false);
+    d3.select(`#${graphName}-hover-line`)
+      .attr('x1', x - HOVER_BAR_MARGIN)
+      .attr('x2', x - HOVER_BAR_MARGIN)
+      .classed('hide', false);
+
+    // hover on linked graph
+    if (graphName == 'volume') {
+      $('#growth-hover-rect, #growth-hover-line').removeClass('hide');
+      d3.select('#growth-capture').dispatch('outsidemove', { detail: { x: x } });
+    } else if (graphName == 'growth') {
+      $('#volume-hover-rect, #volume-hover-line').removeClass('hide');
+      d3.select('#volume-capture').dispatch('outsidemove', { detail: { x: x } });
+    }
+
+    // calculate hover data
+    var section = getSection(graphName);
+    var time = data.getTime(sectionTimeRanges[section])
+    var hoverRange = {
+      n: time.n - (i) * time.period,
+      interval: time.interval,
+      period: time.period,
+    };
+    updateData(section, hoverRange, hoverRange);
+  }
 }
 
 // get color associated with change
@@ -476,8 +541,12 @@ function createCompanyClickListener(element, ticker) {
 function createCheckClickListener(ticker, section) {
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
+  var timeRange = sectionTimeRanges[section];
 
   if (section == 'portfolio') {
+    // show section
+    dom.portfolioHidden.removeClass('hide');
+
     // pick color
     var color = COLORS[portfolioColor];
     portfolioColor += 1;
@@ -487,10 +556,15 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStockChange(section, ticker, tickerString, color);
-    createPortfolioTableRow(dom, ticker, portfolioTimeRange, color);
+    plotStock('volume', ticker, tickerString, color);
+    plotStock('growth', ticker, tickerString, color);
+    createPortfolioTableRow(dom, ticker, timeRange, color);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
+    addCompanyHoverHandlers(ticker, section);
   } else if (section == 'compare') {
+    // show section
+    dom.compareHidden.removeClass('hide');
+
     // pick color
     var color = COLORS[compareColor];
     compareColor += 1;
@@ -500,9 +574,10 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStockChange(section, ticker, tickerString, color);
-    createCompareTableRow(dom, ticker, compareTimeRange, color);
+    plotStock(section, ticker, tickerString, color);
+    createCompareTableRow(dom, ticker, timeRange, color);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
+    addCompanyHoverHandlers(ticker, section);
 
     // create click event listener for removing stock
     $(`#${tickerString}-remove`).click(function() {
@@ -510,6 +585,15 @@ function createCheckClickListener(ticker, section) {
       $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
       d3.select(`#${tickerString}-compare-line`).remove();
+
+      if (data.getCompareTickers().length == 0) {
+        // hide all if no compare tickers
+        dom.doneButton.click();
+        dom.compareHidden.addClass('hide');
+      } else if (!data.getCompareChecked()) {
+        // hide plot and table if no plots displayed
+        dom.compareHidden.not(dom.compareButtons).not(dom.compareStocks).addClass('hide');
+      }
     });
   } else if (section == 'suggested') {
     createCompareItem(dom, ticker, section);
@@ -527,10 +611,11 @@ function createCheckClickListener(ticker, section) {
 
   element.click(function(e) {
     $(this).blur();
+    dom.doneButton.click();
     e.stopPropagation();
 
     data.toggleCompareChecked(ticker);
-    
+
     // check/uncheck all other checkmarks
     $(`[id^='${tickerString}-check']`).each(function(i, value) {
       $(value).children('i').first().toggleClass('check');
@@ -544,9 +629,10 @@ function createCheckClickListener(ticker, section) {
       data.addToCompareStocks(ticker);
       createCheckClickListener(ticker, 'compare')
     } else {
+      dom.compareHidden.removeClass('hide');
       // show/hide plot
-      var line = d3.select(`#${tickerString}-compare-line`);
-      line.classed('hide', !line.classed('hide'));
+      $(`#${tickerString}-compare-line`).toggleClass('hide');
+      plotStock('compare');
     }
 
     if (section == 'search') {
@@ -567,10 +653,16 @@ function createCheckClickListener(ticker, section) {
     }
 
     // hide plot and table if no plots displayed
-    if (data.getCompareTickers().length == 0) {
-      // TODO
+    if (!data.getCompareChecked()) {
+      dom.compareHidden.not(dom.compareButtons).not(dom.compareStocks).addClass('hide');
     }
   });
+}
+
+// add hover handlers for graph, item, and table row associated with this ticker
+function addCompanyHoverHandlers(ticker, section) {
+  var graphName = section == 'portfolio' ? 'growth' : section;
+  $(`#${ticker}-${section}-item, #${ticker}-${section}-row`).hover(handleMouseOver(graphName), handleMouseLeave(graphName));  
 }
 
 // populates company page content
@@ -578,7 +670,8 @@ function loadCompanyPage(ticker) {
   companyTicker = ticker;
 
   // reset time range selector
-  companyTimeRange = '1D';
+  timeRange = '1D';
+  sectionTimeRanges['company'] = timeRange;
   dom.companySelector.children().each(function(i, value) {
     $(value).removeClass('active');
   });
@@ -595,8 +688,8 @@ function loadCompanyPage(ticker) {
   createCheckClickListener(ticker, 'button');
 
   // populate company information
-  var change = data.getChange(ticker, companyTimeRange);
-  var stats = data.getStats(ticker, companyTimeRange);
+  var change = data.getChange(ticker, timeRange);
+  var stats = data.getStats(ticker, timeRange);
   dom.companyTicker.text(ticker);
   dom.companyName.text(data.getCompany(ticker));
   dom.companyPrice.text(data.getPrice(ticker).withCommas());
@@ -617,62 +710,55 @@ function loadCompanyPage(ticker) {
   // show modal
   dom.companyPage.modal('show');
   
-  // set scale of company page plot
-  if (companyX == undefined) {
-    companyX = d3.scaleTime().range([0, dom.companyGraphContainer.width()]);
-  }
-  if (companyY == undefined) {
-    companyY = d3.scaleLinear().range([dom.companyGraphContainer.height(), 0]);
-  }
-  
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
-  plotStockChange('company', ticker, tickerString, getColor(change), true)
+  plotStock('company', ticker, tickerString, getColor(change), undefined, true)
 }
 
-// update portfolio row
+// update section data
 // hoverRange is only set when hovering
 // timeRange should be the same as hoverRange when hoverRange is set
-function updatePortfolioRow(ticker, timeRange, hoverRange) {
-  var change = data.getPortfolioChange(ticker, timeRange);
-  var element = $(`#${ticker}-portfolio-change`);
-  
-  $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
-  $(`#${ticker}-portfolio-percent`).text(data.getPortfolioPercent(ticker, hoverRange).withCommas());
-  element.text(change.withCommas());
-  element.siblings().removeClass('up down').addClass(getArrow(change));
-  element.parent().removeClass('green red').addClass(getColor(change));
-}
+function updateData(section, timeRange, hoverRange) {
+  if (section == 'portfolio') {
+    data.getPortfolioTickers().map(function(ticker) {
+      var change = data.getPortfolioChange(ticker, timeRange);
+      var element = $(`#${ticker}-portfolio-change`);
+      
+      plotStock('volume');
+      plotStock('growth');
 
-// update compare row
-// hoverRange is only set when hovering
-// timeRange should be the same as hoverRange when hoverRange is set
-function updateCompareRow(ticker, timeRange, hoverRange) {
-  var change = data.getChange(ticker, timeRange);
-  var element = $(`#${ticker}-compare-change`);
+      $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
+      $(`#${ticker}-portfolio-percent`).text(data.getPortfolioPercent(ticker, hoverRange).withCommas());
+      element.text(change.withCommas());
+      element.siblings().removeClass('up down').addClass(getArrow(change));
+      element.parent().removeClass('green red').addClass(getColor(change));
+    });
+  } else if (section == 'compare') {
+    data.getCompareTickers().map(function(ticker) {
+      var change = data.getChange(ticker, timeRange);
+      var element = $(`#${ticker}-compare-change`);
 
-  $(`#${ticker}-compare-price`).text(data.getPrice(ticker, hoverRange).withCommas());
-  element.text(change.withCommas());
-  element.siblings().removeClass('up down').addClass(getArrow(change));
-  element.parent().removeClass('green red').addClass(getColor(change));
-}
+      plotStock(section);
 
-// update company page
-// hoverRange is only set when hovering
-// timeRange should be the same as hoverRange when hoverRange is set
-function updateCompanyPage(ticker, timeRange, hoverRange) {
-  var change = data.getChange(ticker, timeRange);
-  var stats = data.getStats(ticker, timeRange);
-  
-  updateChangePlot('company', getColor(change));
+      $(`#${ticker}-compare-price`).text(data.getPrice(ticker, hoverRange).withCommas());
+      element.text(change.withCommas());
+      element.siblings().removeClass('up down').addClass(getArrow(change));
+      element.parent().removeClass('green red').addClass(getColor(change));
+    });
+  } else if (section == 'company') {
+    var change = data.getChange(companyTicker, timeRange);
+    var stats = data.getStats(companyTicker, timeRange);
+    
+    plotStock('company', undefined, undefined, undefined, getColor(change));
 
-  dom.companyPrice.text(data.getPrice(ticker, hoverRange).withCommas());
-  dom.companyChange.text(change.withCommas());
-  dom.companyChange.siblings().removeClass('up down').addClass(getArrow(change));
-  dom.companyChange.parent().removeClass('green red').addClass(getColor(change));
-  dom.companyStart.text(stats.start.withCommas(timeRange));
-  dom.companyHigh.text(stats.high.withCommas(timeRange));
-  dom.companyLow.text(stats.low.withCommas(timeRange));
+    dom.companyPrice.text(data.getPrice(companyTicker, hoverRange).withCommas());
+    dom.companyChange.text(change.withCommas());
+    dom.companyChange.siblings().removeClass('up down').addClass(getArrow(change));
+    dom.companyChange.parent().removeClass('green red').addClass(getColor(change));
+    dom.companyStart.text(stats.start.withCommas(timeRange));
+    dom.companyHigh.text(stats.high.withCommas(timeRange));
+    dom.companyLow.text(stats.low.withCommas(timeRange));
+  }
 }
 
 
@@ -749,7 +835,7 @@ $(document).click(function(e) {
 });
 
 // time range selectors
-$('.selector>.item').click(function(e) {
+$('.selector>.right.menu>.item, .selector>.item').click(function(e) {
   var timeRangeElement = $(e.target);
 
   // remove 'active' class from other time range menu items
@@ -757,19 +843,9 @@ $('.selector>.item').click(function(e) {
   timeRangeElement.addClass('active');
 
   var timeRange = timeRangeElement.text();
-  var section = timeRangeElement.parent().attr('id').split('-')[0];
-  if (section == 'portfolio') {
-    portfolioTimeRange = timeRange;
-    updateChangePlot(section);
-    data.getPortfolioTickers().map(x => updatePortfolioRow(x, portfolioTimeRange));
-  } else if (section == 'compare') {
-    compareTimeRange = timeRange;
-    updateChangePlot(section);
-    data.getCompareTickers().map(x => updateCompareRow(x, compareTimeRange));
-  } else if (section == 'company') {
-    companyTimeRange = timeRange;
-    updateCompanyPage(companyTicker, companyTimeRange);
-  }
+  var section = timeRangeElement.closest('.selector').attr('id').split('-')[0];
+  sectionTimeRanges[section] = timeRange;
+  updateData(section, timeRange);
 });
 
 // company page
@@ -812,261 +888,12 @@ dom.buyShares.focus(function() {
 dom.buyButton.click(function() {
   var newStock = data.buyStock(companyTicker, parseInt(dom.buyShares.val()));
   dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+  dom.portfolioHidden.removeClass('hide');
   if (newStock) {
     createCheckClickListener(companyTicker, 'portfolio');
   } else {
-    updateChangePlot('portfolio');
-    updatePortfolioRow(companyTicker, portfolioTimeRange);
+    plotStock('volume');
+    plotStock('growth');
+    updateData('portfolio', companyTicker, sectionTimeRanges['portfolio']);
   }
 });
-
-
-/////////////////
-// GRAPH STUFF
-/////////////////
-
-// //var color = d3.scale.category10();
-
-// //compare graph
-// //1d and 5d = in every 5 mins
-
-// function getDates(array) {
-//   var date_list = [];
-//   for (var i=0; i < array.length; i++) {
-//     date_list.push(formatDate(i));
-//   }
-//   return date_list;
-// }
-
-
-// var dates = getDates(compareGraphData['dates'][0]);
-// var pricesGOOG = compareGraphData['GOOG'];
-// var pricesAAPL = compareGraphData['AAPL'];
-
-// var margin = {top: 40, right: 40, bottom: 40, left: 40},
-//     width = 500 - margin.left - margin.right,
-//     height = 500 - margin.top - margin.bottom;
-
-// var n = pricesGOOG[0].length;
-// /*
-// console.log(pricesGOOG[0].length);
-// console.log(compareGraphData);
-// console.log(n);
-// console.log(pricesAAPL[0]);
-// console.log(dates);
-// console.log(Math.max.apply(Math, pricesAAPL[0]));
-// */
-
-// function mapData(arrayP) {
-//   price_map = [];
-//   for (var i=0; i < n; i++) {
-//     price_map.push({ "y" : arrayP[i]});
-//   }
-//   return price_map;
-// }
-
-// var price_data_GOOG = mapData(pricesGOOG[0]);
-// var price_data_AAPL = mapData(pricesAAPL[0])
-
-
-// //dummy dataset
-// var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
-// console.log(dataset);
-
-// var x = d3.scaleTime()
-//     .domain([0, n-1])
-//     .range([0, width]);
-
-// var y = d3.scaleLinear()
-//     .domain([Math.min.apply(Math, pricesGOOG[0]), Math.max.apply(Math, pricesGOOG[0])])
-//     .range([height, 0]);
-
-// var lineGOOG = d3.line()
-//     .x(function(d, i) { return x(i); })
-//     .y(function(d) { return y(d.y); })
-//     .curve(d3.curveLinear);
-
-// var lineAAPL = d3.line()
-//     .x(function(d, i) { return x(i); })
-//     .y(function(d) { return y(d.y); })
-//     .curve(d3.curveLinear);
-
-
-// var compare = d3.select("#compare-graph").append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", height + margin.top + margin.bottom)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-//         // Add the X Axis
-// compare.append("g")
-//     .attr("class", "x axis")
-//     .attr("transform", "translate(0," + height + ")")
-//     .call(d3.axisBottom(x)
-//             .tickFormat(d3.timeFormat("%m-%d")))
-
-
-// compare.append("g")
-//     .attr("class", "y axis")
-//     .call(d3.axisLeft(y));
-
-// compare.append("path")
-//     .datum(price_data_GOOG) // 10. Binds data to the line
-//     .attr("class", "line") // Assign a class for styling
-//     .attr("d", lineGOOG);
-
-// /*compare.append("path")
-//         .datum(price_data_AAPL) // 10. Binds data to the line
-//         .attr("class", "line") // Assign a class for styling
-//         .attr("d", lineAAPL);
-// */
-// //change timescale of data
-// function changeTime() {
-//   //get data again
-//   console.log(compareGraphData);
-//   var dates = getDates(compareGraphData['dates'][1]);
-//   var pricesGOOG = compareGraphData['GOOG'];
-//   var pricesAAPL = compareGraphData['AAPL'];
-//   console.log(dates);
-//   console.log(pricesGOOG);
-//   console.log(pricesGOOG[0]);
-//   console.log(pricesGOOG[1]);
-//   console.log(pricesGOOG[2]);
-
-
-//   var compare = d3.select('#compare-graph').transition();
-
-//     compare.select(".lineGOOG") //change the line
-//             .duration(500)
-//             .attr("d", lineGOOG);
-//     compare.select(".x.axis")
-//             .duration(500)
-//             .call(x);
-//     compare.select(".y.axis")
-//             .duration(500)
-//             .call(y);
-
-
-// }
-
-// //add company data to graph
-// function addStock() {
-
-// }
-// //remove company data from graph
-// function removeStock() {
-
-// }
-// //add hover!!
-// //https://bl.ocks.org/d3noob/257c360b3650b9f0a52dd8257d7a2d73
-
-// //growth graph
-// // https://bl.ocks.org/mbostock/c69f5960c6b1a95b6f78
-
-// var x = d3.scaleTime()
-//     .domain([0, 20])
-//     .range([0, width]);
-
-// var y = d3.scaleLinear()
-//     .domain([0,1])
-//     .range([height, 0]);
-
-// var line = d3.line()
-//     .x(function(d, i) { return x(i); })
-//     .y(function(d) { return y(d.y); })
-//     .curve(d3.curveLinear);
-
-// var growth = d3.select("#growth").append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", height + margin.top + margin.bottom)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-//         // Add the X Axis
-// growth.append("g")
-//     .attr("class", "x axis")
-//     .attr("transform", "translate(0," + height + ")")
-//     .call(d3.axisBottom(x)
-//             .tickFormat(d3.timeFormat("%m-%d")))
-
-//       // Add the Y Axis
-
-// growth.append("g")
-//     .attr("class", "y axis")
-//     .call(d3.axisLeft(y));
-// growth.append("path")
-//     .datum(dataset) // 10. Binds data to the line
-//     .attr("class", "line") // Assign a class for styling
-//     .attr("d", line);
-
-
-// //volume graph
-
-// var x = d3.scaleTime()
-//     .domain([0, 20])
-//     .range([0, width]);
-
-// var y = d3.scaleLinear()
-//     .domain([0,1])
-//     .range([height, 0]);
-
-// var line = d3.line()
-//     .x(function(d, i) { return x(i); })
-//     .y(function(d) { return y(d.y); })
-//     .curve(d3.curveLinear);
-
-// var stack = d3.stack();
-
-// var divVolume = d3.select('#volume').append("div")
-//     .attr("class", "tooltip")
-//     .style("opacity", 0);
-
-// var volume = d3.select("#volume").append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", height + margin.top + margin.bottom)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-//         // Add the X Axis
-// volume.append("g")
-//     .attr("class", "x axis")
-//     .attr("transform", "translate(0," + height + ")")
-//     .call(d3.axisBottom(x)
-//             .tickFormat(d3.timeFormat("%m-%d")))
-
-//       // Add the Y Axis
-
-// volume.selectAll("dot")
-//    .data(dataset)
-//  .enter().append("circle")
-//    .attr("r", 2)
-//    .attr("cx", function(d, i) { return x(i); })
-//    .attr("cy", function(d) { return y(d.y); })
-//    .attr("color", "grey")
-//    .on("mouseover", function(d) {
-//      divVolume.transition()
-//        .duration(200)
-//        .style("opacity", .9);
-//      divVolume.html("Date" + "<br/>" + "Price")
-//        .style("left", (d3.event.pageX - 180) + "px")
-//        .style("top", (d3.event.pageY - 155) + "px");
-//      })
-//    .on("mouseout", function(d) {
-//      divVolume.transition()
-//        .duration(500)
-//        .style("opacity", 0);
-//      });
-
-// volume.append("g")
-//     .attr("class", "y axis")
-//     .call(d3.axisLeft(y));
-// volume.append("path")
-//     .datum(dataset) // 10. Binds data to the line
-//     .attr("class", "line") // Assign a class for styling
-//     .attr("d", line);
-
-// //data is in compareGraphData
-
