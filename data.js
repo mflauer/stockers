@@ -138,7 +138,10 @@ class Data {
       // get price at start of timeRange
       var time = this.getTime(timeRange);
       var close = time.interval == 'min' ? 'close' : 'adjusted close'
-      var price = parseFloat(stockData[time.interval][time.n - 1][close]);
+      if (time.n - time.period == 0) {
+        return parseFloat(stockData['min'][0]['close']);
+      }
+      var price = parseFloat(stockData[time.interval][time.n - time.period][close]);
       if (price == 0) {
         // find first non-zero element
         price = parseFloat(stockData[time.interval].slice().reverse().find(function(e) { return e[close] > 0; })[close]);
@@ -243,12 +246,12 @@ class Data {
     return portfolioData;
   }
 
-  getPortfolioValue(ticker, timeRange) {
+  getPortfolioValue(ticker, timeRange, first=true) {
     var total = 0;
     if (ticker == undefined) {
       // return sum of values for each stock in portfolio
       for (ticker in this.PORTFOLIO_STOCKS) {
-        total += this.getPortfolioValue(ticker, timeRange);
+        total += this.getPortfolioValue(ticker, timeRange, first);
       }
     } else {
       // return value of individual stock in portfolio
@@ -259,7 +262,7 @@ class Data {
         if (timeRange != undefined) {
           // get value of individual stock at start of timeRange
           var time = this.getTime(timeRange);
-          if (new Date(changes[i]['date']) >= new Date(this.getStockData(ticker)[time.interval][time.n - 1]['date'])) {
+          if (new Date(changes[i]['date']) >= new Date(this.getStockData(ticker)[time.interval][time.n - time.period]['date'])) {
             break;
           }
         }
@@ -268,7 +271,7 @@ class Data {
       total = shares * price;
 
       // find first purchase of stock
-      if (total == 0) {
+      if (total == 0 && first) {
         var initial = this.PORTFOLIO_STOCKS[ticker][0];
         total = initial.amount * initial.price;
       }
@@ -278,18 +281,17 @@ class Data {
 
   getPortfolioChange(ticker, timeRange) {
     // compare current value with value at start of timeRange
-    var start = this.getPortfolioValue(ticker, timeRange);
-    return 100 * ((this.getPortfolioValue(ticker) / start) - 1);
+    return 100 * ((this.getPortfolioValue(ticker) / this.getPortfolioValue(ticker, timeRange)) - 1);
   }
 
   getPortfolioPercent(ticker, timeRange) {
     // get percentage at start of timeRange
-    var total = this.getPortfolioValue(undefined, timeRange);
+    var total = this.getPortfolioValue(undefined, timeRange, false);
     if (total == 0) {
       // portfolio is empty
       return '—';
     } else {
-      return 100 * (this.getPortfolioValue(ticker, timeRange) / total);
+      return 100 * (this.getPortfolioValue(ticker, timeRange, false) / total);
     }
   }
 
@@ -300,7 +302,15 @@ class Data {
         // create new stock in portfolio
         this.PORTFOLIO_STOCKS[ticker] = [];
         newStock = true;
+      } else {
+        var time = this.getCurrentTime();
+        var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
+        if (latest['date'] == time) {
+          latest['amount'] += shares;
+          return false;
+        }
       }
+      
       this.PORTFOLIO_STOCKS[ticker].push({
         'date': this.getCurrentTime(),
         'price': this.getPrice(ticker),

@@ -147,13 +147,13 @@ i.caret.icon {
   padding: .75em !important; }
 
 .graph-container {
-  width: 100%;
-  height: 30vh;
-  margin-bottom: 1em;
-  padding: 2px; }
-
-table {
-  margin-top: 0 !important; }
+  width: 100%; }
+  .graph-container.portfolio {
+    height: 25vh; }
+  .graph-container.compare {
+    height: 40vh; }
+  .graph-container.company {
+    height: 30vh; }
 
 #compare-stocks {
   margin-top: 5px; }
@@ -178,11 +178,12 @@ path {
   fill: none;
   stroke: #767676;
   stroke-width: 2; }
-  path.baseline {
-    stroke-width: 1;
-    stroke-dasharray: 10, 15; }
   path.thick {
     stroke-width: 3; }
+    path.thick.very {
+      stroke-width: 4; }
+  path.fill {
+    pointer-events: all; }
   path.red {
     stroke: #db2828; }
     path.red.fill {
@@ -261,16 +262,26 @@ path {
     path.brown.hover {
       fill: #a5673f; }
 
-rect[id$="overlay"] {
+rect[id$="capture"] {
   fill: none;
   pointer-events: all; }
-
 rect[id$="hover-rect"] {
-  fill: #21ba45; }
+  fill: rgba(255, 255, 255, 0.95);
+  pointer-events: none; }
+
+line {
+  stroke: #767676; }
+  line[id$="baseline"] {
+    stroke-width: 1;
+    stroke-dasharray: 10, 10; }
+  line[id$="hover-line"] {
+    stroke-width: 2;
+    pointer-events: none; }
 
 text.baseline-label {
   fill: #767676;
   font-size: 12px; }
+<<<<<<< HEAD
 
 #tooltip {
   position: absolute;
@@ -290,3 +301,5 @@ text.baseline-label {
   height: 30vh;
   opacity: 1;
 }
+=======
+>>>>>>> 87674c4a44f4eab0bb100359d0e3d9b17a2dcb09
