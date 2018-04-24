@@ -163,7 +163,7 @@ class Data {
     var stockData = this.getStockData(ticker);
     var close = time.interval == 'min' ? 'close' : 'adjusted close'
     var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x[close])));
-    
+
     return {
       start : this.getPrice(ticker, timeRange),
       high : Math.max(...closes.filter(Boolean)),
@@ -310,7 +310,7 @@ class Data {
           return false;
         }
       }
-      
+
       this.PORTFOLIO_STOCKS[ticker].push({
         'date': this.getCurrentTime(),
         'price': this.getPrice(ticker),
@@ -321,7 +321,44 @@ class Data {
   }
 
   sellStock(ticker, shares) {
-    // TODO
+    //can't sell stock if you don't have any shares
+    // case when you sell all of the stock you own
+    var changes = this.PORTFOLIO_STOCKS[ticker];
+    var currentShares = 0;
+    var price = this.getPrice(ticker, timeRange);
+    for (var i = 0; i < changes.length; i++) {
+      if (timeRange != undefined) {
+        // get value of individual stock at start of timeRange
+        var time = this.getTime(timeRange);
+        if (new Date(changes[i]['date']) >= new Date(this.getStockData(ticker)[time.interval][time.n - time.period]['date'])) {
+          break;
+        }
+      }
+      currentShares += changes[i]['amount'];
+    }
+    console.log(currentShares);
+    if (shares > 0) {
+      var soldStock = false;
+      var time = this.getCurrentTime();
+
+      var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
+      console.log(this.PORTFOLIO_STOCKS[ticker].slice(0)[0]['amount']);
+      if (latest['date'] == time) {
+        latest['amount'] -= shares;
+        return false;
+      }
+      // modify data in portfolio
+
+      this.PORTFOLIO_STOCKS[ticker].push({
+        'date': this.getCurrentTime(),
+        'price': this.getPrice(ticker),
+        'amount': -shares,
+      });
+      if (currentShares = shares) {
+        //remove stock from portfolio screen
+      }
+      return soldStock;
+    }
   }
 
   getCompareTickers() {

@@ -67,6 +67,15 @@ dom.totalPrice = $('#total-price');
 dom.cancelBuy = $('#cancel-buy');
 dom.buyButton = $('#buy-button');
 
+// sell
+dom.sellPage = $('#sell-page');
+dom.sellCompanyTicker = $('#sell-company-ticker');
+dom.sellShares = $('#sell-shares');
+dom.sellPrice = $('#sell-price');
+dom.totalSellPrice = $('#total-sell-price');
+dom.cancelSell = $('#cancel-sell');
+dom.sellButton = $('#sell-button');
+
 
 //////////////////////////////
 // GLOBAL VARIABLES
@@ -688,15 +697,11 @@ function loadCompanyPage(ticker) {
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
 
-  console.log(data.getPortfolioTickers());
-  console.log(companyTicker);
-
   if (data.getPortfolioTickers().includes(companyTicker)) {
     dom.companySellButton.removeClass('hide');
   } else {
     dom.companySellButton.addClass('hide');
   }
-
 
   // populate company information
   var change = data.getChange(ticker, timeRange);
@@ -907,4 +912,42 @@ dom.buyButton.click(function() {
     plotStock('growth');
     updateData('portfolio', companyTicker, sectionTimeRanges['portfolio']);
   }
+});
+
+// sell page
+dom.sellPage
+  .modal({
+    autofocus: false,
+    allowMultiple: false,
+  })
+  .modal('attach events', dom.companySellButton);
+
+// load sell page
+dom.companySellButton.click(function() {
+  dom.sellShares.val('');
+  dom.sellCompanyTicker.text(companyTicker);
+  var price = data.getPrice(companyTicker).withCommas();
+  dom.sellPrice.text(price);
+  dom.totalSellPrice.text('0.00');
+});
+
+// input shares to sell
+dom.sellShares.on('input', function(e) {
+  dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
+  dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
+});
+
+// select input on focus
+dom.sellShares.focus(function() {
+  dom.sellShares.select();
+});
+
+// sell stock
+dom.sellButton.click(function() {
+  var soldStock = data.sellStock(companyTicker, parseInt(dom.sellShares.val()));
+  dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+  dom.portfolioHidden.removeClass('hide');
+  plotStock('volume');
+  plotStock('growth');
+  updateData('portfolio', companyTicker, sectionTimeRanges['portfolio']);
 });

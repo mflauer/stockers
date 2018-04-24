@@ -301,6 +301,35 @@
     </div>
   </div>
 
+
+
+  <div id="sell-page" class="ui mini modal">
+    <div class="ui header">
+      Sell <span id="sell-company-ticker"></span>
+    </div>
+    <div class="content">
+      <div class="ui grid">
+        <div class="ten wide baseline column">Shares</div>
+        <div id="sell-shares-container" class="six wide right aligned column">
+          <div class="ui fluid input">
+            <input id="sell-shares" class="right" type="text" placeholder="0" maxlength="4">
+          </div>
+        </div>
+        <div class="ten wide column">Market Price</div>
+        <div class="six wide right aligned column">$<span id="sell-price"></span></div>
+      </div>
+      <div id="buy-divider" class="ui divider"></div>
+      <div class="ui grid">
+        <div class="ten wide column">Total</div>
+        <div class="six wide right aligned column">$<span id="total-sell-price"></span></div>
+      </div>
+    </div>
+    <div class="actions">
+      <div id="cancel-sell" class="ui basic cancel button">Cancel</div>
+      <div id="sell-button" class="ui basic positive button">Sell</div>
+    </div>
+  </div>
+
   <!-- Load Data -->
   <script src="data/aapl_min.js"></script>
   <script src="data/aapl_day.js"></script>
