@@ -463,6 +463,7 @@ function handleMouseLeave(graphName) {
     // remove hover bar
     $(`#${graphName}-hover-rect`).addClass('hide');
     $(`#${graphName}-hover-line`).addClass('hide');
+    $(`#${graphName}-hover-date`).addClass('hide');
 
     // remove linked hover bar
     if (graphName == 'volume') {
@@ -498,7 +499,6 @@ function handleMouseMove(graphName, xScale, plotData) {
     var format = d3.timeFormat("%b %d, %Y")
     var hoverDate = new Date(plotData.dates[i])
     var displayDate = format(hoverDate)
-    console.log(displayDate)
 
     d3.select(`#${graphName}-hover-date`)
       .attr('x', x)
