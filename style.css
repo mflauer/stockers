@@ -147,7 +147,8 @@ i.caret.icon {
   padding: .75em !important; }
 
 .graph-container {
-  width: 100%; }
+  width: 100%;
+  padding-top: 20px; }
   .graph-container.portfolio {
     height: 25vh; }
   .graph-container.compare {
