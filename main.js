@@ -236,6 +236,7 @@ function getChangePlotData(graphName) {
   plotData['min'] = min;
   plotData['max'] = max;
   plotData['time'] = time;
+  plotData['timeRange'] = timeRange;
 
   return plotData;
 }
