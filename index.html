@@ -148,8 +148,11 @@
               Compare
             </div>
           </div>
-          <div id="company-buy-button" class="ui right basic baseline button">
+          <div id="company-buy-button" class="ui right basic baseline button company-button">
             Buy
+          </div>
+          <div id="company-sell-button" class="ui right basic baseline button company-button hide">
+            Sell
           </div>
         </div>
       </div>
@@ -277,7 +280,7 @@
     <div class="content">
       <div class="ui grid">
         <div class="ten wide baseline column">Shares</div>
-        <div id="buy-shares-container" class="six wide right aligned column">
+        <div class="six wide right aligned column shares-container">
           <div class="ui fluid input">
             <input id="buy-shares" class="right" type="text" placeholder="0" maxlength="4">
           </div>
@@ -285,7 +288,7 @@
         <div class="ten wide column">Market Price</div>
         <div class="six wide right aligned column">$<span id="buy-price"></span></div>
       </div>
-      <div id="buy-divider" class="ui divider"></div>
+      <div class="ui divider shares-divider"></div>
       <div class="ui grid">
         <div class="ten wide column">Total</div>
         <div class="six wide right aligned column">$<span id="total-price"></span></div>
@@ -294,6 +297,33 @@
     <div class="actions">
       <div id="cancel-buy" class="ui basic cancel button">Cancel</div>
       <div id="buy-button" class="ui basic positive button">Buy</div>
+    </div>
+  </div>
+
+  <div id="sell-page" class="ui mini modal">
+    <div class="ui header">
+      Sell <span id="sell-company-ticker"></span>
+    </div>
+    <div class="content">
+      <div class="ui grid">
+        <div class="ten wide baseline column">Shares</div>
+        <div class="six wide right aligned column shares-container">
+          <div class="ui fluid input">
+            <input id="sell-shares" class="right" type="text" placeholder="0" maxlength="4">
+          </div>
+        </div>
+        <div class="ten wide column">Market Price</div>
+        <div class="six wide right aligned column">$<span id="sell-price"></span></div>
+      </div>
+      <div class="ui divider shares-divider"></div>
+      <div class="ui grid">
+        <div class="ten wide column">Total</div>
+        <div class="six wide right aligned column">$<span id="total-sell-price"></span></div>
+      </div>
+    </div>
+    <div class="actions">
+      <div id="cancel-sell" class="ui basic cancel button">Cancel</div>
+      <div id="sell-button" class="ui basic positive button">Sell</div>
     </div>
   </div>
 

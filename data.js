@@ -1,4 +1,4 @@
-  Number.prototype.withCommas = function() {
+Number.prototype.withCommas = function() {
   return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -163,7 +163,7 @@ class Data {
     var stockData = this.getStockData(ticker);
     var close = time.interval == 'min' ? 'close' : 'adjusted close'
     var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x[close])));
-    
+
     return {
       start : this.getPrice(ticker, timeRange),
       high : Math.max(...closes.filter(Boolean)),
@@ -216,6 +216,19 @@ class Data {
         return 0;
       }
     });
+  }
+
+  getPortfolioShares(ticker) {
+    if (!(ticker in this.PORTFOLIO_STOCKS)) {
+      return 0;
+    } else {
+      var amount = 0;
+      var changes = this.PORTFOLIO_STOCKS[ticker];
+      for (var i = 0; i < changes.length; i++) {
+        amount += changes[i].amount;
+      }
+    }
+    return amount;
   }
 
   getPortfolioData(ticker) {
@@ -296,6 +309,7 @@ class Data {
   }
 
   buyStock(ticker, shares) {
+    // buy shares of ticker
     if (shares > 0) {
       var newStock = false;
       if (!(ticker in this.PORTFOLIO_STOCKS)) {
@@ -310,7 +324,7 @@ class Data {
           return false;
         }
       }
-      
+
       this.PORTFOLIO_STOCKS[ticker].push({
         date: this.getCurrentTime(),
         price: this.getPrice(ticker),
@@ -321,7 +335,28 @@ class Data {
   }
 
   sellStock(ticker, shares) {
-    // TODO
+    // sell shares of ticker
+    if (shares > 0) {
+      var totalShares = this.getPortfolioShares(ticker);
+      if (shares > totalShares) {
+        // can't sell stocks not in portfolio
+        return false;
+      } else {
+        var time = this.getCurrentTime();
+        var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
+        if (latest.date == time) {
+          latest.amount -= shares;
+          return true;
+        }
+      }
+
+      this.PORTFOLIO_STOCKS[ticker].push({
+        date: this.getCurrentTime(),
+        price: this.getPrice(ticker),
+        amount: -shares,
+      });
+      return true;
+    }
   }
 
   getCompareTickers() {
