@@ -52,11 +52,13 @@
           </div>
           <h3 class="ui inverted center aligned header">Volume</h3>
           <svg id="volume-graph-container" class="portfolio graph-container">
+            <g id="volume-base"></g>
             <g id="volume-graph"></g>
             <g id="volume-hover"></g>
           </svg>
           <h3 class="ui inverted center aligned header">Growth</h3>
           <svg id="growth-graph-container" class="portfolio graph-container">
+            <g id="growth-base"></g>
             <g id="growth-graph"></g>
             <g id="growth-hover"></g>
           </svg>
@@ -100,6 +102,7 @@
             </div>
           </div>
           <svg id="compare-graph-container" class="compare graph-container hide compare-hidden">
+            <g id="compare-base"></g>
             <g id="compare-graph"></g>
             <g id="compare-hover"></g>
           </svg>
@@ -163,6 +166,7 @@
         <a class="item">5Y</a>
       </div>
       <svg id="company-graph-container" class="company graph-container">
+        <g id="company-base"></g>
         <g id="company-graph"></g>
         <g id="company-hover"></g>
       </svg>
