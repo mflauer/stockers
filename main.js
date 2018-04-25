@@ -984,7 +984,7 @@ dom.sellButton.click(function() {
     dom.portfolioHidden.removeClass('hide');
     plotStock('volume');
     plotStock('growth');
-    updateData('portfolio', sectionTimeRanges['portfolio']);
+    updateData('portfolio', sectionTimeRanges.portfolio);
   }
 });
 
