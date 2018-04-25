@@ -361,13 +361,22 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .attr('y2', container.height())
       .classed('hide', true);
 
-    // add baseline and baseline label
+    // add baseline and baseline labels
+    var labelsTranslate = yScale(0) + GRAPH_Y_MARGIN/2 - 1;
+    var x = d3.scaleTime().range([0, container.width()]);
+    x.domain(d3.extent(plotData['dates'], function(d) { return d; }));
+    hover.append("g")
+      .attr('id', 'x-axis-labels')
+      .attr("transform", "translate(0," + labelsTranslate + ")")
+      .call(d3.axisBottom(x).ticks(5));
+
     hover.append('text')
       .attr('id', `${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
       .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1)
       .classed('baseline-label', true)
       .text(drawArea ? '$0' : '0%');
+    
     hover.append('line')
       .attr('id', `${graphName}-baseline`)
       .attr('x1', xScale(0))
