@@ -333,7 +333,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     graph.append('rect')
       .attr('id', `${graphName}-capture`)
       .attr('x', xScale(0))
-      .attr('width', Math.maxx(0, container.width() - GRAPH_X_MARGIN))
+      .attr('width', Math.max(0, container.width() - GRAPH_X_MARGIN))
       .attr('height', container.height())
       .on('mousemove', handleMouseMove(graphName, xScale, plotData))
       .on('mouseleave', handleMouseLeave(graphName))
