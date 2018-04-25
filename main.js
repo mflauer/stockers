@@ -501,24 +501,21 @@ function handleMouseMove(graphName, xScale, plotData) {
 
     //show date tooltip
     var interval = plotData.time.interval;
-    var format;
     if (interval == 'min') {
-      format = d3.timeFormat("%I:%M %p, %b %d")
+      var format = d3.timeFormat("%I:%M %p, %b %d");
     } else if (interval == 'day') {
-      format = d3.timeFormat("%b %d")
+      var format = d3.timeFormat("%b %d");
     } else if (interval == 'week') {
-      format = d3.timeFormat("%b %d, %Y")
+      var format = d3.timeFormat("%b %d, %Y");
     }
     
-    var hoverDate = new Date(plotData.dates[i])
-    var displayDate = format(hoverDate)
+    var hoverDate = new Date(plotData.dates[i]);
+    var displayDate = format(hoverDate);
 
     d3.select(`#${graphName}-hover-date`)
       .attr('x', x)
       .classed('hide', false)
-      .text(displayDate)
-
-
+      .text(displayDate);
 
     // hover on linked graph
     if (graphName == 'volume') {
