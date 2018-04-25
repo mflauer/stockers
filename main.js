@@ -110,16 +110,6 @@ var editing = false;
 // HELPER FUNCTIONS
 //////////////////////////////
 
-
-window.addEventListener("resize", redrawAllPlots);
-
-function redrawAllPlots() {
-  var graphLocations = ['volume', 'growth', 'compare', 'company'];
-  graphLocations.forEach((location) => {
-    plotStock(location);
-  })
-}
-
 // get section of a graph
 function getSection(graphName) {
   return (graphName == 'volume' || graphName == 'growth') ? 'portfolio' : graphName;
@@ -906,4 +896,9 @@ dom.buyButton.click(function() {
     plotStock('growth');
     updateData('portfolio', companyTicker, sectionTimeRanges['portfolio']);
   }
+});
+
+// redraw plots on resize
+$(window).resize(function() {
+  ['volume', 'growth', 'compare', 'company'].map(x => plotStock(x));
 });
