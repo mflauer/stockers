@@ -92,9 +92,9 @@ const COLORS = [
 
 // graph data
 var sectionTimeRanges = {
-  'portfolio' : '1Y',
-  'compare' : '1D',
-  'company' : '1D'
+  portfolio : '1Y',
+  compare : '1D',
+  company : '1D'
 };
 var companyTicker;
 
@@ -132,7 +132,7 @@ function formatDate(date) {
 // load change plot for section
 function getStackedPlotData() {
   var tickers = data.getPortfolioTickers();
-  var timeRange = sectionTimeRanges['portfolio'];
+  var timeRange = sectionTimeRanges.portfolio;
 
   var plotData = { 'tickers': [] };
   var time = data.getTime(timeRange);
@@ -149,7 +149,7 @@ function getStackedPlotData() {
 
     // populate dates
     if (dates.length == 0) {
-      dates = stockData.map(x => Date.parse(x['date'])).reverse();
+      dates = stockData.map(x => Date.parse(x.date)).reverse();
       totals = Array(dates.length).fill(0);
     }
 
@@ -163,17 +163,17 @@ function getStackedPlotData() {
         return totals[i];
       }
     }).reverse();
-    plotData['tickers'][tickers[t]] = tickerData;
+    plotData.tickers[tickers[t]] = tickerData;
 
     var dataMax = Math.max(...tickerData);
     max = dataMax > max ? dataMax : max;
   }
 
-  plotData['dates'] = dates;
-  plotData['min'] = min;
-  plotData['max'] = max;
-  plotData['time'] = time;
-  plotData['timeRange'] = timeRange;
+  plotData.dates = dates;
+  plotData.min = min;
+  plotData.max = max;
+  plotData.time = time;
+  plotData.timeRange = timeRange;
 
   return plotData;
 }
@@ -208,7 +208,7 @@ function getChangePlotData(graphName) {
 
     // populate dates
     if (dates.length == 0) {
-      dates = stockData.map(x => Date.parse(x['date'])).reverse();
+      dates = stockData.map(x => Date.parse(x.date)).reverse();
     }
 
     // always scale based on value of first item
@@ -223,7 +223,7 @@ function getChangePlotData(graphName) {
       var value = parseFloat(x[close]);
       return value == 0 ? null : 100 * ((value / first) - 1);
     }).reverse();
-    plotData['tickers'][tickers[t]] = tickerData;
+    plotData.tickers[tickers[t]] = tickerData;
 
     var changesRanges = (graphName != 'compare' || data.getCompareChecked(tickers[t]));
     var dataMin = Math.min(...tickerData);
@@ -232,11 +232,11 @@ function getChangePlotData(graphName) {
     max = (changesRanges && dataMax > max) ? dataMax : max;
   }
 
-  plotData['dates'] = dates;
-  plotData['min'] = min;
-  plotData['max'] = max;
-  plotData['time'] = time;
-  plotData['timeRange'] = timeRange;
+  plotData.dates = dates;
+  plotData.min = min;
+  plotData.max = max;
+  plotData.time = time;
+  plotData.timeRange = timeRange;
 
   return plotData;
 }
@@ -268,10 +268,10 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
   // rescale plots
   var xScale = d3.scaleLinear()
     .range([GRAPH_X_MARGIN, container.width()])
-    .domain([0, plotData['dates'].length - 1]);
+    .domain([0, plotData.dates.length - 1]);
   var yScale = d3.scaleLinear()
     .range([container.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN])
-    .domain([plotData['min'], plotData['max']]);
+    .domain([plotData.min, plotData.max]);
   var startLine = d3.line()
     .x(function(d, i) { return xScale(i); })
     .y(function(d) { return yScale(0.); });
@@ -311,7 +311,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       if (forceColor != undefined) {
         element.classed('red green', false).classed(forceColor, true);
       }
-      element.attr('d', tickerLine(plotData['tickers'][company]))
+      element.attr('d', tickerLine(plotData.tickers[company]))
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));;
     });
     if (drawArea) {
@@ -321,7 +321,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
         if (forceColor != undefined) {
           element.classed('red green', false).classed(forceColor, true);
         }
-        element.attr('d', area(plotData['tickers'][company]))
+        element.attr('d', area(plotData.tickers[company]))
           .on('mousemove', handleMouseMove(graphName, xScale, plotData));;
       });
     }
@@ -387,7 +387,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
   }
 
   if (ticker != undefined) {
-    var tickerData = plotData['tickers'][ticker];
+    var tickerData = plotData.tickers[ticker];
 
     if (drawArea) {
       // draw area
@@ -499,7 +499,7 @@ function handleMouseMove(graphName, xScale, plotData) {
       .attr('x2', x - HOVER_BAR_MARGIN)
       .classed('hide', false);
 
-    //show date tooltip
+    // show date tooltip
     var interval = plotData.time.interval;
     if (interval == 'min') {
       var format = d3.timeFormat("%I:%M %p, %b %d");
@@ -699,7 +699,7 @@ function loadCompanyPage(ticker) {
 
   // reset time range selector
   timeRange = '1D';
-  sectionTimeRanges['company'] = timeRange;
+  sectionTimeRanges.company = timeRange;
   dom.companySelector.children().each(function(i, value) {
     $(value).removeClass('active');
   });
@@ -922,6 +922,6 @@ dom.buyButton.click(function() {
   } else {
     plotStock('volume');
     plotStock('growth');
-    updateData('portfolio', companyTicker, sectionTimeRanges['portfolio']);
+    updateData('portfolio', companyTicker, sectionTimeRanges.portfolio);
   }
 });
