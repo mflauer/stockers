@@ -15,23 +15,23 @@
 </head>
 
 <body>
-  <div class="ui secondary pointing menu">
+  <div class="ui secondary pointing inverted menu">
     <div class="header item">
       <img class="ui image small" src="assets/text-logo.svg"
            onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
     </div>
     <div class="right menu">
-      <a class="white item">Logout</a>
+      <a class="item">Logout</a>
     </div>
   </div>
 
   <div class="ui divided padded grid">
     <div id="portfolio-hidden" class="eight wide column hide">
-      <h2 class="ui center aligned white header">Portfolio</h2>
+      <h2 class="ui center aligned inverted header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
-          <div class="ui white huge header">$<span id="portfolio-value"></span></div>
-          <h5 class="ui white header">
+          <div class="ui inverted huge header">$<span id="portfolio-value"></span></div>
+          <h5 class="ui inverted header">
             Your Stocks
           </h5>
           <div id="portfolio-stocks">
@@ -39,34 +39,34 @@
           </div>
         </div>
         <div class="twelve wide column">
-          <div id="portfolio-selector" class="ui secondary pointing menu selector">
-            <div class="white right menu">
-              <a class="white item">1D</a>
-              <a class="white item">5D</a>
-              <a class="white item">1M</a>
-              <a class="white item">3M</a>
-              <a class="white item">6M</a>
-              <a class="active white item">1Y</a>
-              <a class="white item">5Y</a>
+          <div id="portfolio-selector" class="ui secondary pointing inverted menu selector">
+            <div class="right menu">
+              <a class="item">1D</a>
+              <a class="item">5D</a>
+              <a class="item">1M</a>
+              <a class="item">3M</a>
+              <a class="item">6M</a>
+              <a class="active item">1Y</a>
+              <a class="item">5Y</a>
             </div>
           </div>
-          <h3 class="ui center aligned white header">Volume</h3>
+          <h3 class="ui center aligned inverted header">Volume</h3>
           <svg id="volume-graph-container" class="portfolio graph-container">
             <g id="volume-graph"></g>
             <g id="volume-hover"></g>
           </svg>
-          <h3 class="ui center aligned white header">Growth</h3>
+          <h3 class="ui center aligned inverted header">Growth</h3>
           <svg id="growth-graph-container" class="portfolio graph-container">
             <g id="growth-graph"></g>
             <g id="growth-hover"></g>
           </svg>
-          <table class="ui white basic selectable fixed compact table">
+          <table class="ui inverted basic selectable fixed compact table">
             <thead>
               <tr>
-                <th class="white">Name</th>
-                <th class="white right aligned">Value</th>
-                <th class="white right aligned">Change</th>
-                <th class="white right aligned">% of Portfolio</th>
+                <th>Name</th>
+                <th class="right aligned">Value</th>
+                <th class="right aligned">Change</th>
+                <th class="right aligned">% of Portfolio</th>
               </tr>
             </thead>
             <tbody id="portfolio-table">
@@ -78,7 +78,7 @@
     </div>
 
     <div class="eight wide column">
-      <h2 class="ui center aligned white header">Compare</h2>
+      <h2 class="ui center aligned inverted header">Compare</h2>
       <div class="ui grid">
         <div class="twelve wide column">
           <div id="search" class="ui fluid search">
@@ -88,29 +88,29 @@
             </div>
             <div class="results"></div>
           </div>
-          <div id="compare-selector" class="ui secondary pointing right menu selector hide compare-hidden">
+          <div id="compare-selector" class="ui secondary pointing right inverted menu selector hide compare-hidden">
             <div class="right menu">
-              <a class="active white item">1D</a>
-              <a class="white item">5D</a>
-              <a class="white item">1M</a>
-              <a class="white item">3M</a>
-              <a class="white item">6M</a>
-              <a class="white item">1Y</a>
-              <a class="white item">5Y</a>
+              <a class="active item">1D</a>
+              <a class="item">5D</a>
+              <a class="item">1M</a>
+              <a class="item">3M</a>
+              <a class="item">6M</a>
+              <a class="item">1Y</a>
+              <a class="item">5Y</a>
             </div>
           </div>
           <svg id="compare-graph-container" class="compare graph-container hide compare-hidden">
             <g id="compare-graph"></g>
             <g id="compare-hover"></g>
           </svg>
-          <table class="ui white basic selectable fixed compact table hide compare-hidden">
+          <table class="ui inverted basic selectable fixed compact table hide compare-hidden">
             <thead>
               <tr>
-                <th class="white">Name</th>
-                <th class="white right aligned">Price</th>
-                <th class="white right aligned">Change</th>
-                <th class="white right aligned">Mkt Cap</th>
-                <th class="white right aligned">P/E</th>
+                <th>Name</th>
+                <th class="right aligned">Price</th>
+                <th class="right aligned">Change</th>
+                <th class="right aligned">Mkt Cap</th>
+                <th class="right aligned">P/E</th>
               </tr>
             </thead>
             <tbody id="compare-table">
@@ -127,7 +127,7 @@
           <div id="compare-stocks" class="hide compare-hidden">
             <!-- stocks dynamically added -->
           </div>
-          <h5 id="suggested-label" class="ui white header">
+          <h5 id="suggested-label" class="ui inverted header">
             Suggested Stocks
           </h5>
           <div id="suggested-stocks">
