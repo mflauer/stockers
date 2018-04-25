@@ -172,6 +172,8 @@ function getStackedPlotData() {
   plotData['dates'] = dates;
   plotData['min'] = min;
   plotData['max'] = max;
+  plotData['time'] = time;
+  plotData['timeRange'] = timeRange;
 
   return plotData;
 }
@@ -233,6 +235,7 @@ function getChangePlotData(graphName) {
   plotData['dates'] = dates;
   plotData['min'] = min;
   plotData['max'] = max;
+  plotData['time'] = time;
 
   return plotData;
 }
@@ -496,7 +499,16 @@ function handleMouseMove(graphName, xScale, plotData) {
       .classed('hide', false);
 
     //show date tooltip
-    var format = d3.timeFormat("%b %d, %Y")
+    var interval = plotData.time.interval;
+    var format;
+    if (interval == 'min') {
+      format = d3.timeFormat("%I:%M %p, %b %d")
+    } else if (interval == 'day') {
+      format = d3.timeFormat("%b %d")
+    } else if (interval == 'week') {
+      format = d3.timeFormat("%b %d, %Y")
+    }
+    
     var hoverDate = new Date(plotData.dates[i])
     var displayDate = format(hoverDate)
 
