@@ -17,7 +17,7 @@ $transparent: rgba(255, 255, 255, .08);
 
 $background: 0;
 $alpha: .5;
-$light-factor: $background*(1-$alpha);
+$light-factor: $background * (1 - $alpha);
 
 $light-red: rgb($light-factor + 219*$alpha, $light-factor + 40*$alpha, $light-factor + 40*$alpha);
 $light-orange: rgb($light-factor + 242*$alpha, $light-factor + 113*$alpha, $light-factor + 28*$alpha);
@@ -40,47 +40,6 @@ body {
 
 table {
   border: none !important;
-}
-
-.hide {
-  display: none !important;
-}
-
-.left {
-  text-align: left !important;
-}
-
-.right {
-  text-align: right !important;
-}
-
-.baseline {
-  vertical-align: baseline !important;
-}
-
-.middle {
-  vertical-align: middle !important;
-}
-
-.inline {
-  display: inline-block !important;
-}
-
-.portfolio-item {
-  margin-bottom: 5px !important;
-  padding: 1.1em 1.5em !important;
-}
-
-.compare-item {
-  margin-bottom: 5px !important;
-  position: relative;
-}
-
-.close {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  margin-right: 0px !important;
 }
 
 .red {
@@ -179,19 +138,53 @@ table {
   }
 }
 
-.white {
-  color: $white !important;
+.hide {
+  display: none !important;
 }
 
-.ui.secondary.pointing.menu :not(#company-selector) .active.item  {
-  border-color: $white !important;
+.left {
+  text-align: left !important;
 }
 
-.ui.selectable.table tbody tr[id$="-row"] {
-  &.hover, &:hover {
-    background-color: rgba(255, 255, 255, .08) !important;
-    color: $white !important;
-  }
+.right {
+  text-align: right !important;
+}
+
+.baseline {
+  vertical-align: baseline !important;
+}
+
+.middle {
+  vertical-align: middle !important;
+}
+
+.inline {
+  display: inline-block !important;
+}
+
+.portfolio-item {
+  margin-bottom: 5px !important;
+  padding: 1.1em 1.5em !important;
+}
+
+.compare-item {
+  margin-bottom: 5px !important;
+  position: relative;
+}
+
+.company-label {
+  margin-left: .5em;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  margin-right: 0px !important;
+}
+
+tr[id$="-row"].hover {
+  background-color: $transparent !important;
 }
 
 .ui.basic.button {
@@ -245,11 +238,11 @@ table {
 }
 
 .ui.circular.button {
-  border: white 1px solid;
+  border: $white 1px solid;
 }
 
 .ui.inverted.button {
-  box-shadow: 0 0 0 1px #fff inset !important;
+  box-shadow: 0 0 0 1px $white inset !important;
 }
 
 .ui.button:hover .icon.button {

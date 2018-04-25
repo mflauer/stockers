@@ -27,7 +27,7 @@ function createCompareItem(dom, ticker, section, color='') {
     <div id="${ticker}-${section}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui ${isSuggested ? 'inverted' : ''} fluid ${color} left button">
       ${isPortfolio ? '' : createCheckButton(ticker, section, color)}
       ${icon}
-      <div class="baseline inline">
+      <div class="baseline inline company-label">
         ${ticker}
       </div>
     </div>

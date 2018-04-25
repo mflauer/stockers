@@ -4,38 +4,6 @@ body {
 table {
   border: none !important; }
 
-.hide {
-  display: none !important; }
-
-.left {
-  text-align: left !important; }
-
-.right {
-  text-align: right !important; }
-
-.baseline {
-  vertical-align: baseline !important; }
-
-.middle {
-  vertical-align: middle !important; }
-
-.inline {
-  display: inline-block !important; }
-
-.portfolio-item {
-  margin-bottom: 5px !important;
-  padding: 1.1em 1.5em !important; }
-
-.compare-item {
-  margin-bottom: 5px !important;
-  position: relative; }
-
-.close {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  margin-right: 0px !important; }
-
 .red {
   color: #db2828; }
   .red:hover {
@@ -96,15 +64,43 @@ table {
   .grey:hover {
     color: #767676; }
 
-.white {
-  color: white !important; }
+.hide {
+  display: none !important; }
 
-.ui.secondary.pointing.menu :not(#company-selector) .active.item {
-  border-color: white !important; }
+.left {
+  text-align: left !important; }
 
-.ui.selectable.table tbody tr[id$="-row"].hover, .ui.selectable.table tbody tr[id$="-row"]:hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  color: white !important; }
+.right {
+  text-align: right !important; }
+
+.baseline {
+  vertical-align: baseline !important; }
+
+.middle {
+  vertical-align: middle !important; }
+
+.inline {
+  display: inline-block !important; }
+
+.portfolio-item {
+  margin-bottom: 5px !important;
+  padding: 1.1em 1.5em !important; }
+
+.compare-item {
+  margin-bottom: 5px !important;
+  position: relative; }
+
+.company-label {
+  margin-left: .5em; }
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  margin-right: 0px !important; }
+
+tr[id$="-row"].hover {
+  background-color: rgba(255, 255, 255, 0.08) !important; }
 
 .ui.basic.button.red.hover {
   background-color: #6e1414 !important; }
@@ -135,7 +131,7 @@ table {
   border: white 1px solid; }
 
 .ui.inverted.button {
-  box-shadow: 0 0 0 1px #fff inset !important; }
+  box-shadow: 0 0 0 1px white inset !important; }
 
 .ui.button:hover .icon.button {
   opacity: 1; }
