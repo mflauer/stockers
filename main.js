@@ -897,3 +897,8 @@ dom.buyButton.click(function() {
     updateData('portfolio', companyTicker, sectionTimeRanges['portfolio']);
   }
 });
+
+// redraw plots on resize
+$(window).resize(function() {
+  ['volume', 'growth', 'compare', 'company'].map(x => plotStock(x));
+});
