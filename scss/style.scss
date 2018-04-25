@@ -485,6 +485,7 @@ rect {
 
 line {
   stroke: $grey;
+  pointer-events: none;
 
   &[id$="baseline"] {
     stroke-width: 1;
@@ -493,7 +494,6 @@ line {
 
   &[id$="hover-line"] {
     stroke-width: 2;
-    pointer-events: none;
   }
 }
 
