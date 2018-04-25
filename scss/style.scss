@@ -183,7 +183,7 @@ table {
   color: $white !important;
 }
 
-.ui.secondary.pointing.menu .active.item :not(#company-selector) {
+.ui.secondary.pointing.menu :not(#company-selector) .active.item  {
   border-color: $white !important;
 }
 
