@@ -13,10 +13,10 @@ $brown: rgb(165, 103, 63);
 $grey: rgb(118, 118, 118);
 $dark-grey: rgb(25, 25, 25);
 $white: rgb(255, 255, 255);
-$transparent: rgba(255, 255, 255, .95);
+$transparent: rgba(255, 255, 255, .08);
 
-$background: 255;
-$alpha: .2;
+$background: 0;
+$alpha: .5;
 $light-factor: $background*(1-$alpha);
 
 $light-red: rgb($light-factor + 219*$alpha, $light-factor + 40*$alpha, $light-factor + 40*$alpha);
@@ -183,13 +183,14 @@ table {
   color: $white !important;
 }
 
-.ui.secondary.pointing.menu .active.item {
+.ui.secondary.pointing.menu .active.item :not(#company-selector) {
   border-color: $white !important;
 }
 
-tr[id$="-row"] {
-  &.hover {
-    background-color: rgba(0,0,0,.05) !important;
+.ui.selectable.table tbody tr[id$="-row"] {
+  &.hover, &:hover {
+    background-color: rgba(255, 255, 255, .08) !important;
+    color: $white !important;
   }
 }
 
@@ -241,6 +242,14 @@ tr[id$="-row"] {
   &.grey.hover {
     background-color: $light-grey !important;
   }
+}
+
+.ui.circular.button {
+  border: white 1px solid;
+}
+
+.ui.inverted.button {
+  box-shadow: 0 0 0 1px #fff inset !important;
 }
 
 .ui.button:hover .icon.button {
@@ -319,7 +328,7 @@ i.caret.icon {
 
 path {
   fill: none;
-  stroke: $grey;
+  stroke: $white;
   stroke-width: 2;
 
   &.thick {
