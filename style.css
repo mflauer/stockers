@@ -97,6 +97,42 @@ table {
 tr[id$="-row"].hover {
   background-color: rgba(255, 255, 255, 0.08) !important; }
 
+i.caret.icon {
+  margin: 0 !important; }
+
+.stats-table {
+  margin: auto; }
+  .stats-table tr td {
+    border-top: 0px !important;
+    text-align: right !important; }
+
+.label {
+  margin-left: 1em !important; }
+  .label.red {
+    color: #db2828 !important; }
+  .label.green {
+    color: #21ba45 !important; }
+
+.graph-container {
+  width: 100%;
+  padding-top: 20px; }
+  .graph-container.portfolio {
+    height: 25vh; }
+  .graph-container.compare {
+    height: 40vh; }
+  .graph-container.company {
+    height: 30vh; }
+
+.company-button {
+  padding: 1.1em 1.5em !important; }
+
+.shares-container {
+  padding-top: .25rem !important;
+  padding-bottom: .25rem !important; }
+
+.shares-divider {
+  margin: 1.25rem 0 !important; }
+
 .ui.button.circular.hover {
   box-shadow: 0 0 0 1px #b2b2b3 inset; }
 .ui.button.circular.positive {
@@ -210,56 +246,17 @@ tr[id$="-row"].hover {
 .ui.button:hover .icon.button {
   opacity: 1; }
 
-i.caret.icon {
-  margin: 0 !important; }
-
-.stats-table {
-  margin: auto; }
-  .stats-table tr td {
-    border-top: 0px !important;
-    text-align: right !important; }
-
-.label {
-  margin-left: 1em !important; }
-  .label.red {
-    color: #db2828 !important; }
-  .label.green {
-    color: #21ba45 !important; }
-
-.ui.secondary.inverted.pointing.menu {
-  border-width: 0;
-  border-bottom: 2px solid #383939; }
-
 .ui.menu.selector .item {
   padding: .75em !important; }
 
-.graph-container {
-  width: 100%; }
-  .graph-container.portfolio {
-    height: 25vh; }
-  .graph-container.compare {
-    height: 40vh; }
-  .graph-container.company {
-    height: 30vh; }
-
 #compare-stocks {
   margin-top: 5px; }
-
-#company-buy-button {
-  padding: 1.1em 1.5em; }
 
 #company-selector {
   margin-top: -2.5em; }
 
 #company-header {
   margin: 1rem 2rem 1rem 0; }
-
-#buy-shares-container {
-  padding-top: .25rem;
-  padding-bottom: .25rem; }
-
-#buy-divider {
-  margin: 1.25rem 0; }
 
 path {
   fill: none;
@@ -384,12 +381,12 @@ rect {
       fill: rgba(27, 28, 29, 0.95); }
 
 line {
-  stroke: #b2b2b3; }
+  stroke: #b2b2b3;
+  pointer-events: none; }
   line[id$="baseline"] {
     stroke-width: 1; }
   line[id$="hover-line"] {
-    stroke-width: 2;
-    pointer-events: none; }
+    stroke-width: 2; }
 
 text.baseline-label {
   fill: #b2b2b3;

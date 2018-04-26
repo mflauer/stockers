@@ -1,4 +1,4 @@
-  Number.prototype.withCommas = function() {
+Number.prototype.withCommas = function() {
   return this.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -14,52 +14,52 @@ class Data {
     this.COMPANIES = ALL_COMPANIES;
     this.STOCK_DATA = {
       'AAPL': {
-        'min': AAPL_MIN,
-        'day': AAPL_DAY,
-        'week': AAPL_WEEK,
-        'pe_ratio': 16.47,
-        'mkt_cap': '854.36B',
-        'div_yield': 1.56,
-        'blurb': 'Apple, Inc. engages in the design, manufacture, and marketing of mobile communication, media devices, personal computers, and portable digital music players. It operates through the following geographical segments: Americas, Europe, Greater China, Japan, and Rest of Asia Pacific.',
-        'ceo': 'Tim Cook',
-        'founded': '1976',
-        'headquarters': 'Cupertino, CA',
+        min: AAPL_MIN,
+        day: AAPL_DAY,
+        week: AAPL_WEEK,
+        pe_ratio: 16.47,
+        mkt_cap: '854.36B',
+        div_yield: 1.56,
+        blurb: 'Apple, Inc. engages in the design, manufacture, and marketing of mobile communication, media devices, personal computers, and portable digital music players. It operates through the following geographical segments: Americas, Europe, Greater China, Japan, and Rest of Asia Pacific.',
+        ceo: 'Tim Cook',
+        founded: '1976',
+        headquarters: 'Cupertino, CA',
       },
       'AMZN': {
-        'min': AMZN_MIN,
-        'day': AMZN_DAY,
-        'week': AMZN_WEEK,
-        'pe_ratio': 307.02,
-        'mkt_cap': '680.28B',
-        'div_yield': 0.00,
-        'blurb': 'Amazon.com, Inc. engages in the provision of online retail shopping services. It operates through the following segments: North America, International, and Amazon Web Services (AWS).',
-        'ceo': 'Jeffrey Bezos',
-        'founded': '1994',
-        'headquarters': 'Seattle, WA',
+        min: AMZN_MIN,
+        day: AMZN_DAY,
+        week: AMZN_WEEK,
+        pe_ratio: 307.02,
+        mkt_cap: '680.28B',
+        div_yield: 0.00,
+        blurb: 'Amazon.com, Inc. engages in the provision of online retail shopping services. It operates through the following segments: North America, International, and Amazon Web Services (AWS).',
+        ceo: 'Jeffrey Bezos',
+        founded: '1994',
+        headquarters: 'Seattle, WA',
       },
       'FB': {
-        'min': FB_MIN,
-        'day': FB_DAY,
-        'week': FB_WEEK,
-        'pe_ratio': 25.51,
-        'mkt_cap': '456.67B',
-        'div_yield': 0.00,
-        'blurb': 'Facebook, Inc. engages in the development of social media applications for people to connect through mobile devices, personal computers, and other surfaces. It enables users to share opinions, ideas, photos, videos, and other activities online.',
-        'ceo': 'Mark Zuckerberg',
-        'founded': '2004',
-        'headquarters': 'Menlo Park, CA',
+        min: FB_MIN,
+        day: FB_DAY,
+        week: FB_WEEK,
+        pe_ratio: 25.51,
+        mkt_cap: '456.67B',
+        div_yield: 0.00,
+        blurb: 'Facebook, Inc. engages in the development of social media applications for people to connect through mobile devices, personal computers, and other surfaces. It enables users to share opinions, ideas, photos, videos, and other activities online.',
+        ceo: 'Mark Zuckerberg',
+        founded: '2004',
+        headquarters: 'Menlo Park, CA',
       },
       'GOOG': {
-        'min': GOOG_MIN,
-        'day': GOOG_DAY,
-        'week': GOOG_WEEK,
-        'pe_ratio': 31.37,
-        'mkt_cap': '700.20B',
-        'div_yield': 0.00,
-        'blurb': 'Alphabet Inc. Class C Capital Stock, also called Alphabet, is a holding company, which engages in the business of acquisition and operation of different companies.',
-        'ceo': 'Lawrence Page',
-        'founded': '2015',
-        'headquarters': 'Mountain View, CA',
+        min: GOOG_MIN,
+        day: GOOG_DAY,
+        week: GOOG_WEEK,
+        pe_ratio: 31.37,
+        mkt_cap: '700.20B',
+        div_yield: 0.00,
+        blurb: 'Alphabet Inc. Class C Capital Stock, also called Alphabet, is a holding company, which engages in the business of acquisition and operation of different companies.',
+        ceo: 'Lawrence Page',
+        founded: '2015',
+        headquarters: 'Mountain View, CA',
       },
     };
     this.TIME_RANGE_INTERVAL = {
@@ -75,21 +75,21 @@ class Data {
     this.PORTFOLIO_STOCKS = {
       'AAPL' : [
         {
-          'date': '2017-05-12T12:30:00',
-          'price': 153.78,
-          'amount': 10,
+          date: '2017-05-12T12:30:00',
+          price: 153.78,
+          amount: 10,
         },
         {
-          'date': '2017-12-22T13:15:00',
-          'price': 176.29,
-          'amount': -5,
+          date: '2017-12-22T13:15:00',
+          price: 176.29,
+          amount: -5,
         },
       ],
       'AMZN' : [
         {
-          'date': '2017-10-20T10:45:00',
-          'price': 992.92,
-          'amount': 1,
+          date: '2017-10-20T10:45:00',
+          price: 992.92,
+          amount: 1,
         },
       ],
     };
@@ -139,7 +139,7 @@ class Data {
       var time = this.getTime(timeRange);
       var close = time.interval == 'min' ? 'close' : 'adjusted close'
       if (time.n - time.period == 0) {
-        return parseFloat(stockData['min'][0]['close']);
+        return parseFloat(stockData.min[0]['close']);
       }
       var price = parseFloat(stockData[time.interval][time.n - time.period][close]);
       if (price == 0) {
@@ -149,7 +149,7 @@ class Data {
       return price
     } else {
       // get current price
-      return parseFloat(stockData['min'][0]['close']);
+      return parseFloat(stockData.min[0]['close']);
     }
   }
 
@@ -163,7 +163,7 @@ class Data {
     var stockData = this.getStockData(ticker);
     var close = time.interval == 'min' ? 'close' : 'adjusted close'
     var closes = [].concat.apply([], stockData[time.interval].slice(0, time.n).map(x => parseFloat(x[close])));
-    
+
     return {
       start : this.getPrice(ticker, timeRange),
       high : Math.max(...closes.filter(Boolean)),
@@ -172,31 +172,31 @@ class Data {
   }
 
   getMktCap(ticker) {
-    return this.getStockData(ticker)['mkt_cap'];
+    return this.getStockData(ticker).mkt_cap;
   }
 
   getPERatio(ticker) {
-    return this.getStockData(ticker)['pe_ratio'];
+    return this.getStockData(ticker).pe_ratio;
   }
 
   getDivYield(ticker) {
-    return this.getStockData(ticker)['div_yield'];
+    return this.getStockData(ticker).div_yield;
   }
 
   getBlurb(ticker) {
-    return this.getStockData(ticker)['blurb'];
+    return this.getStockData(ticker).blurb;
   }
 
   getCEO(ticker) {
-    return this.getStockData(ticker)['ceo'];
+    return this.getStockData(ticker).ceo;
   }
 
   getFounded(ticker) {
-    return this.getStockData(ticker)['founded'];
+    return this.getStockData(ticker).founded;
   }
 
   getHeadquarters(ticker) {
-    return this.getStockData(ticker)['headquarters'];
+    return this.getStockData(ticker).headquarters;
   }
 
   getCompany(ticker) {
@@ -206,8 +206,8 @@ class Data {
   getPortfolioTickers() {
     var stocks = this.PORTFOLIO_STOCKS;
     return Object.keys(stocks).sort(function(a, b) {
-      var aDate = new Date(stocks[a][0]['date']);
-      var bDate = new Date(stocks[b][0]['date']);
+      var aDate = new Date(stocks[a][0].date);
+      var bDate = new Date(stocks[b][0].date);
       if (aDate < bDate) {
         return -1;
       } else if (aDate > bDate) {
@@ -216,6 +216,19 @@ class Data {
         return 0;
       }
     });
+  }
+
+  getPortfolioShares(ticker) {
+    if (!(ticker in this.PORTFOLIO_STOCKS)) {
+      return 0;
+    } else {
+      var amount = 0;
+      var changes = this.PORTFOLIO_STOCKS[ticker];
+      for (var i = 0; i < changes.length; i++) {
+        amount += changes[i].amount;
+      }
+    }
+    return amount;
   }
 
   getPortfolioData(ticker) {
@@ -231,10 +244,10 @@ class Data {
       var close = interval == 'min' ? 'close' : 'adjusted close'
       var shares = 0;
       var i = 0;
-      var date = new Date(changes[i]['date']);
+      var date = new Date(changes[i].date);
       portfolioData[interval] = stockData[interval].slice().reverse().map(function(x) {
-        if (i < changes.length && new Date(x['date']) >= new Date(changes[i]['date'])) {
-          shares += parseInt(changes[i]['amount']);
+        if (i < changes.length && new Date(x.date) >= new Date(changes[i].date)) {
+          shares += parseInt(changes[i].amount);
           i += 1;
         }
         var y = Object.assign({}, x);
@@ -262,11 +275,11 @@ class Data {
         if (timeRange != undefined) {
           // get value of individual stock at start of timeRange
           var time = this.getTime(timeRange);
-          if (new Date(changes[i]['date']) >= new Date(this.getStockData(ticker)[time.interval][time.n - time.period]['date'])) {
+          if (new Date(changes[i].date) >= new Date(this.getStockData(ticker)[time.interval][time.n - time.period].date)) {
             break;
           }
         }
-        shares += changes[i]['amount'];
+        shares += changes[i].amount;
       }
       total = shares * price;
 
@@ -296,6 +309,7 @@ class Data {
   }
 
   buyStock(ticker, shares) {
+    // buy shares of ticker
     if (shares > 0) {
       var newStock = false;
       if (!(ticker in this.PORTFOLIO_STOCKS)) {
@@ -305,23 +319,44 @@ class Data {
       } else {
         var time = this.getCurrentTime();
         var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
-        if (latest['date'] == time) {
-          latest['amount'] += shares;
+        if (latest.date == time) {
+          latest.amount += shares;
           return false;
         }
       }
-      
+
       this.PORTFOLIO_STOCKS[ticker].push({
-        'date': this.getCurrentTime(),
-        'price': this.getPrice(ticker),
-        'amount': shares,
+        date: this.getCurrentTime(),
+        price: this.getPrice(ticker),
+        amount: shares,
       });
       return newStock;
     }
   }
 
   sellStock(ticker, shares) {
-    // TODO
+    // sell shares of ticker
+    if (shares > 0) {
+      var totalShares = this.getPortfolioShares(ticker);
+      if (shares > totalShares) {
+        // can't sell stocks not in portfolio
+        return false;
+      } else {
+        var time = this.getCurrentTime();
+        var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
+        if (latest.date == time) {
+          latest.amount -= shares;
+          return true;
+        }
+      }
+
+      this.PORTFOLIO_STOCKS[ticker].push({
+        date: this.getCurrentTime(),
+        price: this.getPrice(ticker),
+        amount: -shares,
+      });
+      return true;
+    }
   }
 
   getCompareTickers() {

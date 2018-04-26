@@ -182,6 +182,61 @@ tr[id$="-row"].hover {
   background-color: $row-hover !important;
 }
 
+i.caret.icon {
+  margin: 0 !important;
+}
+
+.stats-table {
+  margin: auto;
+
+  tr td {
+    border-top: 0px !important;
+    text-align: right !important;
+  }
+}
+
+.label {
+  margin-left: 1em !important;
+
+  &.red {
+    color: $red !important;
+  }
+
+  &.green {
+    color: $green !important;
+  }
+}
+
+.graph-container {
+  width: 100%;
+  padding-top: 20px;
+
+  &.portfolio {
+    height: 25vh;
+  }
+
+  &.compare {
+    height: 40vh;
+  }
+
+  &.company {
+    height: 30vh;
+  }
+}
+
+.company-button {
+  padding: 1.1em 1.5em !important;
+}
+
+.shares-container {
+  padding-top: .25rem !important;
+  padding-bottom: .25rem !important;
+}
+
+.shares-divider {
+  margin: 1.25rem 0 !important;
+}
+
 .ui.button {
   &.circular {
     &.hover {
@@ -425,62 +480,12 @@ tr[id$="-row"].hover {
   opacity: 1;
 }
 
-i.caret.icon {
-  margin: 0 !important;
-}
-
-.stats-table {
-  margin: auto;
-
-  tr td {
-    border-top: 0px !important;
-    text-align: right !important;
-  }
-}
-
-.label {
-  margin-left: 1em !important;
-
-  &.red {
-    color: $red !important;
-  }
-
-  &.green {
-    color: $green !important;
-  }
-}
-
-.ui.secondary.inverted.pointing.menu {
-  border-width: 0;
-  border-bottom: 2px solid $dark-grey;
-}
-
 .ui.menu.selector .item {
   padding: .75em !important;
 }
 
-.graph-container {
-  width: 100%;
-
-  &.portfolio {
-    height: 25vh;
-  }
-
-  &.compare {
-    height: 40vh;
-  }
-
-  &.company {
-    height: 30vh;
-  }
-}
-
 #compare-stocks {
   margin-top: 5px;
-}
-
-#company-buy-button {
-  padding: 1.1em 1.5em;
 }
 
 #company-selector {
@@ -489,15 +494,6 @@ i.caret.icon {
 
 #company-header {
   margin: 1rem 2rem 1rem 0;
-}
-
-#buy-shares-container {
-  padding-top: .25rem;
-  padding-bottom: .25rem;
-}
-
-#buy-divider {
-  margin: 1.25rem 0;
 }
 
 path {
@@ -728,6 +724,7 @@ rect {
 
 line {
   stroke: $light-grey;
+  pointer-events: none;
 
   &[id$="baseline"] {
     stroke-width: 1;
@@ -735,7 +732,6 @@ line {
 
   &[id$="hover-line"] {
     stroke-width: 2;
-    pointer-events: none;
   }
 }
 
