@@ -388,6 +388,6 @@ line {
   line[id$="hover-line"] {
     stroke-width: 2; }
 
-text.baseline-label {
+text {
   fill: #b2b2b3;
   font-size: 12px; }
