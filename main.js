@@ -871,6 +871,11 @@ dom.search.search({
 // UI
 //////////////////////////////
 
+// select input on focus
+dom.searchInput.click(function() {
+  this.select();
+});
+
 // edit button
 dom.editButton.click(function(e) {
   e.stopPropagation();
@@ -956,7 +961,7 @@ dom.buyShares.on('input', function(e) {
 
 // select input on focus
 dom.buyShares.click(function() {
-  dom.buyShares.select();
+  this.select();
 });
 
 // buy stock
@@ -1005,7 +1010,7 @@ dom.sellShares.on('input', function(e) {
 
 // select input on focus
 dom.sellShares.click(function() {
-  dom.sellShares.select();
+  this.select();
 });
 
 // sell stock
