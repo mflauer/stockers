@@ -919,7 +919,8 @@ dom.companyPage
     autofocus: false,
     allowMultiple: false,
   })
-  .modal('attach events', dom.cancelBuy);
+  .modal('attach events', dom.cancelBuy)
+  .modal('attach events', dom.cancelSell);
 
 // buy page
 dom.buyPage
@@ -948,12 +949,13 @@ dom.companyBuyButton.click(function() {
 
 // input shares to buy
 dom.buyShares.on('input', function(e) {
+  dom.buyShares.parent().removeClass('error');
   dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
   dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
 });
 
 // select input on focus
-dom.buyShares.focus(function() {
+dom.buyShares.click(function() {
   dom.buyShares.select();
 });
 
@@ -972,6 +974,7 @@ dom.buyButton.click(function() {
       updateData('portfolio', sectionTimeRanges.portfolio);
     }
   } else {
+    dom.buyShares.parent().addClass('error');
     return false;
   }
 });
@@ -995,12 +998,13 @@ dom.companySellButton.click(function() {
 
 // input shares to sell
 dom.sellShares.on('input', function(e) {
+  dom.sellShares.parent().removeClass('error');
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
   dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
 });
 
 // select input on focus
-dom.sellShares.focus(function() {
+dom.sellShares.click(function() {
   dom.sellShares.select();
 });
 
@@ -1014,6 +1018,9 @@ dom.sellButton.click(function() {
     plotStock('volume');
     plotStock('growth');
     updateData('portfolio', sectionTimeRanges.portfolio);
+  } else {
+    dom.sellShares.parent().addClass('error');
+    return false;
   }
 });
 

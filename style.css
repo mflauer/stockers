@@ -246,6 +246,10 @@ i.caret.icon {
 .ui.button:hover .icon.button {
   opacity: 1; }
 
+.ui.secondary.inverted.pointing.menu {
+  border-width: 0;
+  border-bottom: 2px solid #383939; }
+
 .ui.menu.selector .item {
   padding: .75em !important; }
 

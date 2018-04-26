@@ -10,7 +10,6 @@ $violet: rgb(100, 53, 201);
 $purple: rgb(163, 51, 200);
 $pink: rgb(224, 57, 151);
 $brown: rgb(165, 103, 63);
-$grey: rgb(118, 118, 118);
 $white: rgb(255, 255, 255);
 
 $background: 0;
@@ -478,6 +477,11 @@ i.caret.icon {
 
 .ui.button:hover .icon.button {
   opacity: 1;
+}
+
+.ui.secondary.inverted.pointing.menu {
+  border-width: 0;
+  border-bottom: 2px solid $dark-grey;
 }
 
 .ui.menu.selector .item {
