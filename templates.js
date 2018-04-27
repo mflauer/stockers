@@ -26,7 +26,7 @@ function createCompareItem(dom, ticker, section, color='white') {
     var icon = '';
   }
   element.append(`
-    <div id="${ticker}-${section}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui fluid ${color} left button">
+    <div id="${ticker}-${section}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui fluid ${color} left button dark">
       ${isPortfolio ? '' : createCheckButton(ticker, section, color)}
       ${icon}
       <div class="baseline inline company-label">

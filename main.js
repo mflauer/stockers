@@ -453,6 +453,7 @@ function handleMouseOver(graphName) {
 
       // hover item and row
       $(`#${ticker}-${section}-item`).siblings().addClass('dark');
+      $(`#${ticker}-${section}-item`).removeClass('dark');
       $(`#${ticker}-${section}-row`).addClass('hover');
       
       // hover line and move to front
@@ -481,7 +482,7 @@ function handleMouseLeave(graphName) {
     var section = getSection(graphName);
 
     // unhover item and row
-    $(`#${ticker}-${section}-item`).siblings().removeClass('dark');
+    $(`#${ticker}-${section}-item`).addClass('dark');
     $(`#${ticker}-${section}-row`).removeClass('hover');
 
     // unhover line
