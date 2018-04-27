@@ -92,13 +92,15 @@ const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 1;
 const COLORS = [
   'blue',
-  'pink',
+  'red',
+  'green',
   'yellow',
-  'olive',
   'purple',
   'orange',
   'teal',
+  'pink',
   'violet',
+  'olive',
   'brown',
 ];
 
@@ -955,6 +957,11 @@ dom.buyShares.on('input', function(e) {
   dom.buyShares.parent().removeClass('error');
   dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
   dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
+
+  var shares = parseInt(dom.buyShares.val());
+  if (shares < 0) {
+    dom.buyShares.parent().addClass('error');
+  }
 });
 
 // select input on focus
@@ -1004,6 +1011,11 @@ dom.sellShares.on('input', function(e) {
   dom.sellShares.parent().removeClass('error');
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
   dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
+
+  var shares = parseInt(dom.sellShares.val());
+  if (shares < 0 || shares > data.getPortfolioShares(companyTicker)) {
+    dom.sellShares.parent().addClass('error');
+  }
 });
 
 // select input on focus
@@ -1014,7 +1026,7 @@ dom.sellShares.click(function() {
 // sell stock
 dom.sellButton.click(function() {
   var shares = parseInt(dom.sellShares.val());
-  if (shares > 0 && shares < data.getPortfolioShares(companyTicker)) {
+  if (shares > 0 && shares <= data.getPortfolioShares(companyTicker)) {
     var soldStock = data.sellStock(companyTicker, shares);
     dom.portfolioValue.text(data.getPortfolioValue().withCommas());
     dom.portfolioHidden.removeClass('hide');
