@@ -358,14 +358,14 @@ class Data {
       return true;
 
   } if (shares==0) {
-      
+
       var soldStock = false;
       var time = this.getCurrentTime();
 
       var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
 
       if (latest['date'] == time) {
-        latest['amount'] -= currentShares;
+        latest['amount'] -= this.getPortfolioShares(ticker);
         return false;
       }
       // modify data in portfolio
@@ -376,7 +376,6 @@ class Data {
         'amount': 0,
       });
       return true;
-
     }
 
   }

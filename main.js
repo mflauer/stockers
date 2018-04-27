@@ -940,7 +940,9 @@ dom.companySellButton.click(function() {
 var max = false;
 // input shares to sell
 dom.sellShares.on('input', function(e) {
+  dom.sellShares.parent().removeClass('error');
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
+
   var sellPrice = (data.getPrice(companyTicker) * dom.sellShares.val()).withCommas();
   dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
   var portfolioPrice = data.getPortfolioValue(companyTicker).withCommas();
@@ -967,7 +969,6 @@ dom.sellButton.click(function() {
     var soldStock = data.sellStock(companyTicker, shares);
   } else if (max) {
     var soldStock = data.sellStock(companyTicker, 0);
-
     dom.portfolioValue.text(data.getPortfolioValue().withCommas());
     dom.portfolioHidden.removeClass('hide');
     plotStock('volume');
