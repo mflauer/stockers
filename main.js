@@ -963,14 +963,23 @@ dom.sellMax.click(function() {
 // sell stock
 dom.sellButton.click(function() {
   var shares = parseInt(dom.sellShares.val());
-  if (shares > 0) {
-    var soldStock = data.sellStock(companyTicker, parseInt(dom.sellShares.val()));
+  if (shares > 0 && shares < data.getPortfolioShares(companyTicker)) {
+    var soldStock = data.sellStock(companyTicker, shares);
   } else if (max) {
     var soldStock = data.sellStock(companyTicker, 0);
+
+    dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+    dom.portfolioHidden.removeClass('hide');
+    plotStock('volume');
+    plotStock('growth');
+    updateData('portfolio', sectionTimeRanges.portfolio);
+  } else {
+    dom.sellShares.parent().addClass('error');
+    return false;
   }
-  dom.portfolioValue.text(data.getPortfolioValue().withCommas());
-  dom.portfolioHidden.removeClass('hide');
-  plotStock('volume');
-  plotStock('growth');
-  updateData('portfolio', companyTicker, sectionTimeRanges['portfolio']);
+});
+
+// redraw plots on resize
+$(window).resize(function() {
+  ['volume', 'growth', 'compare', 'company'].map(x => plotStock(x));
 });
