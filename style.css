@@ -1,37 +1,8 @@
+body {
+  background-color: #1b1c1d; }
+
 table {
   border: none !important; }
-
-.hide {
-  display: none !important; }
-
-.left {
-  text-align: left !important; }
-
-.right {
-  text-align: right !important; }
-
-.baseline {
-  vertical-align: baseline !important; }
-
-.middle {
-  vertical-align: middle !important; }
-
-.inline {
-  display: inline-block !important; }
-
-.portfolio-item {
-  margin-bottom: 5px !important;
-  padding: 1.1em 1.5em !important; }
-
-.compare-item {
-  margin-bottom: 5px !important;
-  position: relative; }
-
-.close {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  margin-right: 0px !important; }
 
 .red {
   color: #db2828; }
@@ -88,44 +59,43 @@ table {
   .brown:hover {
     color: #a5673f; }
 
-.grey {
-  color: #767676; }
-  .grey:hover {
-    color: #767676; }
+.hide {
+  display: none !important; }
 
-.white {
-  color: white !important; }
+.left {
+  text-align: left !important; }
+
+.right {
+  text-align: right !important; }
+
+.baseline {
+  vertical-align: baseline !important; }
+
+.middle {
+  vertical-align: middle !important; }
+
+.inline {
+  display: inline-block !important; }
+
+.portfolio-item {
+  margin-bottom: 5px !important;
+  padding: 1.1em 1.5em !important; }
+
+.compare-item {
+  margin-bottom: 5px !important;
+  position: relative; }
+
+.check-button {
+  margin-right: .75em !important; }
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  margin-right: 0px !important; }
 
 tr[id$="-row"].hover {
-  background-color: rgba(0, 0, 0, 0.05) !important; }
-
-.ui.basic.button.red.hover {
-  background-color: #f8d4d4 !important; }
-.ui.basic.button.orange.hover {
-  background-color: #fce3d2 !important; }
-.ui.basic.button.yellow.hover {
-  background-color: #fef2ce !important; }
-.ui.basic.button.olive.hover {
-  background-color: #f0f5d1 !important; }
-.ui.basic.button.green.hover {
-  background-color: #d3f1da !important; }
-.ui.basic.button.teal.hover {
-  background-color: #ccf0ef !important; }
-.ui.basic.button.blue.hover {
-  background-color: #d3e7f6 !important; }
-.ui.basic.button.violet.hover {
-  background-color: #e0d7f4 !important; }
-.ui.basic.button.purple.hover {
-  background-color: #edd6f4 !important; }
-.ui.basic.button.pink.hover {
-  background-color: #f9d7ea !important; }
-.ui.basic.button.brown.hover {
-  background-color: #ede1d9 !important; }
-.ui.basic.button.grey.hover {
-  background-color: #e4e4e4 !important; }
-
-.ui.button:hover .icon.button {
-  opacity: 1; }
+  background-color: rgba(255, 255, 255, 0.08) !important; }
 
 i.caret.icon {
   margin: 0 !important; }
@@ -143,11 +113,9 @@ i.caret.icon {
   .label.green {
     color: #21ba45 !important; }
 
-.ui.menu.selector .item {
-  padding: .75em !important; }
-
 .graph-container {
-  width: 100%; }
+  width: 100%;
+  padding-top: 20px; }
   .graph-container.portfolio {
     height: 25vh; }
   .graph-container.compare {
@@ -155,14 +123,138 @@ i.caret.icon {
   .graph-container.company {
     height: 30vh; }
 
+.company-button {
+  padding: 1.1em 1.5em !important; }
+
+.shares-container {
+  padding-top: .25rem !important;
+  padding-bottom: .25rem !important; }
+
+.shares-divider {
+  margin: 1.25rem 0 !important; }
+
+.ui.button.circular.hover {
+  box-shadow: 0 0 0 1px #b2b2b3 inset; }
+.ui.button.circular.positive {
+  color: white !important;
+  background-color: #21ba45 !important; }
+.ui.button.circular.dark {
+  background-color: transparent !important;
+  box-shadow: 0 0 0 1px white inset !important; }
+  .ui.button.circular.dark.checked {
+    background-color: white !important; }
+    .ui.button.circular.dark.checked:hover {
+      background-color: transparent !important; }
+  .ui.button.circular.dark:hover {
+    background-color: transparent !important;
+    box-shadow: 0 0 0 2px white inset !important; }
+.ui.button.white {
+  box-shadow: 0 0 0 1px white inset !important;
+  background-color: transparent;
+  color: white; }
+  .ui.button.white:hover {
+    box-shadow: 0 0 0 2px white inset !important; }
+.ui.button.red:hover {
+  background-color: #db2828; }
+.ui.button.red.dark {
+  background-color: #991c1c; }
+.ui.button.red.checked {
+  color: #db2828 !important; }
+  .ui.button.red.checked:hover {
+    color: white !important; }
+.ui.button.orange:hover {
+  background-color: #f2711c; }
+.ui.button.orange.dark {
+  background-color: #a94f14; }
+.ui.button.orange.checked {
+  color: #f2711c !important; }
+  .ui.button.orange.checked:hover {
+    color: white !important; }
+.ui.button.yellow:hover {
+  background-color: #fbbd08; }
+.ui.button.yellow.dark {
+  background-color: #b08406; }
+.ui.button.yellow.checked {
+  color: #fbbd08 !important; }
+  .ui.button.yellow.checked:hover {
+    color: white !important; }
+.ui.button.olive:hover {
+  background-color: #b5cc18; }
+.ui.button.olive.dark {
+  background-color: #7f8f11; }
+.ui.button.olive.checked {
+  color: #b5cc18 !important; }
+  .ui.button.olive.checked:hover {
+    color: white !important; }
+.ui.button.green:hover {
+  background-color: #21ba45; }
+.ui.button.green.dark {
+  background-color: #178230; }
+.ui.button.green.checked {
+  color: #21ba45 !important; }
+  .ui.button.green.checked:hover {
+    color: white !important; }
+.ui.button.teal:hover {
+  background-color: #00b5ad; }
+.ui.button.teal.dark {
+  background-color: #007f79; }
+.ui.button.teal.checked {
+  color: #00b5ad !important; }
+  .ui.button.teal.checked:hover {
+    color: white !important; }
+.ui.button.blue:hover {
+  background-color: #2185d0; }
+.ui.button.blue.dark {
+  background-color: #175d92; }
+.ui.button.blue.checked {
+  color: #2185d0 !important; }
+  .ui.button.blue.checked:hover {
+    color: white !important; }
+.ui.button.violet:hover {
+  background-color: #6435c9; }
+.ui.button.violet.dark {
+  background-color: #46258d; }
+.ui.button.violet.checked {
+  color: #6435c9 !important; }
+  .ui.button.violet.checked:hover {
+    color: white !important; }
+.ui.button.purple:hover {
+  background-color: #a333c8; }
+.ui.button.purple.dark {
+  background-color: #72248c; }
+.ui.button.purple.checked {
+  color: #a333c8 !important; }
+  .ui.button.purple.checked:hover {
+    color: white !important; }
+.ui.button.pink:hover {
+  background-color: #e03997; }
+.ui.button.pink.dark {
+  background-color: #9d286a; }
+.ui.button.pink.checked {
+  color: #e03997 !important; }
+  .ui.button.pink.checked:hover {
+    color: white !important; }
+.ui.button.brown:hover {
+  background-color: #a5673f; }
+.ui.button.brown.dark {
+  background-color: #74482c; }
+.ui.button.brown.checked {
+  color: #a5673f !important; }
+  .ui.button.brown.checked:hover {
+    color: white !important; }
+
+.ui.button:hover .icon.button {
+  opacity: 1; }
+
+.ui.secondary.inverted.pointing.menu {
+  border-width: 0;
+  border-bottom: 2px solid #383939; }
+
+.ui.menu.selector .item {
+  padding: .75em !important; }
+
 #compare-stocks {
   margin-top: 5px; }
-
-#company-buy-button {
-  padding: 1.1em 1.5em; }
-
-#company-sell-button {
-  padding: 1.1em 1.5em; }
 
 #company-selector {
   margin-top: -2.5em; }
@@ -170,17 +262,12 @@ i.caret.icon {
 #company-header {
   margin: 1rem 2rem 1rem 0; }
 
-#buy-shares-container {
-  padding-top: .25rem;
-  padding-bottom: .25rem; }
-
-#buy-divider {
-  margin: 1.25rem 0; }
-
 path {
   fill: none;
-  stroke: #767676;
+  stroke: #b2b2b3;
   stroke-width: 2; }
+  path.thin {
+    stroke-width: 1; }
   path.thick {
     stroke-width: 3; }
     path.thick.very {
@@ -191,96 +278,120 @@ path {
     stroke: #db2828; }
     path.red.fill {
       stroke: none;
-      fill: #f8d4d4; }
+      fill: #991c1c; }
     path.red.hover {
       fill: #db2828; }
+    path.red.dark {
+      stroke: #991c1c; }
   path.orange {
     stroke: #f2711c; }
     path.orange.fill {
       stroke: none;
-      fill: #fce3d2; }
+      fill: #a94f14; }
     path.orange.hover {
       fill: #f2711c; }
+    path.orange.dark {
+      stroke: #a94f14; }
   path.yellow {
     stroke: #fbbd08; }
     path.yellow.fill {
       stroke: none;
-      fill: #fef2ce; }
+      fill: #b08406; }
     path.yellow.hover {
       fill: #fbbd08; }
+    path.yellow.dark {
+      stroke: #b08406; }
   path.olive {
     stroke: #b5cc18; }
     path.olive.fill {
       stroke: none;
-      fill: #f0f5d1; }
+      fill: #7f8f11; }
     path.olive.hover {
       fill: #b5cc18; }
+    path.olive.dark {
+      stroke: #7f8f11; }
   path.green {
     stroke: #21ba45; }
     path.green.fill {
       stroke: none;
-      fill: #d3f1da; }
+      fill: #178230; }
     path.green.hover {
       fill: #21ba45; }
+    path.green.dark {
+      stroke: #178230; }
   path.teal {
     stroke: #00b5ad; }
     path.teal.fill {
       stroke: none;
-      fill: #ccf0ef; }
+      fill: #007f79; }
     path.teal.hover {
       fill: #00b5ad; }
+    path.teal.dark {
+      stroke: #007f79; }
   path.blue {
     stroke: #2185d0; }
     path.blue.fill {
       stroke: none;
-      fill: #d3e7f6; }
+      fill: #175d92; }
     path.blue.hover {
       fill: #2185d0; }
+    path.blue.dark {
+      stroke: #175d92; }
   path.violet {
     stroke: #6435c9; }
     path.violet.fill {
       stroke: none;
-      fill: #e0d7f4; }
+      fill: #46258d; }
     path.violet.hover {
       fill: #6435c9; }
+    path.violet.dark {
+      stroke: #46258d; }
   path.purple {
     stroke: #a333c8; }
     path.purple.fill {
       stroke: none;
-      fill: #edd6f4; }
+      fill: #72248c; }
     path.purple.hover {
       fill: #a333c8; }
+    path.purple.dark {
+      stroke: #72248c; }
   path.pink {
     stroke: #e03997; }
     path.pink.fill {
       stroke: none;
-      fill: #f9d7ea; }
+      fill: #9d286a; }
     path.pink.hover {
       fill: #e03997; }
+    path.pink.dark {
+      stroke: #9d286a; }
   path.brown {
     stroke: #a5673f; }
     path.brown.fill {
       stroke: none;
-      fill: #ede1d9; }
+      fill: #74482c; }
     path.brown.hover {
       fill: #a5673f; }
+    path.brown.dark {
+      stroke: #74482c; }
 
-rect[id$="capture"] {
-  fill: none;
-  pointer-events: all; }
-rect[id$="hover-rect"] {
-  fill: rgba(255, 255, 255, 0.95);
+rect {
   pointer-events: none; }
+  rect[id$="capture"] {
+    fill: none;
+    pointer-events: all; }
+  rect[id$="hover-rect"] {
+    fill: rgba(255, 255, 255, 0.95); }
+    rect[id$="hover-rect"].dark {
+      fill: rgba(27, 28, 29, 0.95); }
 
 line {
-  stroke: #767676; }
+  stroke: #b2b2b3;
+  pointer-events: none; }
   line[id$="baseline"] {
-    stroke-width: 1;
-    stroke-dasharray: 10, 10; }
+    stroke-width: 1; }
   line[id$="hover-line"] {
-    stroke-width: 2;
-    pointer-events: none; }
+    stroke-width: 2; }
 
-text.baseline-label {
-  fill: #767676;
+text {
+  fill: #b2b2b3;
   font-size: 12px; }

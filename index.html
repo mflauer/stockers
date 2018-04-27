@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  <div class="ui secondary pointing menu">
+  <div class="ui inverted secondary pointing menu">
     <div class="header item">
       <img class="ui image small" src="assets/text-logo.svg"
            onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
@@ -25,13 +25,13 @@
     </div>
   </div>
 
-  <div class="ui divided padded grid">
+  <div class="ui inverted divided padded grid">
     <div id="portfolio-hidden" class="eight wide column hide">
-      <h2 class="ui center aligned header">Portfolio</h2>
+      <h2 class="ui inverted center aligned header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
-          <div class="ui huge header">$<span id="portfolio-value"></span></div>
-          <h5 class="ui header">
+          <div class="ui inverted huge header">$<span id="portfolio-value"></span></div>
+          <h5 class="ui inverted header">
             Your Stocks
           </h5>
           <div id="portfolio-stocks">
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="twelve wide column">
-          <div id="portfolio-selector" class="ui secondary pointing menu selector">
+          <div id="portfolio-selector" class="ui inverted secondary pointing menu selector">
             <div class="right menu">
               <a class="item">1D</a>
               <a class="item">5D</a>
@@ -50,18 +50,19 @@
               <a class="item">5Y</a>
             </div>
           </div>
-          <h3 class="ui center aligned header">Volume</h3>
+          <h3 class="ui inverted center aligned header">Volume</h3>
           <svg id="volume-graph-container" class="portfolio graph-container">
+            <g id="volume-base"></g>
             <g id="volume-graph"></g>
             <g id="volume-hover"></g>
           </svg>
-          <h3 class="ui center aligned header">Growth</h3>
+          <h3 class="ui inverted center aligned header">Growth</h3>
           <svg id="growth-graph-container" class="portfolio graph-container">
+            <g id="growth-base"></g>
             <g id="growth-graph"></g>
             <g id="growth-hover"></g>
           </svg>
-          <div id='tooltip'></div>
-          <table class="ui basic selectable fixed compact table">
+          <table class="ui inverted basic selectable fixed compact table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -79,7 +80,7 @@
     </div>
 
     <div class="eight wide column">
-      <h2 class="ui center aligned header">Compare</h2>
+      <h2 class="ui inverted center aligned header">Compare</h2>
       <div class="ui grid">
         <div class="twelve wide column">
           <div id="search" class="ui fluid search">
@@ -89,7 +90,7 @@
             </div>
             <div class="results"></div>
           </div>
-          <div id="compare-selector" class="ui secondary pointing right menu selector hide compare-hidden">
+          <div id="compare-selector" class="ui inverted secondary pointing right menu selector hide compare-hidden">
             <div class="right menu">
               <a class="active item">1D</a>
               <a class="item">5D</a>
@@ -101,10 +102,11 @@
             </div>
           </div>
           <svg id="compare-graph-container" class="compare graph-container hide compare-hidden">
+            <g id="compare-base"></g>
             <g id="compare-graph"></g>
             <g id="compare-hover"></g>
           </svg>
-          <table class="ui basic selectable fixed compact table hide compare-hidden">
+          <table class="ui inverted basic selectable fixed compact table hide compare-hidden">
             <thead>
               <tr>
                 <th>Name</th>
@@ -128,7 +130,7 @@
           <div id="compare-stocks" class="hide compare-hidden">
             <!-- stocks dynamically added -->
           </div>
-          <h5 id="suggested-label" class="ui header">
+          <h5 id="suggested-label" class="ui inverted header">
             Suggested Stocks
           </h5>
           <div id="suggested-stocks">
@@ -149,10 +151,10 @@
               Compare
             </div>
           </div>
-          <div id="company-buy-button" class="ui right basic baseline button">
+          <div id="company-buy-button" class="ui right basic baseline button company-button">
             Buy
           </div>
-          <div id="company-sell-button" class="ui right basic baseline button hide">
+          <div id="company-sell-button" class="ui right basic baseline button company-button hide">
             Sell
           </div>
         </div>
@@ -167,6 +169,7 @@
         <a class="item">5Y</a>
       </div>
       <svg id="company-graph-container" class="company graph-container">
+        <g id="company-base"></g>
         <g id="company-graph"></g>
         <g id="company-hover"></g>
       </svg>
@@ -254,10 +257,10 @@
         </div>
         <div class="column">
           <div class="ui segment">
-            <a href="https://www.investors.com/etfs-and-funds/etfs/apple-stock-relative-strength-powershares-momentum-etf/" target="_blank">
+            <a href="https://www.cnbc.com/2018/04/24/apple-aapl-sinks-into-correction-territory.html" target="_blank">
               <img class="ui fluid image" src="assets/articles/article-2.png"
                    onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
-              <h5 class="ui header">Apple, Intel Weigh On Dow And Nasdaq As Chip Stocks Get...</h5>
+              <h5 class="ui header">Apple stock closes in correction territory</h5>
             </a>
           </div>
         </div>
@@ -281,7 +284,7 @@
     <div class="content">
       <div class="ui grid">
         <div class="ten wide baseline column">Shares</div>
-        <div id="buy-shares-container" class="six wide right aligned column">
+        <div class="six wide right aligned column shares-container">
           <div class="ui fluid input">
             <input id="buy-shares" class="right" type="text" placeholder="0" maxlength="4">
           </div>
@@ -289,7 +292,7 @@
         <div class="ten wide column">Market Price</div>
         <div class="six wide right aligned column">$<span id="buy-price"></span></div>
       </div>
-      <div id="buy-divider" class="ui divider"></div>
+      <div class="ui divider shares-divider"></div>
       <div class="ui grid">
         <div class="ten wide column">Total</div>
         <div class="six wide right aligned column">$<span id="total-price"></span></div>
@@ -301,8 +304,6 @@
     </div>
   </div>
 
-
-
   <div id="sell-page" class="ui mini modal">
     <div class="ui header">
       Sell <span id="sell-company-ticker"></span>
@@ -310,7 +311,7 @@
     <div class="content">
       <div class="ui grid">
         <div class="ten wide baseline column">Shares</div>
-        <div id="sell-shares-container" class="six wide right aligned column">
+        <div class="six wide right aligned column shares-container">
           <div class="ui fluid input">
             <div id="sell-max" class="small compact ui button">Max</div>
             <input id="sell-shares" class="right" type="text" placeholder="0" maxlength="4">
@@ -319,7 +320,7 @@
         <div class="ten wide column">Market Price</div>
         <div class="six wide right aligned column">$<span id="sell-price"></span></div>
       </div>
-      <div id="buy-divider" class="ui divider"></div>
+      <div class="ui divider shares-divider"></div>
       <div class="ui grid">
         <div class="ten wide column">Selling</div>
         <div class="six wide right aligned column">$<span id="total-sell-price"></span></div>

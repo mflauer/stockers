@@ -966,7 +966,6 @@ dom.sellButton.click(function() {
   if (shares > 0) {
     var soldStock = data.sellStock(companyTicker, parseInt(dom.sellShares.val()));
   } else if (max) {
-    console.log("hi");
     var soldStock = data.sellStock(companyTicker, 0);
   }
   dom.portfolioValue.text(data.getPortfolioValue().withCommas());
