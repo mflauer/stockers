@@ -452,7 +452,6 @@ function handleMouseOver(graphName) {
       var section = getSection(graphName);
 
       // hover item and row
-      $(`#${ticker}-${section}-item`).siblings().addClass('dark');
       $(`#${ticker}-${section}-item`).removeClass('dark');
       $(`#${ticker}-${section}-row`).addClass('hover');
       
