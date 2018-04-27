@@ -92,15 +92,13 @@ const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 1;
 const COLORS = [
   'blue',
-  'red',
-  'green',
+  'pink',
   'yellow',
+  'olive',
   'purple',
   'orange',
   'teal',
-  'pink',
   'violet',
-  'olive',
   'brown',
 ];
 

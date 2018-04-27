@@ -85,8 +85,8 @@ table {
   margin-bottom: 5px !important;
   position: relative; }
 
-.company-label {
-  margin-left: .5em; }
+.check-button {
+  margin-right: .75em !important; }
 
 .close {
   position: absolute;
