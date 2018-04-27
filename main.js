@@ -950,6 +950,7 @@ dom.companyBuyButton.click(function() {
   var price = data.getPrice(companyTicker).withCommas();
   dom.buyPrice.text(price);
   dom.totalPrice.text('0.00');
+  dom.buyShares.parent().removeClass('error');
 });
 
 // input shares to buy
@@ -1004,6 +1005,7 @@ dom.companySellButton.click(function() {
   var price = data.getPrice(companyTicker).withCommas();
   dom.sellPrice.text(price);
   dom.totalSellPrice.text('0.00');
+  dom.sellShares.parent().removeClass('error');
 });
 
 // input shares to sell
