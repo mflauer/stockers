@@ -343,6 +343,7 @@ class Data {
 
       var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
       console.log(this.PORTFOLIO_STOCKS[ticker].slice(0)[0]['amount']);
+
       if (latest['date'] == time) {
         latest['amount'] -= shares;
         return false;
@@ -354,11 +355,30 @@ class Data {
         'price': this.getPrice(ticker),
         'amount': -shares,
       });
-      if (currentShares = shares) {
-        //remove stock from portfolio screen
+      return true;
+
+  } if (shares==0) {
+      
+      var soldStock = false;
+      var time = this.getCurrentTime();
+
+      var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
+
+      if (latest['date'] == time) {
+        latest['amount'] -= currentShares;
+        return false;
       }
-      return soldStock;
+      // modify data in portfolio
+
+      this.PORTFOLIO_STOCKS[ticker].push({
+        'date': this.getCurrentTime(),
+        'price': this.getPrice(ticker),
+        'amount': 0,
+      });
+      return true;
+
     }
+
   }
 
   getCompareTickers() {

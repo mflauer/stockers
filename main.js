@@ -75,6 +75,9 @@ dom.sellPrice = $('#sell-price');
 dom.totalSellPrice = $('#total-sell-price');
 dom.cancelSell = $('#cancel-sell');
 dom.sellButton = $('#sell-button');
+dom.sellAllPortfolio = $('#portfolio-stock-price');
+dom.remaining = $('#remaining');
+dom.sellMax = $('#sell-max');
 
 
 //////////////////////////////
@@ -927,14 +930,22 @@ dom.companySellButton.click(function() {
   dom.sellShares.val('');
   dom.sellCompanyTicker.text(companyTicker);
   var price = data.getPrice(companyTicker).withCommas();
+  var portfolioPrice = data.getPortfolioValue(companyTicker).withCommas();
   dom.sellPrice.text(price);
   dom.totalSellPrice.text('0.00');
+  dom.remaining.text(portfolioPrice);
+
 });
 
+var max = false;
 // input shares to sell
 dom.sellShares.on('input', function(e) {
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
+  var sellPrice = (data.getPrice(companyTicker) * dom.sellShares.val()).withCommas();
   dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
+  var portfolioPrice = data.getPortfolioValue(companyTicker).withCommas();
+  var remaining = (portfolioPrice - sellPrice).withCommas();
+  dom.remaining.text(remaining);
 });
 
 // select input on focus
@@ -942,9 +953,22 @@ dom.sellShares.focus(function() {
   dom.sellShares.select();
 });
 
+dom.sellMax.click(function() {
+  var portfolioPrice = data.getPortfolioValue(companyTicker).withCommas();
+  dom.totalSellPrice.text(portfolioPrice);
+  dom.remaining.text('0.00');
+  max = true;
+});
+
 // sell stock
 dom.sellButton.click(function() {
-  var soldStock = data.sellStock(companyTicker, parseInt(dom.sellShares.val()));
+  var shares = parseInt(dom.sellShares.val());
+  if (shares > 0) {
+    var soldStock = data.sellStock(companyTicker, parseInt(dom.sellShares.val()));
+  } else if (max) {
+    console.log("hi");
+    var soldStock = data.sellStock(companyTicker, 0);
+  }
   dom.portfolioValue.text(data.getPortfolioValue().withCommas());
   dom.portfolioHidden.removeClass('hide');
   plotStock('volume');
