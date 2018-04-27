@@ -115,7 +115,8 @@ i.caret.icon {
 
 .graph-container {
   width: 100%;
-  padding-top: 20px; }
+  padding-top: 20px;
+  padding-bottom: 10px; }
   .graph-container.portfolio {
     height: 25vh; }
   .graph-container.compare {

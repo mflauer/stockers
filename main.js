@@ -372,7 +372,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .attr('x', xScale(0) - HOVER_MARGIN)
       .attr('y', 0)
       .attr('width', 0)
-      .attr('height', container.height())
+      .attr('height', container.height() - GRAPH_Y_MARGIN)
       .classed('dark', graphName != 'company')
       .classed('hide', true);
     hover.append('text')
@@ -389,13 +389,15 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .classed('hide', true);
 
     // add baseline and baseline labels
-    var labelsTranslate = yScale(0) + GRAPH_Y_MARGIN/2 - 1;
     var x = d3.scaleTime().range([0, container.width()]);
     x.domain(d3.extent(plotData['dates'], function(d) { return d; }));
     base.append("g")
-      .attr('id', 'x-axis-labels')
-      .attr("transform", "translate(0," + labelsTranslate + ")")
-      .call(d3.axisBottom(x).ticks(5));
+      .attr('id', `${graphName}-baseline`)
+      .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
+      .classed('dark', graphName != 'company')
+      .classed('baseline', true)
+      .call(d3.axisBottom(x).ticks(5))
+      .on('mousemove', handleMouseMove(graphName, xScale, plotData));
 
     base.append('text')
       .attr('id', `${graphName}-baseline-label`)
@@ -405,15 +407,15 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .classed('baseline-label', true)
       .text(drawArea ? '$0' : '0%');
     
-    base.append('line')
-      .attr('id', `${graphName}-baseline`)
-      .attr('x1', xScale(0))
-      .attr('y1', yScale(0))
-      .attr('x2', container.width())
-      .attr('y2', yScale(0))
-      .classed('dark', graphName != 'company')
-      .classed('baseline', true)
-      .on('mousemove', handleMouseMove(graphName, xScale, plotData));
+    // base.append('line') //TODO get rid of this section, call code that actually updates things above
+    //   .attr('id', `${graphName}-baseline`)
+    //   .attr('x1', xScale(0))
+    //   .attr('y1', yScale(0))
+    //   .attr('x2', container.width())
+    //   .attr('y2', yScale(0))
+    //   .classed('dark', graphName != 'company')
+    //   .classed('baseline', true)
+    //   .on('mousemove', handleMouseMove(graphName, xScale, plotData));
   }
 
   if (ticker != undefined) {
