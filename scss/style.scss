@@ -10,72 +10,38 @@ $violet: rgb(100, 53, 201);
 $purple: rgb(163, 51, 200);
 $pink: rgb(224, 57, 151);
 $brown: rgb(165, 103, 63);
-$grey: rgb(118, 118, 118);
 $white: rgb(255, 255, 255);
-$transparent: rgba(255, 255, 255, .95);
 
-$background: 255;
-$alpha: .2;
-$light-factor: $background*(1-$alpha);
+$background: 0;
+$alpha: .7;
+$factor: $background * (1-$alpha);
+$dark-red: rgb($factor + 219*$alpha, $factor + 40*$alpha, $factor + 40*$alpha);
+$dark-orange: rgb($factor + 242*$alpha, $factor + 113*$alpha, $factor + 28*$alpha);
+$dark-yellow: rgb($factor + 251*$alpha, $factor + 189*$alpha, $factor + 8*$alpha);
+$dark-olive: rgb($factor + 181*$alpha, $factor + 204*$alpha, $factor + 24*$alpha);
+$dark-green: rgb($factor + 33*$alpha, $factor + 186*$alpha, $factor + 69*$alpha);
+$dark-teal: rgb($factor + 0*$alpha, $factor + 181*$alpha, $factor + 173*$alpha);
+$dark-blue: rgb($factor + 33*$alpha, $factor + 133*$alpha, $factor + 208*$alpha);
+$dark-violet: rgb($factor + 100*$alpha, $factor + 53*$alpha, $factor + 201*$alpha);
+$dark-purple: rgb($factor + 163*$alpha, $factor + 51*$alpha, $factor + 200*$alpha);
+$dark-pink: rgb($factor + 224*$alpha, $factor + 57*$alpha, $factor + 151*$alpha);
+$dark-brown: rgb($factor + 165*$alpha, $factor + 103*$alpha, $factor + 63*$alpha);
 
-$light-red: rgb($light-factor + 219*$alpha, $light-factor + 40*$alpha, $light-factor + 40*$alpha);
-$light-orange: rgb($light-factor + 242*$alpha, $light-factor + 113*$alpha, $light-factor + 28*$alpha);
-$light-yellow: rgb($light-factor + 251*$alpha, $light-factor + 189*$alpha, $light-factor + 8*$alpha);
-$light-olive: rgb($light-factor + 181*$alpha, $light-factor + 204*$alpha, $light-factor + 24*$alpha);
-$light-green: rgb($light-factor + 33*$alpha, $light-factor + 186*$alpha, $light-factor + 69*$alpha);
-$light-teal: rgb($light-factor + 0*$alpha, $light-factor + 181*$alpha, $light-factor + 173*$alpha);
-$light-blue: rgb($light-factor + 33*$alpha, $light-factor + 133*$alpha, $light-factor + 208*$alpha);
-$light-violet: rgb($light-factor + 100*$alpha, $light-factor + 53*$alpha, $light-factor + 201*$alpha);
-$light-purple: rgb($light-factor + 163*$alpha, $light-factor + 51*$alpha, $light-factor + 200*$alpha);
-$light-pink: rgb($light-factor + 224*$alpha, $light-factor + 57*$alpha, $light-factor + 151*$alpha);
-$light-brown: rgb($light-factor + 165*$alpha, $light-factor + 103*$alpha, $light-factor + 63*$alpha);
-$light-grey: rgb($light-factor + 118*$alpha, $light-factor + 118*$alpha, $light-factor + 118*$alpha);
+$bg: rgb(27, 28, 29);
+$light-grey: rgb(177.65, 178.35, 179.05);
+$dark-grey: rgb(56.1, 56.65, 57.2);
+$row-hover: rgba(255, 255, 255, .08);
+$hover: rgba(255, 255, 255, .95);
+$dark-hover: rgba(27, 28, 29, .95);
 
 
 // STYLES
+body {
+  background-color: $bg;
+}
+
 table {
   border: none !important;
-}
-
-.hide {
-  display: none !important;
-}
-
-.left {
-  text-align: left !important;
-}
-
-.right {
-  text-align: right !important;
-}
-
-.baseline {
-  vertical-align: baseline !important;
-}
-
-.middle {
-  vertical-align: middle !important;
-}
-
-.inline {
-  display: inline-block !important;
-}
-
-.portfolio-item {
-  margin-bottom: 5px !important;
-  padding: 1.1em 1.5em !important;
-}
-
-.compare-item {
-  margin-bottom: 5px !important;
-  position: relative;
-}
-
-.close {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  margin-right: 0px !important;
 }
 
 .red {
@@ -166,23 +132,53 @@ table {
   }
 }
 
-.grey {
-  color: $grey;
-
-  &:hover {
-    color: $grey;
-  }
+.hide {
+  display: none !important;
 }
 
-.white {
-  color: $white !important;
+.left {
+  text-align: left !important;
 }
 
+.right {
+  text-align: right !important;
+}
 
-tr[id$="-row"] {
-  &.hover {
-    background-color: rgba(0,0,0,.05) !important;
-  }
+.baseline {
+  vertical-align: baseline !important;
+}
+
+.middle {
+  vertical-align: middle !important;
+}
+
+.inline {
+  display: inline-block !important;
+}
+
+.portfolio-item {
+  margin-bottom: 5px !important;
+  padding: 1.1em 1.5em !important;
+}
+
+.compare-item {
+  margin-bottom: 5px !important;
+  position: relative;
+}
+
+.company-label {
+  margin-left: .5em;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  margin-right: 0px !important;
+}
+
+tr[id$="-row"].hover {
+  background-color: $row-hover !important;
 }
 
 i.caret.icon {
@@ -227,6 +223,10 @@ i.caret.icon {
   }
 }
 
+.company-button {
+  padding: 1.1em 1.5em !important;
+}
+
 .shares-container {
   padding-top: .25rem !important;
   padding-bottom: .25rem !important;
@@ -236,62 +236,252 @@ i.caret.icon {
   margin: 1.25rem 0 !important;
 }
 
-.company-button {
-  padding: 1.1em 1.5em !important;
-}
+.ui.button {
+  &.circular {
+    &.hover {
+      box-shadow: 0 0 0 1px $light-grey inset;
+    }
 
-.ui.basic.button {
-  &.red.hover {
-    background-color: $light-red !important;
+    &.positive {
+      color: $white !important;
+      background-color: $green !important;
+    }
+
+    &.dark {
+      background-color: transparent !important;
+      box-shadow: 0 0 0 1px $white inset !important;
+
+      &.checked {
+        background-color: $white !important;
+
+        &:hover {
+          background-color: transparent !important;
+        }
+      }
+
+      &:hover {
+        background-color: transparent !important;
+        box-shadow: 0 0 0 2px $white inset !important;
+      }
+    }
   }
 
-  &.orange.hover {
-    background-color: $light-orange !important;
+  &.white{
+    box-shadow: 0 0 0 1px $white inset !important;
+    background-color: transparent;
+    color: $white;
+
+    &:hover {
+      box-shadow: 0 0 0 2px $white inset !important;
+    }
   }
 
-  &.yellow.hover {
-    background-color: $light-yellow !important;
+  &.red {
+    &:hover {
+      background-color: $red;
+    }
+
+    &.dark {
+      background-color: $dark-red;
+    }
+
+    &.checked {
+      color: $red !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.olive.hover {
-    background-color: $light-olive !important;
+  &.orange {
+    &:hover {
+      background-color: $orange;
+    }
+
+    &.dark {
+      background-color: $dark-orange;
+    }
+
+    &.checked {
+      color: $orange !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.green.hover {
-    background-color: $light-green !important;
+  &.yellow {
+    &:hover {
+      background-color: $yellow;
+    }
+
+    &.dark {
+      background-color: $dark-yellow;
+    }
+
+    &.checked {
+      color: $yellow !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.teal.hover {
-    background-color: $light-teal !important;
+  &.olive {
+    &:hover {
+      background-color: $olive;
+    }
+
+    &.dark {
+      background-color: $dark-olive;
+    }
+
+    &.checked {
+      color: $olive !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.blue.hover {
-    background-color: $light-blue !important;
+  &.green {
+    &:hover {
+      background-color: $green;
+    }
+
+    &.dark {
+      background-color: $dark-green;
+    }
+
+    &.checked {
+      color: $green !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.violet.hover {
-    background-color: $light-violet !important;
+  &.teal {
+    &:hover {
+      background-color: $teal;
+    }
+
+    &.dark {
+      background-color: $dark-teal;
+    }
+
+    &.checked {
+      color: $teal !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.purple.hover {
-    background-color: $light-purple !important;
+  &.blue {
+    &:hover {
+      background-color: $blue;
+    }
+
+    &.dark {
+      background-color: $dark-blue;
+    }
+
+    &.checked {
+      color: $blue !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.pink.hover {
-    background-color: $light-pink !important;
+  &.violet {
+    &:hover {
+      background-color: $violet;
+    }
+
+    &.dark {
+      background-color: $dark-violet;
+    }
+
+    &.checked {
+      color: $violet !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.brown.hover {
-    background-color: $light-brown !important;
+  &.purple {
+    &:hover {
+      background-color: $purple;
+    }
+
+    &.dark {
+      background-color: $dark-purple;
+    }
+
+    &.checked {
+      color: $purple !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 
-  &.grey.hover {
-    background-color: $light-grey !important;
+  &.pink {
+    &:hover {
+      background-color: $pink;
+    }
+
+    &.dark {
+      background-color: $dark-pink;
+    }
+
+    &.checked {
+      color: $pink !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
+  }
+
+  &.brown {
+    &:hover {
+      background-color: $brown;
+    }
+
+    &.dark {
+      background-color: $dark-brown;
+    }
+
+    &.checked {
+      color: $brown !important;
+
+      &:hover {
+        color: $white !important;
+      }
+    }
   }
 }
 
 .ui.button:hover .icon.button {
   opacity: 1;
+}
+
+.ui.secondary.inverted.pointing.menu {
+  border-width: 0;
+  border-bottom: 2px solid $dark-grey;
 }
 
 .ui.menu.selector .item {
@@ -312,8 +502,12 @@ i.caret.icon {
 
 path {
   fill: none;
-  stroke: $grey;
+  stroke: $light-grey;
   stroke-width: 2;
+
+  &.thin {
+    stroke-width: 1;
+  }
 
   &.thick {
     stroke-width: 3;
@@ -332,11 +526,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-red;
+      fill: $dark-red;
     }
 
     &.hover {
       fill: $red;
+    }
+
+    &.dark {
+      stroke: $dark-red;
     }
   }
 
@@ -345,11 +543,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-orange;
+      fill: $dark-orange;
     }
 
     &.hover {
       fill: $orange;
+    }
+
+    &.dark {
+      stroke: $dark-orange;
     }
   }
 
@@ -358,11 +560,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-yellow;
+      fill: $dark-yellow;
     }
 
     &.hover {
       fill: $yellow;
+    }
+
+    &.dark {
+      stroke: $dark-yellow;
     }
   }
 
@@ -371,11 +577,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-olive;
+      fill: $dark-olive;
     }
 
     &.hover {
       fill: $olive;
+    }
+
+    &.dark {
+      stroke: $dark-olive;
     }
   }
 
@@ -384,11 +594,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-green;
+      fill: $dark-green;
     }
 
     &.hover {
       fill: $green;
+    }
+
+    &.dark {
+      stroke: $dark-green;
     }
   }
 
@@ -397,11 +611,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-teal;
+      fill: $dark-teal;
     }
 
     &.hover {
       fill: $teal;
+    }
+
+    &.dark {
+      stroke: $dark-teal;
     }
   }
 
@@ -410,11 +628,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-blue;
+      fill: $dark-blue;
     }
 
     &.hover {
       fill: $blue;
+    }
+
+    &.dark {
+      stroke: $dark-blue;
     }
   }
 
@@ -423,11 +645,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-violet;
+      fill: $dark-violet;
     }
 
     &.hover {
       fill: $violet;
+    }
+
+    &.dark {
+      stroke: $dark-violet;
     }
   }
 
@@ -436,11 +662,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-purple;
+      fill: $dark-purple;
     }
 
     &.hover {
       fill: $purple;
+    }
+
+    &.dark {
+      stroke: $dark-purple;
     }
   }
 
@@ -449,11 +679,15 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-pink;
+      fill: $dark-pink;
     }
 
     &.hover {
       fill: $pink;
+    }
+
+    &.dark {
+      stroke: $dark-pink;
     }
   }
 
@@ -462,34 +696,42 @@ path {
 
     &.fill {
       stroke: none;
-      fill: $light-brown;
+      fill: $dark-brown;
     }
 
     &.hover {
       fill: $brown;
     }
+
+    &.dark {
+      stroke: $dark-brown;
+    }
   }
 }
 
 rect {
+  pointer-events: none;
+
   &[id$="capture"] {
     fill: none;
     pointer-events: all;
   }
 
-  &[id$="hover-rect"] {
-    fill: $transparent;
-    pointer-events: none;
+  &[id$="hover-rect"] {  
+    fill: $hover;
+
+    &.dark {
+      fill: $dark-hover;
+    }
   }
 }
 
 line {
-  stroke: $grey;
+  stroke: $light-grey;
   pointer-events: none;
 
   &[id$="baseline"] {
     stroke-width: 1;
-    stroke-dasharray: 10, 10;
   }
 
   &[id$="hover-line"] {
@@ -497,7 +739,7 @@ line {
   }
 }
 
-text.baseline-label {
-  fill: $grey;
+text {
+  fill: $light-grey;
   font-size: 12px;
 }
