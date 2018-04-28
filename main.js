@@ -890,12 +890,18 @@ dom.companyBuyButton.click(function() {
   var price = data.getPrice(companyTicker).withCommas();
   dom.buyPrice.text(price);
   dom.totalPrice.text('0.00');
+  dom.buyShares.parent().removeClass('error');
 });
 
 // input shares to buy
 dom.buyShares.on('input', function(e) {
   dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
   dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
+
+  var shares = parseInt(dom.buyShares.val());
+  if (shares < 0) {
+    dom.buyShares.parent().addClass('error');
+  }
 });
 
 // select input on focus
@@ -934,6 +940,7 @@ dom.companySellButton.click(function() {
   dom.sellPrice.text(price);
   dom.totalSellPrice.text('0.00');
   dom.remaining.text(portfolioPrice);
+  dom.sellShares.parent().removeClass('error');
 
 });
 
@@ -945,6 +952,11 @@ dom.sellShares.on('input', function(e) {
 
   var sellPrice = (data.getPrice(companyTicker) * dom.sellShares.val()).withCommas();
   dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
+<<<<<<< HEAD
+  var shares = parseInt(dom.sellShares.val());
+  if (shares < 0 || shares > data.getPortfolioShares(companyTicker)) {
+    dom.sellShares.parent().addClass('error');
+  }
   var portfolioPrice = data.getPortfolioValue(companyTicker).withCommas();
   var remaining = (portfolioPrice - sellPrice).withCommas();
   dom.remaining.text(remaining);
@@ -965,7 +977,7 @@ dom.sellMax.click(function() {
 // sell stock
 dom.sellButton.click(function() {
   var shares = parseInt(dom.sellShares.val());
-  if (shares > 0 && shares < data.getPortfolioShares(companyTicker)) {
+  if (shares > 0 && shares <= data.getPortfolioShares(companyTicker)) {
     var soldStock = data.sellStock(companyTicker, shares);
   } else if (max) {
     var soldStock = data.sellStock(companyTicker, 0);
