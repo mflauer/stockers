@@ -259,7 +259,7 @@ class Data {
     return portfolioData;
   }
 
-  getPortfolioValue(ticker, timeRange, first=true) {
+  getPortfolioValue(ticker, timeRange, first=false) {
     var total = 0;
     if (ticker == undefined) {
       // return sum of values for each stock in portfolio
@@ -294,21 +294,23 @@ class Data {
 
   getPortfolioChange(ticker, timeRange) {
     // compare current value with value at start of timeRange
-    return 100 * ((this.getPortfolioValue(ticker) / this.getPortfolioValue(ticker, timeRange)) - 1);
+    return 100 * ((this.getPortfolioValue(ticker) / this.getPortfolioValue(ticker, timeRange, true)) - 1);
   }
 
   getPortfolioPercent(ticker, timeRange) {
     // get percentage at start of timeRange
-    var total = this.getPortfolioValue(undefined, timeRange, false);
+    var total = this.getPortfolioValue(undefined, timeRange);
     if (total == 0) {
       // portfolio is empty
       return '—';
     } else {
-      return 100 * (this.getPortfolioValue(ticker, timeRange, false) / total);
+      return 100 * (this.getPortfolioValue(ticker, timeRange) / total);
     }
   }
 
   buyStock(ticker, shares) {
+    var time = this.getCurrentTime();
+
     // buy shares of ticker
     if (shares > 0) {
       var newStock = false;
@@ -317,7 +319,6 @@ class Data {
         this.PORTFOLIO_STOCKS[ticker] = [];
         newStock = true;
       } else {
-        var time = this.getCurrentTime();
         var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
         if (latest.date == time) {
           latest.amount += shares;
@@ -326,7 +327,7 @@ class Data {
       }
 
       this.PORTFOLIO_STOCKS[ticker].push({
-        date: this.getCurrentTime(),
+        date: time,
         price: this.getPrice(ticker),
         amount: shares,
       });
@@ -335,6 +336,8 @@ class Data {
   }
 
   sellStock(ticker, shares) {
+    var time = this.getCurrentTime();
+
     // sell shares of ticker
     if (shares > 0) {
       var totalShares = this.getPortfolioShares(ticker);
@@ -342,7 +345,6 @@ class Data {
         // can't sell stocks not in portfolio
         return false;
       } else {
-        var time = this.getCurrentTime();
         var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
         if (latest.date == time) {
           latest.amount -= shares;
@@ -351,7 +353,7 @@ class Data {
       }
 
       this.PORTFOLIO_STOCKS[ticker].push({
-        date: this.getCurrentTime(),
+        date: time,
         price: this.getPrice(ticker),
         amount: -shares,
       });

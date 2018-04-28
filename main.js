@@ -167,7 +167,6 @@ function getStackedPlotData() {
       totals = Array(dates.length).fill(0);
     }
 
-
     var tickerData = stockData.map(x => parseFloat(x[close]))
     tickerData = tickerData.map(function(x, i) {
       if (x == 0 && i > 1 && tickerData[i - 1] == 0) {
@@ -792,7 +791,7 @@ function updateData(section, timeRange, hoverRange) {
       plotStock('volume');
       plotStock('growth');
 
-      $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
+      $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange,).withCommas());
       $(`#${ticker}-portfolio-percent`).text(data.getPortfolioPercent(ticker, hoverRange).withCommas());
       element.text(change.withCommas());
       element.siblings().removeClass('up down').addClass(getArrow(change));
