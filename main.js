@@ -101,6 +101,7 @@ const COLORS = [
   'violet',
   'brown',
 ];
+const NUM_GRAPH_TICKS = 5;
 
 // graph data
 var sectionTimeRanges = {
@@ -127,18 +128,28 @@ function getSection(graphName) {
   return (graphName == 'volume' || graphName == 'growth') ? 'portfolio' : graphName;
 }
 
-// formats date TODO: not used
-function formatDate(date) {
-  var d = new Date(date),
-      year = d.getFullYear(),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      time = '' + d.getTime();
 
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
 
-  return str = [year, month, day, time].join('-');
+// gets the date format for hover depending on interval
+function getHoverDateFormat(interval) {
+  if (interval == 'min') {
+    return d3.timeFormat("%I:%M %p, %b %d");
+  } else if (interval == 'day') {
+    return d3.timeFormat("%b %d");
+  } else if (interval == 'week') {
+    return d3.timeFormat("%b %d, %Y");
+  }
+}
+
+// gets the date format for the axes label depending on timeRange
+function getAxisDateFormat(timeRange) {
+  if (timeRange == '1D') {
+    return d3.timeFormat("%I:%M %p");
+  } else if (timeRange == '5D' || timeRange == '1M' || timeRange == '3M' || timeRange == '6M') {
+    return d3.timeFormat("%b %d");
+  } else if (timeRange == '1Y' || timeRange == '5Y') {
+    return d3.timeFormat("%b %Y");
+  }
 }
 
 // load change plot for section
@@ -314,9 +325,14 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     graph.selectAll('*').remove();
     hover.selectAll('*').remove();
   } else {
+    var x = d3.scaleTime().range([0, container.width()]);
+    x.domain(d3.extent(plotData['dates'], function(d) { return d; }));
+
     base.select(`#${graphName}-baseline`)
-      .attr('y1', yScale(0))
-      .attr('y2', yScale(0));
+      .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
+      .call(d3.axisBottom(x)
+              .ticks(NUM_GRAPH_TICKS)
+              .tickFormat(getAxisDateFormat(plotData.timeRange)));
     base.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
       .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1);
@@ -391,12 +407,15 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     // add baseline and baseline labels
     var x = d3.scaleTime().range([0, container.width()]);
     x.domain(d3.extent(plotData['dates'], function(d) { return d; }));
+
     base.append("g")
       .attr('id', `${graphName}-baseline`)
       .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
       .classed('dark', graphName != 'company')
       .classed('baseline', true)
-      .call(d3.axisBottom(x).ticks(5))
+      .call(d3.axisBottom(x)
+              .ticks(NUM_GRAPH_TICKS)
+              .tickFormat(getAxisDateFormat(plotData.timeRange)))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
 
     base.append('text')
@@ -406,16 +425,6 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .classed('dark', graphName != 'company')
       .classed('baseline-label', true)
       .text(drawArea ? '$0' : '0%');
-    
-    // base.append('line') //TODO get rid of this section, call code that actually updates things above
-    //   .attr('id', `${graphName}-baseline`)
-    //   .attr('x1', xScale(0))
-    //   .attr('y1', yScale(0))
-    //   .attr('x2', container.width())
-    //   .attr('y2', yScale(0))
-    //   .classed('dark', graphName != 'company')
-    //   .classed('baseline', true)
-    //   .on('mousemove', handleMouseMove(graphName, xScale, plotData));
   }
 
   if (ticker != undefined) {
@@ -539,18 +548,8 @@ function handleMouseMove(graphName, xScale, plotData) {
       .classed('hide', false);
 
     // show date tooltip
-    var interval = plotData.time.interval;
-    if (interval == 'min') {
-      var format = d3.timeFormat("%I:%M %p, %b %d");
-    } else if (interval == 'day') {
-      var format = d3.timeFormat("%b %d");
-    } else if (interval == 'week') {
-      var format = d3.timeFormat("%b %d, %Y");
-    }
-
-    var hoverDate = new Date(plotData.dates[i]);
-    var displayDate = format(hoverDate);
-
+    var dateFormat = getHoverDateFormat(plotData.time.interval)
+    var displayDate = dateFormat(new Date(plotData.dates[i]));
     d3.select(`#${graphName}-hover-date`)
       .attr('x', x)
       .classed('hide', false)
