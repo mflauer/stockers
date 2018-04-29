@@ -3,6 +3,9 @@
 //////////////////////////////
 dom = {};
 
+// navigation
+dom.login = $('#login');
+
 // graphs
 dom.volumeGraphContainer = $('#volume-graph-container');
 dom.volumeBase = d3.select('#volume-base');
@@ -118,6 +121,9 @@ var compareColor = 0;
 
 // if compare companies is being edited
 var editing = false;
+
+// username of logged in user
+var username;
 
 
 //////////////////////////////
@@ -844,11 +850,12 @@ function updateData(section, timeRange, hoverRange) {
 // Load page content
 //////////////////////////////
 
-// portfolio value
-dom.portfolioValue.text(data.getPortfolioValue().withCommas());
-
-// load stocks
-data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
+// only show portfolio if logged in
+if (username != undefined) {
+  dom.login.text('Logout');
+  dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+  data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
+}
 data.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
 data.getSuggestedTickers().map(x => createCheckClickListener(x, 'suggested'));
 
@@ -883,6 +890,34 @@ dom.search.search({
 //////////////////////////////
 // UI
 //////////////////////////////
+
+// login
+dom.login.click(function() {
+  if (username == undefined) {
+    username = 'Warren';
+    dom.login.text('Logout');
+
+    // populate portfolio
+    dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+    data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
+  } else {
+    username = undefined;
+    dom.login.text('Login');
+
+    // clear portfolio
+    portfolioColor = 0;
+    dom.portfolioValue.text('');
+    dom.portfolioStocks.children().remove();
+    dom.portfolioTable.children().remove();
+    dom.volumeGraph.selectAll('*').remove();
+    dom.volumeHover.selectAll('*').remove();
+    dom.volumeBase.selectAll('*').remove();
+    dom.growthGraph.selectAll('*').remove();
+    dom.growthHover.selectAll('*').remove();
+    dom.growthBase.selectAll('*').remove();
+    dom.portfolioHidden.addClass('hide');
+  }
+});
 
 // select input on focus
 dom.searchInput.click(function() {
