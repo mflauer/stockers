@@ -192,7 +192,7 @@ function getStackedPlotData() {
 }
 
 // load change plot for section
-function getChangePlotData(graphName) {
+function getChangePlotData(graphName, scaleIndex) {
   if (graphName == 'volume') {
     return getStackedPlotData();
   } else if (graphName == 'growth') {
@@ -224,17 +224,21 @@ function getChangePlotData(graphName) {
       dates = stockData.map(x => Date.parse(x.date)).reverse();
     }
 
-    // always scale based on value of first item
-    var first = parseFloat(stockData.slice(-1)[0][close]);
-    if (first == 0) {
+    // scale based on value of first item
+    if (scaleIndex != undefined) {
+      var scale = parseFloat(stockData[time.n - scaleIndex - 1][close]);
+    } else {
+      var scale = parseFloat(stockData.slice(-1)[0][close]);
+    }
+    if (scale == 0) {
       // find first non-zero element
       var firstElement = stockData.slice().reverse().find(function(e) { return parseFloat(e[close]) > 0; });
-      first = firstElement ? firstElement[close] : firstElement;
+      scale = firstElement ? firstElement[close] : firstElement;
     }
 
     var tickerData = stockData.map(function(x) {
       var value = parseFloat(x[close]);
-      return value == 0 ? null : 100 * ((value / first) - 1);
+      return value == 0 ? null : 100 * ((value / scale) - 1);
     }).reverse();
     plotData.tickers[tickers[t]] = tickerData;
 
@@ -256,8 +260,8 @@ function getChangePlotData(graphName) {
 
 // add ticker stock to plot
 // optionally force color of existing lines or clear the plot
-function plotStock(graphName, ticker, tickerString, color, forceColor, clear=false) {
-  var plotData = getChangePlotData(graphName);
+function plotStock(graphName, ticker, tickerString, color, forceColor, scaleIndex, clear=false) {
+  var plotData = getChangePlotData(graphName, scaleIndex);
   var drawArea = graphName == 'volume';
   if (drawArea) {
     var base = dom.volumeBase;
@@ -564,7 +568,16 @@ function handleMouseMove(graphName, xScale, plotData) {
       period: time.period,
     };
     updateData(section, hoverRange, hoverRange);
+
+    // rescale data
+    rescaleLines(graphName, i);
   }
+}
+
+// rescales lines on hover
+function rescaleLines(graphName, i) {
+  graphName = graphName == 'volume' ? 'growth' : graphName;
+  plotStock(graphName, undefined, undefined, undefined, undefined, i);
 }
 
 // get color associated with change
@@ -776,7 +789,7 @@ function loadCompanyPage(ticker) {
 
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
-  plotStock('company', ticker, tickerString, getColor(change), undefined, true)
+  plotStock('company', ticker, tickerString, getColor(change), undefined, undefined, true)
 }
 
 // update section data
@@ -791,7 +804,7 @@ function updateData(section, timeRange, hoverRange) {
       plotStock('volume');
       plotStock('growth');
 
-      $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange,).withCommas());
+      $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
       $(`#${ticker}-portfolio-percent`).text(data.getPortfolioPercent(ticker, hoverRange).withCommas());
       element.text(change.withCommas());
       element.siblings().removeClass('up down').addClass(getArrow(change));
