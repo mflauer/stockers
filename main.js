@@ -226,7 +226,8 @@ function getChangePlotData(graphName, scaleIndex) {
 
     // scale based on value of first item
     if (scaleIndex != undefined) {
-      var scale = parseFloat(stockData[time.n - scaleIndex - 1][close]);
+      var index = time.n/time.period - scaleIndex - 1;
+      var scale = parseFloat(stockData[index][close]);
     } else {
       var scale = parseFloat(stockData.slice(-1)[0][close]);
     }
