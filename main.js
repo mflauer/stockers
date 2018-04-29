@@ -327,7 +327,9 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     hover.selectAll('*').remove();
   } else {
     base.select(`#${graphName}-baseline`)
+      .attr('x1', xScale(0))
       .attr('y1', yScale(0))
+      .attr('x2', container.width())
       .attr('y2', yScale(0));
     base.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
