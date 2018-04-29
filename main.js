@@ -3,7 +3,9 @@
 //////////////////////////////
 dom = {};
 
-// navigation
+// login
+dom.welcome = $('#welcome');
+dom.user = $('#user');
 dom.login = $('#login');
 
 // graphs
@@ -854,6 +856,8 @@ function updateData(section, timeRange, hoverRange) {
 
 // only show portfolio if logged in
 if (username != undefined) {
+  dom.welcome.removeClass('hide');
+  dom.user.text(username);
   dom.login.text('Logout');
   dom.portfolioValue.text(data.getPortfolioValue().withCommas());
   data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
@@ -897,6 +901,8 @@ dom.search.search({
 dom.login.click(function() {
   if (username == undefined) {
     username = 'Warren';
+    dom.welcome.removeClass('hide');
+    dom.user.text(username);
     dom.login.text('Logout');
 
     // populate portfolio
@@ -904,6 +910,8 @@ dom.login.click(function() {
     data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
   } else {
     username = undefined;
+    dom.welcome.addClass('hide');
+    dom.user.text('');
     dom.login.text('Login');
 
     // clear portfolio
