@@ -133,20 +133,20 @@ function getSection(graphName) {
 // gets the date format for hover depending on interval
 function getHoverDateFormat(interval) {
   if (interval == 'min') {
-    return d3.timeFormat("%I:%M %p, %b %d");
+    return d3.timeFormat("%-I:%M %p, %b %-d");
   } else if (interval == 'day') {
-    return d3.timeFormat("%b %d");
+    return d3.timeFormat("%b %-d");
   } else if (interval == 'week') {
-    return d3.timeFormat("%b %d, %Y");
+    return d3.timeFormat("%b %-d, %Y");
   }
 }
 
 // gets the date format for the axes label depending on timeRange
 function getAxisDateFormat(timeRange) {
   if (timeRange == '1D') {
-    return d3.timeFormat("%I:%M %p");
+    return d3.timeFormat("%-I:%M %p");
   } else if (timeRange == '5D' || timeRange == '1M' || timeRange == '3M' || timeRange == '6M') {
-    return d3.timeFormat("%b %d");
+    return d3.timeFormat("%b %-d");
   } else if (timeRange == '1Y' || timeRange == '5Y') {
     return d3.timeFormat("%b %Y");
   }
@@ -325,13 +325,15 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     graph.selectAll('*').remove();
     hover.selectAll('*').remove();
   } else {
-    var x = d3.scaleTime().range([0, container.width()]);
-    x.domain(d3.extent(plotData['dates'], function(d) { return d; }));
-
+    var xTimeScale = d3.scaleTime()
+      .range([0, container.width() - GRAPH_X_MARGIN])
+      .domain(d3.extent(plotData['dates'], function(d) { return d; }));
+    
     base.select(`#${graphName}-baseline`)
       .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
-      .call(d3.axisBottom(x)
+      .call(d3.axisBottom(xTimeScale)
               .ticks(NUM_GRAPH_TICKS)
+              .tickSizeOuter(0)
               .tickFormat(getAxisDateFormat(plotData.timeRange)));
     base.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
@@ -405,7 +407,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .classed('hide', true);
 
     // add baseline and baseline labels
-    var x = d3.scaleTime().range([0, container.width()]);
+    var x = d3.scaleTime().range([0, container.width() - GRAPH_X_MARGIN]);
     x.domain(d3.extent(plotData['dates'], function(d) { return d; }));
 
     base.append("g")
