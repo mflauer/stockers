@@ -380,9 +380,9 @@ rect {
     fill: none;
     pointer-events: all; }
   rect[id$="hover-rect"] {
-    fill: rgba(255, 255, 255, 0.95); }
+    fill: rgba(255, 255, 255, 0.8); }
     rect[id$="hover-rect"].dark {
-      fill: rgba(27, 28, 29, 0.95); }
+      fill: rgba(27, 28, 29, 0.8); }
 
 line {
   stroke: #b2b2b3;
