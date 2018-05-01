@@ -92,9 +92,12 @@ dom.sellButton = $('#sell-button');
 
 // constants
 const GRAPH_X_MARGIN = 20;
-const GRAPH_Y_MARGIN = 10;
+const GRAPH_Y_MARGIN = 3;
+const LABEL_OFFSET = 4;
 const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 1;
+const FLIP_HOVER_DATE_THRESHOLD = 80;
+const NUM_GRAPH_TICKS = 5;
 const COLORS = [
   'blue',
   // 'red',
@@ -137,18 +140,30 @@ function getSection(graphName) {
   return (graphName == 'volume' || graphName == 'growth') ? 'portfolio' : graphName;
 }
 
-// formats date TODO: not used
-function formatDate(date) {
-  var d = new Date(date),
-      year = d.getFullYear(),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      time = '' + d.getTime();
+// gets the date format for hover depending on interval
+function getHoverDateFormat(interval) {
+  if (interval == 'min') {
+    return d3.timeFormat("%-I:%M %p, %b %-d");
+  } else if (interval == 'day') {
+    return d3.timeFormat("%b %-d");
+  } else if (interval == 'week') {
+    return d3.timeFormat("%b %-d, %Y");
+  }
+}
 
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  return str = [year, month, day, time].join('-');
+// gets the date format for the axes label depending on timeRange
+function getAxisDateFormat(timeRange) {
+  if (timeRange == '1D') {
+    return d3.timeFormat("%-I:%M %p");
+  } else if (timeRange == '5D' || timeRange == '1M') {
+    return d3.timeFormat("%b %-d");
+  } else if (timeRange == '3M' || timeRange == '6M') {
+    return d3.timeFormat("%b");
+  } else if (timeRange == '1Y') {
+    return d3.timeFormat("%b %Y");
+  } else if (timeRange == '5Y') {
+    return d3.timeFormat("%Y");
+  }
 }
 
 // load change plot for section
@@ -171,7 +186,10 @@ function getStackedPlotData() {
 
     // populate dates
     if (dates.length == 0) {
-      dates = stockData.map(x => Date.parse(x.date)).reverse();
+      dates = stockData.map(function(x) {
+        var d = new Date(x.date + "Z");
+        return new Date(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
+      }).reverse();
       totals = Array(dates.length).fill(0);
     }
 
@@ -311,10 +329,13 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     .defined(function(d) {
       return d != null;
     });
+  var xTimeScale = d3.scaleTime()
+    .range([0, container.width() - GRAPH_X_MARGIN])
+    .domain(d3.extent(plotData['dates'], function(d) { return d; }));
   if (drawArea) {
     var area = d3.area()
       .x(function(d, i) { return xScale(i); })
-      .y0(container.height() - GRAPH_Y_MARGIN)
+      .y0(function(d) { return yScale(0); })
       .y1(function(d) { return yScale(d); })
       .defined(function(d) {
         return d != null;
@@ -329,13 +350,14 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     hover.selectAll('*').remove();
   } else {
     base.select(`#${graphName}-baseline`)
-      .attr('x1', xScale(0))
-      .attr('y1', yScale(0))
-      .attr('x2', container.width())
-      .attr('y2', yScale(0));
+      .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
+      .call(d3.axisBottom(xTimeScale)
+              .ticks(NUM_GRAPH_TICKS)
+              .tickSizeOuter(0)
+              .tickFormat(getAxisDateFormat(plotData.timeRange)));
     base.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
-      .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1);
+      .attr('y', yScale(0) + LABEL_OFFSET);
     graph.select(`#${graphName}-capture`)
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     graph.selectAll(`[id$='${graphName}-line']`).each(function() {
@@ -404,23 +426,24 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .classed('dark', graphName != 'company')
       .classed('hide', true);
 
-    // add baseline and baseline label
+    // add baseline and baseline labels
+    base.append("g")
+      .attr('id', `${graphName}-baseline`)
+      .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
+      .classed('dark', graphName != 'company')
+      .classed('baseline', true)
+      .call(d3.axisBottom(xTimeScale)
+              .ticks(NUM_GRAPH_TICKS)
+              .tickFormat(getAxisDateFormat(plotData.timeRange)))
+      .on('mousemove', handleMouseMove(graphName, xScale, plotData));
+
     base.append('text')
       .attr('id', `${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
-      .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1)
+      .attr('y', yScale(0) + LABEL_OFFSET)
       .classed('dark', graphName != 'company')
       .classed('baseline-label', true)
       .text(drawArea ? '$0' : '0%');
-    base.append('line')
-      .attr('id', `${graphName}-baseline`)
-      .attr('x1', xScale(0))
-      .attr('y1', yScale(0))
-      .attr('x2', container.width())
-      .attr('y2', yScale(0))
-      .classed('dark', graphName != 'company')
-      .classed('baseline', true)
-      .on('mousemove', handleMouseMove(graphName, xScale, plotData));
   }
 
   if (ticker != undefined) {
@@ -543,21 +566,21 @@ function handleMouseMove(graphName, xScale, plotData) {
       .attr('x2', x - HOVER_BAR_MARGIN)
       .classed('hide', false);
 
-    // show date tooltip
-    var interval = plotData.time.interval;
-    if (interval == 'min') {
-      var format = d3.timeFormat("%I:%M %p, %b %d");
-    } else if (interval == 'day') {
-      var format = d3.timeFormat("%b %d");
-    } else if (interval == 'week') {
-      var format = d3.timeFormat("%b %d, %Y");
+    var graphWidth = graph.node().getBoundingClientRect().width;
+    if (graphWidth - (x - GRAPH_X_MARGIN) < FLIP_HOVER_DATE_THRESHOLD) {
+      var hoverDateX = x - 2;
+      var hoverDateAlignment = 'end'
+    } else {
+      var hoverDateX = x + 2;
+      var hoverDateAlignment = 'start'
     }
-
-    var hoverDate = new Date(plotData.dates[i]);
-    var displayDate = format(hoverDate);
-
+    
+    // show date tooltip
+    var dateFormat = getHoverDateFormat(plotData.time.interval)
+    var displayDate = dateFormat(new Date(plotData.dates[i]));
     d3.select(`#${graphName}-hover-date`)
-      .attr('x', x)
+      .attr('text-anchor', hoverDateAlignment)
+      .attr('x', hoverDateX)
       .classed('hide', false)
       .text(displayDate);
 
