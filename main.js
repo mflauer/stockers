@@ -39,7 +39,7 @@ dom.searchInput = $('#search-input');
 // compare
 dom.compareHidden = $('.compare-hidden');
 dom.compareButtons = $('#compare-buttons');
-dom.editButton = $('#edit-button');
+dom.removeButton = $('#remove-button');
 dom.doneButton = $('#done-button');
 dom.compareStocks = $('#compare-stocks');
 dom.suggestedLabel = $('#suggested-label');
@@ -121,8 +121,8 @@ var companyTicker;
 var portfolioColor = 0;
 var compareColor = 0;
 
-// if compare companies is being edited
-var editing = false;
+// if compare companies is being removed
+var removing = false;
 
 // username of logged in user
 var username;
@@ -935,11 +935,11 @@ dom.searchInput.click(function() {
   this.select();
 });
 
-// edit button
-dom.editButton.click(function(e) {
+// remove button
+dom.removeButton.click(function(e) {
   e.stopPropagation();
-  editing = true;
-  dom.editButton.addClass('hide');
+  removing = true;
+  dom.removeButton.addClass('hide');
   dom.doneButton.removeClass('hide');
   $('.close').each(function(i, value) {
     $(value).removeClass('hide');
@@ -948,17 +948,17 @@ dom.editButton.click(function(e) {
 
 // done button
 dom.doneButton.click(function() {
-  editing = false;
-  dom.editButton.removeClass('hide');
+  removing = false;
+  dom.removeButton.removeClass('hide');
   dom.doneButton.addClass('hide');
   $('.close').each(function(i, value) {
     $(value).addClass('hide');
   });
 });
 
-// done editing if click anything
+// done removing if click anything
 $(document).click(function(e) {
-  if (editing && !$(e.target).hasClass('close')) {
+  if (removing && !$(e.target).hasClass('close')) {
     dom.doneButton.click();
   }
 });
