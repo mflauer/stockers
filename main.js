@@ -90,6 +90,7 @@ const GRAPH_X_MARGIN = 20;
 const GRAPH_Y_MARGIN = 10;
 const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 1;
+const FLIP_HOVER_DATE_THRESHOLD = 80;
 const COLORS = [
   'blue',
   'pink',
@@ -552,11 +553,21 @@ function handleMouseMove(graphName, xScale, plotData) {
       .attr('x2', x - HOVER_BAR_MARGIN)
       .classed('hide', false);
 
+    var graphWidth = graph.node().getBoundingClientRect().width;
+    if (graphWidth - (x - GRAPH_X_MARGIN) < FLIP_HOVER_DATE_THRESHOLD) {
+      var hoverDateX = x - 2;
+      var hoverDateAlignment = 'end'
+    } else {
+      var hoverDateX = x + 2;
+      var hoverDateAlignment = 'start'
+    }
+    
     // show date tooltip
     var dateFormat = getHoverDateFormat(plotData.time.interval)
     var displayDate = dateFormat(new Date(plotData.dates[i]));
     d3.select(`#${graphName}-hover-date`)
-      .attr('x', x)
+      .attr('text-anchor', hoverDateAlignment)
+      .attr('x', hoverDateX)
       .classed('hide', false)
       .text(displayDate);
 
