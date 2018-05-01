@@ -152,7 +152,7 @@ function getAxisDateFormat(timeRange) {
   } else if (timeRange == '1Y') {
     return d3.timeFormat("%b %Y");
   } else if (timeRange == '5Y') {
-    return d3.timeFormat("%Y")
+    return d3.timeFormat("%Y");
   }
 }
 
