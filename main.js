@@ -87,10 +87,12 @@ dom.sellButton = $('#sell-button');
 
 // constants
 const GRAPH_X_MARGIN = 20;
-const GRAPH_Y_MARGIN = 10;
+const GRAPH_Y_MARGIN = 3;
+const LABEL_OFFSET = 4;
 const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 1;
 const FLIP_HOVER_DATE_THRESHOLD = 80;
+const NUM_GRAPH_TICKS = 5;
 const COLORS = [
   'blue',
   'pink',
@@ -102,7 +104,6 @@ const COLORS = [
   'violet',
   'brown',
 ];
-const NUM_GRAPH_TICKS = 5;
 
 // graph data
 var sectionTimeRanges = {
@@ -128,8 +129,6 @@ var editing = false;
 function getSection(graphName) {
   return (graphName == 'volume' || graphName == 'growth') ? 'portfolio' : graphName;
 }
-
-
 
 // gets the date format for hover depending on interval
 function getHoverDateFormat(interval) {
@@ -178,12 +177,11 @@ function getStackedPlotData() {
     // populate dates
     if (dates.length == 0) {
       dates = stockData.map(function(x) {
-        var d = new Date(x.date + "Z")
-        return new Date(d.getTime() + d.getTimezoneOffset()*60*1000)
+        var d = new Date(x.date + "Z");
+        return new Date(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
       }).reverse();
       totals = Array(dates.length).fill(0);
     }
-
 
     var tickerData = stockData.map(x => parseFloat(x[close]))
     tickerData = tickerData.map(function(x, i) {
@@ -316,10 +314,13 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     .defined(function(d) {
       return d != null;
     });
+  var xTimeScale = d3.scaleTime()
+    .range([0, container.width() - GRAPH_X_MARGIN])
+    .domain(d3.extent(plotData['dates'], function(d) { return d; }));
   if (drawArea) {
     var area = d3.area()
       .x(function(d, i) { return xScale(i); })
-      .y0(container.height() - GRAPH_Y_MARGIN)
+      .y0(function(d) { return yScale(0); })
       .y1(function(d) { return yScale(d); })
       .defined(function(d) {
         return d != null;
@@ -333,10 +334,6 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     graph.selectAll('*').remove();
     hover.selectAll('*').remove();
   } else {
-    var xTimeScale = d3.scaleTime()
-      .range([0, container.width() - GRAPH_X_MARGIN])
-      .domain(d3.extent(plotData['dates'], function(d) { return d; }));
-
     base.select(`#${graphName}-baseline`)
       .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
       .call(d3.axisBottom(xTimeScale)
@@ -345,7 +342,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
               .tickFormat(getAxisDateFormat(plotData.timeRange)));
     base.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
-      .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1);
+      .attr('y', yScale(0) + LABEL_OFFSET);
     graph.select(`#${graphName}-capture`)
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     graph.selectAll(`[id$='${graphName}-line']`).each(function() {
@@ -398,7 +395,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .attr('x', xScale(0) - HOVER_MARGIN)
       .attr('y', 0)
       .attr('width', 0)
-      .attr('height', container.height() - GRAPH_Y_MARGIN)
+      .attr('height', container.height())
       .classed('dark', graphName != 'company')
       .classed('hide', true);
     hover.append('text')
@@ -415,15 +412,12 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
       .classed('hide', true);
 
     // add baseline and baseline labels
-    var x = d3.scaleTime().range([0, container.width() - GRAPH_X_MARGIN]);
-    x.domain(d3.extent(plotData['dates'], function(d) { return d; }));
-
     base.append("g")
       .attr('id', `${graphName}-baseline`)
       .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
       .classed('dark', graphName != 'company')
       .classed('baseline', true)
-      .call(d3.axisBottom(x)
+      .call(d3.axisBottom(xTimeScale)
               .ticks(NUM_GRAPH_TICKS)
               .tickFormat(getAxisDateFormat(plotData.timeRange)))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
@@ -431,7 +425,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     base.append('text')
       .attr('id', `${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
-      .attr('y', yScale(0) + GRAPH_Y_MARGIN/2 - 1)
+      .attr('y', yScale(0) + LABEL_OFFSET)
       .classed('dark', graphName != 'company')
       .classed('baseline-label', true)
       .text(drawArea ? '$0' : '0%');
