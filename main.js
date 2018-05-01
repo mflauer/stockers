@@ -172,7 +172,10 @@ function getStackedPlotData() {
 
     // populate dates
     if (dates.length == 0) {
-      dates = stockData.map(x => Date.parse(x.date)).reverse();
+      dates = stockData.map(function(x) {
+        var d = new Date(x.date + "Z")
+        return new Date(d.getTime() + d.getTimezoneOffset()*60*1000)
+      }).reverse();
       totals = Array(dates.length).fill(0);
     }
 
@@ -328,7 +331,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, clear=fal
     var xTimeScale = d3.scaleTime()
       .range([0, container.width() - GRAPH_X_MARGIN])
       .domain(d3.extent(plotData['dates'], function(d) { return d; }));
-    
+
     base.select(`#${graphName}-baseline`)
       .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
       .call(d3.axisBottom(xTimeScale)
