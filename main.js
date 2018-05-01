@@ -146,10 +146,14 @@ function getHoverDateFormat(interval) {
 function getAxisDateFormat(timeRange) {
   if (timeRange == '1D') {
     return d3.timeFormat("%-I:%M %p");
-  } else if (timeRange == '5D' || timeRange == '1M' || timeRange == '3M' || timeRange == '6M') {
+  } else if (timeRange == '5D' || timeRange == '1M') {
     return d3.timeFormat("%b %-d");
-  } else if (timeRange == '1Y' || timeRange == '5Y') {
+  } else if (timeRange == '3M' || timeRange == '6M') {
+    return d3.timeFormat("%b");
+  } else if (timeRange == '1Y') {
     return d3.timeFormat("%b %Y");
+  } else if (timeRange == '5Y') {
+    return d3.timeFormat("%Y")
   }
 }
 
