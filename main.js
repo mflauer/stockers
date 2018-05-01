@@ -3,6 +3,11 @@
 //////////////////////////////
 dom = {};
 
+// login
+dom.welcome = $('#welcome');
+dom.user = $('#user');
+dom.login = $('#login');
+
 // graphs
 dom.volumeGraphContainer = $('#volume-graph-container');
 dom.volumeBase = d3.select('#volume-base');
@@ -95,6 +100,8 @@ const FLIP_HOVER_DATE_THRESHOLD = 80;
 const NUM_GRAPH_TICKS = 5;
 const COLORS = [
   'blue',
+  // 'red',
+  // 'green',
   'pink',
   'yellow',
   'olive',
@@ -119,6 +126,9 @@ var compareColor = 0;
 
 // if compare companies is being edited
 var editing = false;
+
+// username of logged in user
+var username;
 
 
 //////////////////////////////
@@ -208,7 +218,7 @@ function getStackedPlotData() {
 }
 
 // load change plot for section
-function getChangePlotData(graphName) {
+function getChangePlotData(graphName, scaleIndex) {
   if (graphName == 'volume') {
     return getStackedPlotData();
   } else if (graphName == 'growth') {
@@ -240,17 +250,22 @@ function getChangePlotData(graphName) {
       dates = stockData.map(x => Date.parse(x.date)).reverse();
     }
 
-    // always scale based on value of first item
-    var first = parseFloat(stockData.slice(-1)[0][close]);
-    if (first == 0) {
+    // scale based on value of first item
+    if (scaleIndex != undefined) {
+      var index = time.n/time.period - scaleIndex - 1;
+      var scale = parseFloat(stockData[index][close]);
+    } else {
+      var scale = parseFloat(stockData.slice(-1)[0][close]);
+    }
+    if (scale == 0) {
       // find first non-zero element
       var firstElement = stockData.slice().reverse().find(function(e) { return parseFloat(e[close]) > 0; });
-      first = firstElement ? firstElement[close] : firstElement;
+      scale = firstElement ? firstElement[close] : firstElement;
     }
 
     var tickerData = stockData.map(function(x) {
       var value = parseFloat(x[close]);
-      return value == 0 ? null : 100 * ((value / first) - 1);
+      return value == 0 ? null : 100 * ((value / scale) - 1);
     }).reverse();
     plotData.tickers[tickers[t]] = tickerData;
 
@@ -272,8 +287,8 @@ function getChangePlotData(graphName) {
 
 // add ticker stock to plot
 // optionally force color of existing lines or clear the plot
-function plotStock(graphName, ticker, tickerString, color, forceColor, clear=false) {
-  var plotData = getChangePlotData(graphName);
+function plotStock(graphName, ticker, tickerString, color, forceColor, scaleIndex, clear=false) {
+  var plotData = getChangePlotData(graphName, scaleIndex);
   var drawArea = graphName == 'volume';
   if (drawArea) {
     var base = dom.volumeBase;
@@ -587,7 +602,16 @@ function handleMouseMove(graphName, xScale, plotData) {
       period: time.period,
     };
     updateData(section, hoverRange, hoverRange);
+
+    // rescale data
+    rescaleLines(graphName, i);
   }
+}
+
+// rescales lines on hover
+function rescaleLines(graphName, i) {
+  graphName = graphName == 'volume' ? 'growth' : graphName;
+  plotStock(graphName, undefined, undefined, undefined, undefined, i);
 }
 
 // get color associated with change
@@ -799,7 +823,7 @@ function loadCompanyPage(ticker) {
 
   // escape . and ^ characters in tickers
   var tickerString = ticker.replace('.', '\\.').replace('^', '\\^');
-  plotStock('company', ticker, tickerString, getColor(change), undefined, true)
+  plotStock('company', ticker, tickerString, getColor(change), undefined, undefined, true)
 }
 
 // update section data
@@ -853,11 +877,14 @@ function updateData(section, timeRange, hoverRange) {
 // Load page content
 //////////////////////////////
 
-// portfolio value
-dom.portfolioValue.text(data.getPortfolioValue().withCommas());
-
-// load stocks
-data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
+// only show portfolio if logged in
+if (username != undefined) {
+  dom.welcome.removeClass('hide');
+  dom.user.text(username);
+  dom.login.text('Logout');
+  dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+  data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
+}
 data.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
 data.getSuggestedTickers().map(x => createCheckClickListener(x, 'suggested'));
 
@@ -892,6 +919,38 @@ dom.search.search({
 //////////////////////////////
 // UI
 //////////////////////////////
+
+// login
+dom.login.click(function() {
+  if (username == undefined) {
+    username = 'Warren';
+    dom.welcome.removeClass('hide');
+    dom.user.text(username);
+    dom.login.text('Logout');
+
+    // populate portfolio
+    dom.portfolioValue.text(data.getPortfolioValue().withCommas());
+    data.getPortfolioTickers().map(x => createCheckClickListener(x, 'portfolio'));
+  } else {
+    username = undefined;
+    dom.welcome.addClass('hide');
+    dom.user.text('');
+    dom.login.text('Login');
+
+    // clear portfolio
+    portfolioColor = 0;
+    dom.portfolioValue.text('');
+    dom.portfolioStocks.children().remove();
+    dom.portfolioTable.children().remove();
+    dom.volumeGraph.selectAll('*').remove();
+    dom.volumeHover.selectAll('*').remove();
+    dom.volumeBase.selectAll('*').remove();
+    dom.growthGraph.selectAll('*').remove();
+    dom.growthHover.selectAll('*').remove();
+    dom.growthBase.selectAll('*').remove();
+    dom.portfolioHidden.addClass('hide');
+  }
+});
 
 // select input on focus
 dom.searchInput.click(function() {
@@ -972,6 +1031,7 @@ dom.companyBuyButton.click(function() {
   var price = data.getPrice(companyTicker).withCommas();
   dom.buyPrice.text(price);
   dom.totalPrice.text('0.00');
+  dom.buyShares.parent().removeClass('error');
 });
 
 // input shares to buy
@@ -979,6 +1039,11 @@ dom.buyShares.on('input', function(e) {
   dom.buyShares.parent().removeClass('error');
   dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
   dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
+
+  var shares = parseInt(dom.buyShares.val());
+  if (shares < 0) {
+    dom.buyShares.parent().addClass('error');
+  }
 });
 
 // select input on focus
@@ -1021,6 +1086,7 @@ dom.companySellButton.click(function() {
   var price = data.getPrice(companyTicker).withCommas();
   dom.sellPrice.text(price);
   dom.totalSellPrice.text('0.00');
+  dom.sellShares.parent().removeClass('error');
 });
 
 // input shares to sell
@@ -1028,6 +1094,11 @@ dom.sellShares.on('input', function(e) {
   dom.sellShares.parent().removeClass('error');
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
   dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
+
+  var shares = parseInt(dom.sellShares.val());
+  if (shares < 0 || shares > data.getPortfolioShares(companyTicker)) {
+    dom.sellShares.parent().addClass('error');
+  }
 });
 
 // select input on focus
@@ -1038,7 +1109,7 @@ dom.sellShares.click(function() {
 // sell stock
 dom.sellButton.click(function() {
   var shares = parseInt(dom.sellShares.val());
-  if (shares > 0 && shares < data.getPortfolioShares(companyTicker)) {
+  if (shares > 0 && shares <= data.getPortfolioShares(companyTicker)) {
     var soldStock = data.sellStock(companyTicker, shares);
     dom.portfolioValue.text(data.getPortfolioValue().withCommas());
     dom.portfolioHidden.removeClass('hide');

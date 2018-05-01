@@ -21,17 +21,23 @@
            onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
     </div>
     <div class="right menu">
-      <a class="item">Logout</a>
+      <div id="welcome" class="item hide">
+        Hello,&nbsp<span id="user"></span>!
+      </div>
+      <div class="item">
+        <div id="login" class="ui teal button">Login</div>
+      </div>
+      <!-- <a id="login" class="item">Login</a> -->
     </div>
   </div>
 
-  <div class="ui inverted divided padded grid">
+  <div class="ui inverted center aligned padded grid">
     <div id="portfolio-hidden" class="eight wide column hide">
-      <h2 class="ui inverted center aligned header">Portfolio</h2>
+      <h2 class="ui inverted header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
           <div class="ui inverted huge header">$<span id="portfolio-value"></span></div>
-          <h5 class="ui inverted header">
+          <h5 class="ui inverted left aligned header">
             Your Stocks
           </h5>
           <div id="portfolio-stocks">
@@ -80,7 +86,7 @@
     </div>
 
     <div class="eight wide column">
-      <h2 class="ui inverted center aligned header">Compare</h2>
+      <h2 class="ui inverted header">Compare</h2>
       <div class="ui grid">
         <div class="twelve wide column">
           <div id="search" class="ui fluid search">
@@ -130,7 +136,7 @@
           <div id="compare-stocks" class="hide compare-hidden">
             <!-- stocks dynamically added -->
           </div>
-          <h5 id="suggested-label" class="ui inverted header">
+          <h5 id="suggested-label" class="ui inverted left aligned header">
             Suggested Stocks
           </h5>
           <div id="suggested-stocks">
