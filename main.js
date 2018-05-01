@@ -416,6 +416,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     hover.append('text')
       .attr('id', `${graphName}-hover-date`)
       .attr('x', 0)
+      .classed('dark', graphName != 'company')
       .classed('hide', true);
     hover.append('line')
       .attr('id', `${graphName}-hover-line`)
