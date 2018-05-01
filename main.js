@@ -9,10 +9,10 @@ dom.user = $('#user');
 dom.login = $('#login');
 
 // graphs
-dom.volumeGraphContainer = $('#volume-graph-container');
-dom.volumeBase = d3.select('#volume-base');
-dom.volumeGraph = d3.select('#volume-graph');
-dom.volumeHover = d3.select('#volume-hover');
+dom.valueGraphContainer = $('#value-graph-container');
+dom.valueBase = d3.select('#value-base');
+dom.valueGraph = d3.select('#value-graph');
+dom.valueHover = d3.select('#value-hover');
 dom.growthGraphContainer = $('#growth-graph-container');
 dom.growthBase = d3.select('#growth-base');
 dom.growthGraph = d3.select('#growth-graph');
@@ -134,7 +134,7 @@ var username;
 
 // get section of a graph
 function getSection(graphName) {
-  return (graphName == 'volume' || graphName == 'growth') ? 'portfolio' : graphName;
+  return (graphName == 'value' || graphName == 'growth') ? 'portfolio' : graphName;
 }
 
 // formats date TODO: not used
@@ -201,7 +201,7 @@ function getStackedPlotData() {
 
 // load change plot for section
 function getChangePlotData(graphName, scaleIndex) {
-  if (graphName == 'volume') {
+  if (graphName == 'value') {
     return getStackedPlotData();
   } else if (graphName == 'growth') {
     var f = 'getPortfolioData';
@@ -271,12 +271,12 @@ function getChangePlotData(graphName, scaleIndex) {
 // optionally force color of existing lines or clear the plot
 function plotStock(graphName, ticker, tickerString, color, forceColor, scaleIndex, clear=false) {
   var plotData = getChangePlotData(graphName, scaleIndex);
-  var drawArea = graphName == 'volume';
+  var drawArea = graphName == 'value';
   if (drawArea) {
-    var base = dom.volumeBase;
-    var graph = dom.volumeGraph;
-    var hover = dom.volumeHover;
-    var container = dom.volumeGraphContainer;
+    var base = dom.valueBase;
+    var graph = dom.valueGraph;
+    var hover = dom.valueHover;
+    var container = dom.valueGraphContainer;
   } else if (graphName == 'growth') {
     var base = dom.growthBase;
     var graph = dom.growthGraph;
@@ -428,8 +428,8 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
 
     if (drawArea) {
       // draw area
-      graph.insert('path', '#volume-capture + path')
-        .attr('id', `${tickerString}-volume-area`)
+      graph.insert('path', '#value-capture + path')
+        .attr('id', `${tickerString}-value-area`)
         .attr('d', area(tickerData))
         .classed(color, true)
         .classed('fill', true)
@@ -439,7 +439,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
 
       // draw total line
       graph.insert('path', ':first-child')
-        .attr('id', `${tickerString}-volume-line`)
+        .attr('id', `${tickerString}-value-line`)
         .attr('d', tickerLine(tickerData))
         .classed('very thick', true)
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));
@@ -474,15 +474,15 @@ function handleMouseOver(graphName) {
         // ticker is not visible
         return;
       }
-      var lineName = graphName == 'volume' ? 'growth' : graphName;
+      var lineName = graphName == 'value' ? 'growth' : graphName;
       $(`#${ticker}-${lineName}-line`).addClass('thick');
       $(`#${ticker}-${lineName}-line`).siblings().addClass('thin dark');
       var element = d3.select(`#${ticker}-${lineName}-line`).node();
       element.parentNode.appendChild(element);
 
-      // hover volume area
+      // hover value area
       if (section == 'portfolio') {
-        $(`#${ticker}-volume-area`).addClass('hover');
+        $(`#${ticker}-value-area`).addClass('hover');
       }
     }
   }
@@ -499,13 +499,13 @@ function handleMouseLeave(graphName) {
     $(`#${ticker}-${section}-row`).removeClass('hover');
 
     // unhover line
-    var lineName = graphName == 'volume' ? 'growth' : graphName;
+    var lineName = graphName == 'value' ? 'growth' : graphName;
     $(`#${ticker}-${lineName}-line`).removeClass('thick');
     $(`#${ticker}-${lineName}-line`).siblings().removeClass('thin dark');
 
-    // unhover volume area
+    // unhover value area
     if (section == 'portfolio') {
-      $(`#${ticker}-volume-area`).removeClass('hover');
+      $(`#${ticker}-value-area`).removeClass('hover');
     }
 
     // remove hover bar
@@ -514,10 +514,10 @@ function handleMouseLeave(graphName) {
     $(`#${graphName}-hover-date`).addClass('hide');
 
     // remove linked hover bar
-    if (graphName == 'volume') {
+    if (graphName == 'value') {
       $('#growth-hover-rect, #growth-hover-line').addClass('hide');
     } else if (graphName == 'growth') {
-      $('#volume-hover-rect, #volume-hover-line').addClass('hide');
+      $('#value-hover-rect, #value-hover-line').addClass('hide');
     }
 
     // reset data
@@ -562,12 +562,12 @@ function handleMouseMove(graphName, xScale, plotData) {
       .text(displayDate);
 
     // hover on linked graph
-    if (graphName == 'volume') {
+    if (graphName == 'value') {
       $('#growth-hover-rect, #growth-hover-line').removeClass('hide');
       d3.select('#growth-capture').dispatch('outsidemove', { detail: { x: x } });
     } else if (graphName == 'growth') {
-      $('#volume-hover-rect, #volume-hover-line').removeClass('hide');
-      d3.select('#volume-capture').dispatch('outsidemove', { detail: { x: x } });
+      $('#value-hover-rect, #value-hover-line').removeClass('hide');
+      d3.select('#value-capture').dispatch('outsidemove', { detail: { x: x } });
     }
 
     // calculate hover data
@@ -587,7 +587,7 @@ function handleMouseMove(graphName, xScale, plotData) {
 
 // rescales lines on hover
 function rescaleLines(graphName, i) {
-  graphName = graphName == 'volume' ? 'growth' : graphName;
+  graphName = graphName == 'value' ? 'growth' : graphName;
   plotStock(graphName, undefined, undefined, undefined, undefined, i);
 }
 
@@ -637,7 +637,7 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStock('volume', ticker, tickerString, color);
+    plotStock('value', ticker, tickerString, color);
     plotStock('growth', ticker, tickerString, color);
     createPortfolioTableRow(dom, ticker, timeRange, color);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
@@ -812,7 +812,7 @@ function updateData(section, timeRange, hoverRange) {
       var change = data.getPortfolioChange(ticker, timeRange);
       var element = $(`#${ticker}-portfolio-change`);
 
-      plotStock('volume');
+      plotStock('value');
       plotStock('growth');
 
       $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
@@ -919,9 +919,9 @@ dom.login.click(function() {
     dom.portfolioValue.text('');
     dom.portfolioStocks.children().remove();
     dom.portfolioTable.children().remove();
-    dom.volumeGraph.selectAll('*').remove();
-    dom.volumeHover.selectAll('*').remove();
-    dom.volumeBase.selectAll('*').remove();
+    dom.valueGraph.selectAll('*').remove();
+    dom.valueHover.selectAll('*').remove();
+    dom.valueBase.selectAll('*').remove();
     dom.growthGraph.selectAll('*').remove();
     dom.growthHover.selectAll('*').remove();
     dom.growthBase.selectAll('*').remove();
@@ -1038,7 +1038,7 @@ dom.buyButton.click(function() {
     if (newStock) {
       createCheckClickListener(companyTicker, 'portfolio');
     } else {
-      plotStock('volume');
+      plotStock('value');
       plotStock('growth');
       updateData('portfolio', sectionTimeRanges.portfolio);
     }
@@ -1090,7 +1090,7 @@ dom.sellButton.click(function() {
     var soldStock = data.sellStock(companyTicker, shares);
     dom.portfolioValue.text(data.getPortfolioValue().withCommas());
     dom.portfolioHidden.removeClass('hide');
-    plotStock('volume');
+    plotStock('value');
     plotStock('growth');
     updateData('portfolio', sectionTimeRanges.portfolio);
   } else {
@@ -1101,5 +1101,5 @@ dom.sellButton.click(function() {
 
 // redraw plots on resize
 $(window).resize(function() {
-  ['volume', 'growth', 'compare', 'company'].map(x => plotStock(x));
+  ['value', 'growth', 'compare', 'company'].map(x => plotStock(x));
 });
