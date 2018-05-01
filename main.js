@@ -816,6 +816,7 @@ function updateData(section, timeRange, hoverRange) {
       plotStock('growth');
 
       $(`#${ticker}-portfolio-value`).text(data.getPortfolioValue(ticker, hoverRange).withCommas());
+      $(`#${ticker}-portfolio-shares`).text(data.getPortfolioShares(ticker, hoverRange));
       $(`#${ticker}-portfolio-percent`).text(data.getPortfolioPercent(ticker, hoverRange).withCommas());
       element.text(change.withCommas());
       element.siblings().removeClass('up down').addClass(getArrow(change));
