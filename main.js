@@ -686,6 +686,8 @@ function createCheckClickListener(ticker, section) {
 
     // create click event listener for removing stock
     $(`#${tickerString}-remove`).click(function() {
+      $(`#${tickerString}-compare-item`).mouseleave();
+      
       data.removeCompareStock(ticker);
       $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
@@ -699,6 +701,7 @@ function createCheckClickListener(ticker, section) {
         // hide plot and table if no plots displayed
         dom.compareHidden.not(dom.compareButtons).not(dom.compareStocks).addClass('hide');
       }
+      return false;
     });
   } else if (section == 'suggested') {
     createCompareItem(dom, ticker, section);
