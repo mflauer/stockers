@@ -6,7 +6,7 @@ function createCheckButton(ticker, section='compare', color='') {
     color = checked ? 'positive' : color;
   }
   return `
-    <div id="${ticker}-check-${section}" class="mini basic circular ui icon ${shade} ${color} ${checked ? 'checked' : ''} button check-button">
+    <div id="${ticker}-check-${section}" class="basic circular ui icon ${shade} ${color} ${checked ? 'checked' : ''} button check-button">
       <i class="${checked ? 'check' : ''} icon"></i>
     </div>
   `;
@@ -42,6 +42,7 @@ function createPortfolioTableRow(dom, ticker, timeRange, color) {
     <tr id="${ticker}-portfolio-row">
       <td><a id="${ticker}-portfolio-table" class="${color}" href="#">${ticker}</a></td>
       <td class="right aligned">$<span id="${ticker}-portfolio-value">${data.getPortfolioValue(ticker).withCommas()}</span></td>
+      <td id="${ticker}-portfolio-shares" class="right aligned">${data.getPortfolioShares(ticker)}</td>
       <td class="right aligned">
         <div class="${getColor(change)}">
           <i class="caret ${getArrow(change)} icon"></i>

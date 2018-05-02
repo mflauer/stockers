@@ -33,7 +33,6 @@
 
   <div class="ui inverted center aligned padded grid">
     <div id="portfolio-hidden" class="eight wide column hide">
-      <h2 class="ui inverted header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
           <div class="ui inverted huge header">$<span id="portfolio-value"></span></div>
@@ -45,6 +44,7 @@
           </div>
         </div>
         <div class="twelve wide column">
+          <h2 class="ui inverted header">Portfolio</h2>
           <div id="portfolio-selector" class="ui inverted secondary pointing menu selector">
             <div class="right menu">
               <a class="item">1D</a>
@@ -56,11 +56,11 @@
               <a class="item">5Y</a>
             </div>
           </div>
-          <h3 class="ui inverted center aligned header">Volume</h3>
-          <svg id="volume-graph-container" class="portfolio graph-container">
-            <g id="volume-graph"></g>
-            <g id="volume-hover"></g>
-            <g id="volume-base"></g>
+          <h3 class="ui inverted center aligned header">Value</h3>
+          <svg id="value-graph-container" class="portfolio graph-container">
+            <g id="value-graph"></g>
+            <g id="value-hover"></g>
+            <g id="value-base"></g>
           </svg>
           <h3 class="ui inverted center aligned header">Growth</h3>
           <svg id="growth-graph-container" class="portfolio graph-container">
@@ -73,6 +73,7 @@
               <tr>
                 <th>Name</th>
                 <th class="right aligned">Value</th>
+                <th class="right aligned">Shares</th>
                 <th class="right aligned">Change</th>
                 <th class="right aligned">% of Portfolio</th>
               </tr>
@@ -86,9 +87,9 @@
     </div>
 
     <div class="eight wide column">
-      <h2 class="ui inverted header">Compare</h2>
       <div class="ui grid">
         <div class="twelve wide column">
+          <h2 class="ui inverted header">Compare</h2>
           <div id="search" class="ui fluid search">
             <div class="ui icon fluid input">
               <input id="search-input" class="prompt" type="text" placeholder="Search stocks...">
@@ -130,8 +131,8 @@
         </div>
         <div class="four wide column">
           <div id="compare-buttons" class="right hide compare-hidden">
-            <a id="edit-button" href="#" class="">Edit</a>
-            <a id="done-button" href="#" class="hide">Done</a>
+            <a id="remove-button" href="#" class="teal ">Remove</a>
+            <a id="done-button" href="#" class="teal hide">Done</a>
           </div>
           <div id="compare-stocks" class="hide compare-hidden">
             <!-- stocks dynamically added -->
@@ -151,7 +152,7 @@
     <div class="content">
       <div class="ui grid">
         <div class="sixteen wide right aligned column">
-          <div id="compare-button" class="compare-button ui right compact basic baseline button">
+          <div id="compare-button" class="compare-button inline baseline">
             <div></div>
             <div class="baseline inline">
               Compare
