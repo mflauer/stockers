@@ -151,10 +151,20 @@ function getHoverDateFormat(interval) {
   }
 }
 
+function getNumPointsPerTimeRange(timeRange, plotDataLength) {
+    if (timeRange == '1D') {
+      return 79;
+    } else if (timeRange == '5D') {
+      return 79*5/4;
+    } else {
+      return plotDataLength
+    }
+}
+
 // gets the date format for the axes label depending on timeRange
 function getAxisDateFormat(timeRange) {
   if (timeRange == '1D') {
-    return d3.timeFormat("%-I:%M %p");
+    return d3.timeFormat("%-I %p");
   } else if (timeRange == '5D' || timeRange == '1M') {
     return d3.timeFormat("%b %-d");
   } else if (timeRange == '3M' || timeRange == '6M') {
@@ -247,7 +257,10 @@ function getChangePlotData(graphName, scaleIndex) {
 
     // populate dates
     if (dates.length == 0) {
-      dates = stockData.map(x => Date.parse(x.date)).reverse();
+      dates = stockData.map(function(x) {
+        var d = new Date(x.date + "Z");
+        return new Date(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
+      }).reverse();
     }
 
     // scale based on value of first item
@@ -314,9 +327,11 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
   }
 
   // rescale plots
+  var numDataDates = plotData.dates.length - 1;
+  var xScaleDomain = getNumPointsPerTimeRange(plotData['timeRange'], numDataDates);
   var xScale = d3.scaleLinear()
     .range([GRAPH_X_MARGIN, container.width()])
-    .domain([0, plotData.dates.length - 1]);
+    .domain([0, xScaleDomain]);
   var yScale = d3.scaleLinear()
     .range([container.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN])
     .domain([plotData.min, plotData.max]);
@@ -329,9 +344,16 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     .defined(function(d) {
       return d != null;
     });
+  
+  // for the 1D and 5D graphs, the stock data will not always extend
+  // to the end of the x-axis (aka midday, the plot will fill half the graph).
+  var numBufferPoints = Math.floor(xScaleDomain - numDataDates);
+  var endDateForScale = new Date(plotData.dates[numDataDates - 1]).getTime() + numBufferPoints*5*60*1000/plotData.time.period;
+  var datesForScaling = plotData['dates'].slice();
+  datesForScaling.push(endDateForScale);
   var xTimeScale = d3.scaleTime()
     .range([0, container.width() - GRAPH_X_MARGIN])
-    .domain(d3.extent(plotData['dates'], function(d) { return d; }));
+    .domain(d3.extent(datesForScaling, function(d) { return d; }));
   if (drawArea) {
     var area = d3.area()
       .x(function(d, i) { return xScale(i); })
@@ -355,10 +377,17 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
               .ticks(NUM_GRAPH_TICKS)
               .tickSizeOuter(0)
               .tickFormat(getAxisDateFormat(plotData.timeRange)));
+
+    // hide last label if graph overflows
+    if (plotData.timeRange == '1D' || plotData.timeRange == '1Y') {
+      $('#' + graphName + '-baseline .tick').last().text('')
+    }
+
     base.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
       .attr('y', yScale(0) + LABEL_OFFSET);
     graph.select(`#${graphName}-capture`)
+      .attr('width', xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN)
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     graph.selectAll(`[id$='${graphName}-line']`).each(function() {
       var element = d3.select(this);
@@ -388,7 +417,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     graph.append('rect')
       .attr('id', `${graphName}-capture`)
       .attr('x', xScale(0))
-      .attr('width', Math.max(0, container.width() - GRAPH_X_MARGIN))
+      .attr('width', xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN)
       .attr('height', container.height())
       .on('mousemove', handleMouseMove(graphName, xScale, plotData))
       .on('mouseleave', handleMouseLeave(graphName))
@@ -434,8 +463,14 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .classed('baseline', true)
       .call(d3.axisBottom(xTimeScale)
               .ticks(NUM_GRAPH_TICKS)
+              .tickSizeOuter(0)
               .tickFormat(getAxisDateFormat(plotData.timeRange)))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
+
+    // hide last label if graph overflows
+    if (plotData.timeRange == '1D' || plotData.timeRange == '1Y') {
+      $('#' + graphName + '-baseline .tick').last().text('')
+    }
 
     base.append('text')
       .attr('id', `${graphName}-baseline-label`)
@@ -555,6 +590,10 @@ function handleMouseMove(graphName, xScale, plotData) {
     var mouseX = d3.mouse(graph.node())[0];
     var i = Math.round(xScale.invert(mouseX)); //index of the data
     var x = xScale(i);
+
+    if (i >= plotData.time.n) {
+      return
+    }
 
     // show hover line
     d3.select(`#${graphName}-hover-rect`)
