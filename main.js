@@ -195,8 +195,8 @@ function getStackedPlotData() {
 
     var tickerData = stockData.map(x => parseFloat(x[close]))
     tickerData = tickerData.map(function(x, i) {
-      if (x == 0 && i > 1 && tickerData[i - 1] == 0) {
-        return null
+      if (x == 0) {
+        return null;
       } else {
         totals[i] += x;
         return totals[i];
@@ -820,6 +820,15 @@ function loadCompanyPage(ticker) {
 function updateData(section, timeRange, hoverRange) {
   if (section == 'portfolio') {
     data.getPortfolioTickers().map(function(ticker) {
+      var item = $(`#${ticker}-portfolio-item`);
+      var row = $(`#${ticker}-portfolio-row`);
+      item.removeClass('hide');
+      row.removeClass('hide');
+      if (!data.isTickerInRange(ticker, sectionTimeRanges.portfolio)) {
+        item.addClass('hide');
+        row.addClass('hide');
+      }
+
       var change = data.getPortfolioChange(ticker, timeRange);
       var element = $(`#${ticker}-portfolio-change`);
 

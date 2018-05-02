@@ -17,16 +17,19 @@ function createCompareItem(dom, ticker, section, color='white') {
   var isSuggested = (section == 'suggested');
   if (isPortfolio) {
     var element = dom.portfolioStocks;
-    var icon = ''
+    var icon = '';
+    var hide = !data.isTickerInRange(ticker, '1Y');
   } else if (section == 'compare') {
     var element = dom.compareStocks;
     var icon = `<i id="${ticker}-remove" class="close link icon hide"></i>`;
+    var hide = false;
   } else if (section == 'suggested') {
     var element = dom.suggestedStocks;
     var icon = '';
+    var hide = false;
   }
   element.append(`
-    <div id="${ticker}-${section}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui fluid ${color} left button dark">
+    <div id="${ticker}-${section}-item" class="${isPortfolio ? 'portfolio' : 'compare'}-item ui fluid ${color} left button dark ${hide ? 'hide' : ''}">
       ${isPortfolio ? '' : createCheckButton(ticker, section, color)}
       ${icon}
       <div class="baseline inline">
@@ -39,7 +42,7 @@ function createCompareItem(dom, ticker, section, color='white') {
 function createPortfolioTableRow(dom, ticker, timeRange, color) {
   var change = data.getPortfolioChange(ticker, timeRange);
   dom.portfolioTable.append(`
-    <tr id="${ticker}-portfolio-row">
+    <tr id="${ticker}-portfolio-row" class="${data.isTickerInRange(ticker, '1Y') ? '' : 'hide'}">
       <td><a id="${ticker}-portfolio-table" class="${color}" href="#">${ticker}</a></td>
       <td class="right aligned">$<span id="${ticker}-portfolio-value">${data.getPortfolioValue(ticker).withCommas()}</span></td>
       <td id="${ticker}-portfolio-shares" class="right aligned">${data.getPortfolioShares(ticker)}</td>
