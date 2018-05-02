@@ -262,6 +262,10 @@ i.caret.icon {
 #company-header {
   margin: 1rem 2rem 1rem 0; }
 
+#compare-button {
+  width: max-content;
+  margin-right: 2em; }
+
 path {
   fill: none;
   stroke: #b2b2b3;

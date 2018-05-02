@@ -705,16 +705,7 @@ function createCheckClickListener(ticker, section) {
   }
   createCompanyClickListener($(`#${tickerString}-${section}-item`), ticker);
 
-  if (section == 'button') {
-    // element is entire compare button on company page, not just checkbox
-    var element = dom.compareButton;
-    // remove previous click event listeners
-    element.off('click');
-  } else {
-    var element = $(`#${tickerString}-check-${section}`);
-  }
-
-  element.click(function(e) {
+  $(`#${tickerString}-check-${section}`).click(function(e) {
     $(this).blur();
     dom.doneButton.click();
     e.stopPropagation();
@@ -743,9 +734,8 @@ function createCheckClickListener(ticker, section) {
 
     if (section == 'search') {
       dom.searchInput.focus();
-    } else if (section == 'company' || section == 'button') {
+    } else if (section == 'company') {
       // make compare button green on company page
-      dom.compareButton.toggleClass('positive');
       $(`#${tickerString}-check-company`).toggleClass('positive');
     }
 
@@ -785,13 +775,7 @@ function loadCompanyPage(ticker) {
 
   // creat compare button
   dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
-  if (data.getCompareChecked(ticker)) {
-    dom.compareButton.addClass('positive');
-  } else {
-    dom.compareButton.removeClass('positive');
-  }
   createCheckClickListener(ticker, 'company');
-  createCheckClickListener(ticker, 'button');
 
   if (data.getPortfolioShares(companyTicker) > 0) {
     dom.companySellButton.removeClass('hide');
@@ -1017,14 +1001,6 @@ dom.buyPage
     allowMultiple: false,
   })
   .modal('attach events', dom.companyBuyButton);
-
-// hover check in compare button
-dom.compareButton.mouseenter(function() {
-  $(this).children().first().addClass('hover');
-});
-dom.compareButton.mouseleave(function() {
-  $(this).children().first().removeClass('hover');
-})
 
 // load buy page
 dom.companyBuyButton.click(function() {

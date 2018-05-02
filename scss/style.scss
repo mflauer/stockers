@@ -500,6 +500,11 @@ i.caret.icon {
   margin: 1rem 2rem 1rem 0;
 }
 
+#compare-button {
+  width: max-content;
+  margin-right: 2em;
+}
+
 path {
   fill: none;
   stroke: $light-grey;
