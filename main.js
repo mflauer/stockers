@@ -952,7 +952,6 @@ dom.sellShares.on('input', function(e) {
 
   var sellPrice = (data.getPrice(companyTicker) * dom.sellShares.val()).withCommas();
   dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
-<<<<<<< HEAD
   var shares = parseInt(dom.sellShares.val());
   if (shares < 0 || shares > data.getPortfolioShares(companyTicker)) {
     dom.sellShares.parent().addClass('error');
