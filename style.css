@@ -79,7 +79,7 @@ table {
 
 .portfolio-item {
   margin-bottom: 5px !important;
-  padding: 1.1em 1.5em !important; }
+  padding: 1.5em 1.5em !important; }
 
 .compare-item {
   margin-bottom: 5px !important;
@@ -264,7 +264,7 @@ i.caret.icon {
 
 #compare-button {
   width: max-content;
-  margin-right: 2em; }
+  margin-right: 3em; }
 
 path {
   fill: none;

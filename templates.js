@@ -6,7 +6,7 @@ function createCheckButton(ticker, section='compare', color='') {
     color = checked ? 'positive' : color;
   }
   return `
-    <div id="${ticker}-check-${section}" class="mini basic circular ui icon ${shade} ${color} ${checked ? 'checked' : ''} button check-button">
+    <div id="${ticker}-check-${section}" class="basic circular ui icon ${shade} ${color} ${checked ? 'checked' : ''} button check-button">
       <i class="${checked ? 'check' : ''} icon"></i>
     </div>
   `;
