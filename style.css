@@ -129,6 +129,9 @@ i.caret.icon {
 .shares-container {
   padding-top: .25rem !important;
   padding-bottom: .25rem !important; }
+  .shares-container #total-shares-container {
+    margin-left: .25rem;
+    padding: 0.7rem 0; }
 
 .shares-divider {
   margin: 1.25rem 0 !important; }
