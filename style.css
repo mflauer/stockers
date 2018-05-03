@@ -266,6 +266,9 @@ i.caret.icon {
   width: max-content;
   margin-right: 3em; }
 
+#articles .ui.sub.header {
+  margin-top: 0 !important; }
+
 path {
   fill: none;
   stroke: #b2b2b3;
