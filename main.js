@@ -96,7 +96,7 @@ const GRAPH_Y_MARGIN = 20;
 const LABEL_OFFSET = 4;
 const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 1;
-const FLIP_HOVER_DATE_THRESHOLD = 80;
+const FLIP_HOVER_DATE_THRESHOLD = 100;
 const NUM_GRAPH_TICKS = 5;
 const COLORS = [
   'blue',
@@ -612,9 +612,9 @@ function handleMouseMove(graphName, xScale, plotData) {
       .attr('x2', x - HOVER_BAR_MARGIN)
       .classed('hide', false);
 
-    var graphWidth = graph.node().getBoundingClientRect().width;
+    var graphWidth = graph.node().parentNode.getBoundingClientRect().width;
     if (graphWidth - (x - GRAPH_X_MARGIN) < FLIP_HOVER_DATE_THRESHOLD) {
-      var hoverDateX = x - 2;
+      var hoverDateX = x - 4;
       var hoverDateAlignment = 'end'
     } else {
       var hoverDateX = x + 2;
