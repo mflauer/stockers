@@ -401,4 +401,5 @@ line {
 
 text {
   fill: #b2b2b3;
-  font-size: 12px; }
+  font-size: 12px;
+  pointer-events: none; }
