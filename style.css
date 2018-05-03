@@ -79,7 +79,7 @@ table {
 
 .portfolio-item {
   margin-bottom: 5px !important;
-  padding: 1.1em 1.5em !important; }
+  padding: 1.5em 1.5em !important; }
 
 .compare-item {
   margin-bottom: 5px !important;
@@ -262,6 +262,13 @@ i.caret.icon {
 #company-header {
   margin: 1rem 2rem 1rem 0; }
 
+#compare-button {
+  width: max-content;
+  margin-right: 2em; }
+
+#articles .ui.sub.header {
+  margin-top: 0 !important; }
+
 path {
   fill: none;
   stroke: #b2b2b3;
@@ -380,9 +387,9 @@ rect {
     fill: none;
     pointer-events: all; }
   rect[id$="hover-rect"] {
-    fill: rgba(255, 255, 255, 0.95); }
+    fill: rgba(255, 255, 255, 0.8); }
     rect[id$="hover-rect"].dark {
-      fill: rgba(27, 28, 29, 0.95); }
+      fill: rgba(27, 28, 29, 0.8); }
 
 line {
   stroke: #b2b2b3;

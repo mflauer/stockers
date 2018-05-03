@@ -33,7 +33,6 @@
 
   <div class="ui inverted center aligned padded grid">
     <div id="portfolio-hidden" class="eight wide column hide">
-      <h2 class="ui inverted header">Portfolio</h2>
       <div class="ui grid">
         <div class="four wide column">
           <div class="ui inverted huge header">$<span id="portfolio-value"></span></div>
@@ -45,6 +44,7 @@
           </div>
         </div>
         <div class="twelve wide column">
+          <h2 class="ui inverted header">Portfolio</h2>
           <div id="portfolio-selector" class="ui inverted secondary pointing menu selector">
             <div class="right menu">
               <a class="item">1D</a>
@@ -56,11 +56,11 @@
               <a class="item">5Y</a>
             </div>
           </div>
-          <h3 class="ui inverted center aligned header">Volume</h3>
-          <svg id="volume-graph-container" class="portfolio graph-container">
-            <g id="volume-graph"></g>
-            <g id="volume-hover"></g>
-            <g id="volume-base"></g>
+          <h3 class="ui inverted center aligned header">Value</h3>
+          <svg id="value-graph-container" class="portfolio graph-container">
+            <g id="value-graph"></g>
+            <g id="value-hover"></g>
+            <g id="value-base"></g>
           </svg>
           <h3 class="ui inverted center aligned header">Growth</h3>
           <svg id="growth-graph-container" class="portfolio graph-container">
@@ -73,6 +73,7 @@
               <tr>
                 <th>Name</th>
                 <th class="right aligned">Value</th>
+                <th class="right aligned">Shares</th>
                 <th class="right aligned">Change</th>
                 <th class="right aligned">% of Portfolio</th>
               </tr>
@@ -86,9 +87,9 @@
     </div>
 
     <div class="eight wide column">
-      <h2 class="ui inverted header">Compare</h2>
       <div class="ui grid">
         <div class="twelve wide column">
+          <h2 class="ui inverted header">Compare</h2>
           <div id="search" class="ui fluid search">
             <div class="ui icon fluid input">
               <input id="search-input" class="prompt" type="text" placeholder="Search stocks...">
@@ -130,8 +131,8 @@
         </div>
         <div class="four wide column">
           <div id="compare-buttons" class="right hide compare-hidden">
-            <a id="edit-button" href="#" class="">Edit</a>
-            <a id="done-button" href="#" class="hide">Done</a>
+            <a id="remove-button" href="#" class="teal ">Remove</a>
+            <a id="done-button" href="#" class="teal hide">Done</a>
           </div>
           <div id="compare-stocks" class="hide compare-hidden">
             <!-- stocks dynamically added -->
@@ -147,11 +148,11 @@
     </div>
   </div>
 
-  <div id="company-page" class="ui long modal">
+  <div id="company-page" class="ui small long modal">
     <div class="content">
       <div class="ui grid">
         <div class="sixteen wide right aligned column">
-          <div id="compare-button" class="compare-button ui right compact basic baseline button">
+          <div id="compare-button" class="compare-button inline baseline">
             <div></div>
             <div class="baseline inline">
               Compare
@@ -192,7 +193,7 @@
       </div>
       <p id="blurb"></p>
       <div class="ui centered grid">
-        <div class="five wide column">
+        <div class="six wide column">
           <table class="stats-table ui very basic compact table">
             <tbody>
               <tr>
@@ -230,7 +231,7 @@
           </table>
         </div>
         <div class="one wide column"></div>
-        <div class="four wide column">
+        <div class="five wide column">
           <table class="stats-table ui very basic compact table">
             <tbody>
               <tr>
@@ -251,33 +252,42 @@
       </div>
       <div class="ui divider"></div>
       <div class="ui header">News</div>
-      <div class="ui three column grid">
+      <div id="articles" class="ui three column grid">
         <div class="column">
-          <div class="ui segment">
-            <a href="https://www.reuters.com/article/us-usa-stocks/apple-philip-morris-chip-stocks-lead-wall-street-slide-idUSKBN1HQ1LK" target="_blank">
+          <a href="https://uk.reuters.com/article/usa-stocks/us-stocks-apple-philip-morris-chip-stocks-lead-wall-street-slide-idUKL3N1RW54Y" target="_blank">
+            <div class="ui segment">
               <img class="ui fluid image" src="assets/articles/article-1.png"
                    onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
-              <h5 class="ui header">Apple, Philip Morris, chip stocks lead Wall Street slide</h5>
-            </a>
-          </div>
+              <h5 class="ui header">
+                Apple, Philip Morris, chip stocks lead Wall Street slide
+                <h5 class="ui sub header">Reuters</h5>
+              </h5>
+            </div>
+          </a>
         </div>
         <div class="column">
-          <div class="ui segment">
-            <a href="https://www.cnbc.com/2018/04/24/apple-aapl-sinks-into-correction-territory.html" target="_blank">
+          <a href="https://www.cnbc.com/2018/04/24/apple-aapl-sinks-into-correction-territory.html" target="_blank">
+            <div class="ui segment">
               <img class="ui fluid image" src="assets/articles/article-2.png"
                    onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
-              <h5 class="ui header">Apple stock closes in correction territory</h5>
-            </a>
-          </div>
+              <h5 class="ui header">
+                Apple stock closes in correction territory
+                <h5 class="ui sub header">CNBC</h5>
+              </h5>
+            </div>
+          </a>
         </div>
         <div class="column">
-          <div class="ui segment">
-            <a href="https://www.nasdaq.com/article/why-did-apple-and-nvidia-stock-open-lower-on-thursday-cm950281" target="_blank">
+          <a href="https://www.nasdaq.com/article/why-did-apple-and-nvidia-stock-open-lower-on-thursday-cm950281" target="_blank">
+            <div class="ui segment">
               <img class="ui fluid image" src="assets/articles/article-3.png"
                    onerror="this.onerror=null; this.src='assets/text-logo.png'"/>
-              <h5 class="ui header">Why Did Apple and Nvidia Stock Open Lower on Thursday?</h5>
-            </a>
-          </div>
+              <h5 class="ui header">
+                Why Did Apple and Nvidia Stock Open Lower on Thursday?
+                <h5 class="ui sub header">Nasdaq</h5>
+              </h5>
+            </div>
+          </a>
         </div>
       </div>
     </div>

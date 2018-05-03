@@ -31,8 +31,8 @@ $bg: rgb(27, 28, 29);
 $light-grey: rgb(177.65, 178.35, 179.05);
 $dark-grey: rgb(56.1, 56.65, 57.2);
 $row-hover: rgba(255, 255, 255, .08);
-$hover: rgba(255, 255, 255, .95);
-$dark-hover: rgba(27, 28, 29, .95);
+$hover: rgba(255, 255, 255, .8);
+$dark-hover: rgba(27, 28, 29, .8);
 
 
 // STYLES
@@ -158,7 +158,7 @@ table {
 
 .portfolio-item {
   margin-bottom: 5px !important;
-  padding: 1.1em 1.5em !important;
+  padding: 1.5em 1.5em !important;
 }
 
 .compare-item {
@@ -498,6 +498,17 @@ i.caret.icon {
 
 #company-header {
   margin: 1rem 2rem 1rem 0;
+}
+
+#compare-button {
+  width: max-content;
+  margin-right: 2em;
+}
+
+#articles {
+  .ui.sub.header {
+    margin-top: 0 !important;
+  }
 }
 
 path {
