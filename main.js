@@ -155,7 +155,7 @@ function getNumPointsPerTimeRange(timeRange, plotDataLength) {
     if (timeRange == '1D') {
       return 79;
     } else if (timeRange == '5D') {
-      return 79*5/4;
+      return 79 * 5/data.getTime(timeRange).period;
     } else {
       return plotDataLength
     }
@@ -380,7 +380,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
 
     // hide last label if graph overflows
     if (plotData.timeRange == '1D' || plotData.timeRange == '1Y') {
-      $('#' + graphName + '-baseline .tick').last().text('')
+      $('#' + graphName + '-baseline .tick').last().text('');
     }
 
     base.select(`#${graphName}-baseline-label`)
@@ -451,7 +451,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .attr('x1', xScale(0) - HOVER_MARGIN)
       .attr('y1', 0)
       .attr('x2', xScale(0) - HOVER_MARGIN)
-      .attr('y2', container.height())
+      .attr('y2', container.height() + )
       .classed('dark', graphName != 'company')
       .classed('hide', true);
 
@@ -469,7 +469,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
 
     // hide last label if graph overflows
     if (plotData.timeRange == '1D' || plotData.timeRange == '1Y') {
-      $('#' + graphName + '-baseline .tick').last().text('')
+      $('#' + graphName + '-baseline .tick').last().text('');
     }
 
     base.append('text')
@@ -592,7 +592,7 @@ function handleMouseMove(graphName, xScale, plotData) {
     var x = xScale(i);
 
     if (i >= plotData.time.n) {
-      return
+      return;
     }
 
     // show hover line
