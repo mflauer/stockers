@@ -386,8 +386,13 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     base.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
       .attr('y', yScale(0) + LABEL_OFFSET);
+    hover.select(`#${graphName}-hover-rect`)
+      .attr('height', container.height());
+    hover.select(`#${graphName}-hover-line`)
+      .attr('y2', container.height());
     graph.select(`#${graphName}-capture`)
-      .attr('width', xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN)
+      .attr('width', Math.max(0, xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN))
+      .attr('height', container.height())
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     graph.selectAll(`[id$='${graphName}-line']`).each(function() {
       var element = d3.select(this);
@@ -417,7 +422,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     graph.append('rect')
       .attr('id', `${graphName}-capture`)
       .attr('x', xScale(0))
-      .attr('width', xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN)
+      .attr('width', Math.max(0, xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN))
       .attr('height', container.height())
       .on('mousemove', handleMouseMove(graphName, xScale, plotData))
       .on('mouseleave', handleMouseLeave(graphName))
@@ -457,7 +462,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .classed('hide', true);
 
     // add baseline and baseline labels
-    base.append("g")
+    base.append('g')
       .attr('id', `${graphName}-baseline`)
       .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
       .classed('dark', graphName != 'company')
