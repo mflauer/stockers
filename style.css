@@ -257,10 +257,13 @@ i.caret.icon {
   margin-top: 5px; }
 
 #company-selector {
-  margin-top: 1em; }
+  margin-top: -2.5em; }
 
 #company-header {
   margin: 1rem 2rem 1rem 0; }
+
+#articles .ui.sub.header {
+  margin-top: 0 !important; }
 
 path {
   fill: none;
