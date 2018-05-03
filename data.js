@@ -358,28 +358,7 @@ class Data {
         amount: -shares,
       });
       return true;
-
-  } if (shares==0) {
-
-      var soldStock = false;
-      var time = this.getCurrentTime();
-
-      var latest = this.PORTFOLIO_STOCKS[ticker].slice(-1)[0];
-
-      if (latest['date'] == time) {
-        latest['amount'] -= this.getPortfolioShares(ticker);
-        return false;
-      }
-      // modify data in portfolio
-
-      this.PORTFOLIO_STOCKS[ticker].push({
-        'date': this.getCurrentTime(),
-        'price': this.getPrice(ticker),
-        'amount': 0,
-      });
-      return true;
     }
-
   }
 
   getCompareTickers() {
