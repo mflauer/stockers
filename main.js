@@ -951,6 +951,7 @@ dom.login.click(function() {
 });
 
 // select input on focus
+dom.searchInput.select();
 dom.searchInput.click(function() {
   this.select();
 });
