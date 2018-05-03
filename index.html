@@ -292,7 +292,7 @@
         <div class="ten wide baseline column">Shares</div>
         <div class="six wide right aligned column shares-container">
           <div class="ui fluid input">
-            <input id="buy-shares" class="right" type="text" placeholder="0" maxlength="4">
+            <input id="buy-shares" class="right" type="text" maxlength="4">
           </div>
         </div>
         <div class="ten wide column">Market Price</div>
@@ -306,7 +306,7 @@
     </div>
     <div class="actions">
       <div id="cancel-buy" class="ui basic cancel button">Cancel</div>
-      <div id="buy-button" class="ui basic positive button">Buy</div>
+      <div id="buy-button" class="ui basic positive disabled button">Buy</div>
     </div>
   </div>
 
@@ -319,8 +319,10 @@
         <div class="ten wide baseline column">Shares</div>
         <div class="six wide right aligned column shares-container">
           <div class="ui fluid input">
-            <input id="sell-shares" class="right" type="text" placeholder="0" maxlength="4">
-              / <span id="total-shares">
+            <input id="sell-shares" class="right" type="text" maxlength="4">
+            <div class="inline baseline">
+              /<span id="total-shares"></span>
+            </div>
           </div>
         </div>
         <div class="ten wide column">Market Price</div>
@@ -336,7 +338,7 @@
     </div>
     <div class="actions">
       <div id="cancel-sell" class="ui basic cancel button">Cancel</div>
-      <div id="sell-button" class="ui basic positive button">Sell</div>
+      <div id="sell-button" class="ui basic positive disabled button">Sell</div>
     </div>
   </div>
 

@@ -80,12 +80,12 @@ dom.buyButton = $('#buy-button');
 dom.sellPage = $('#sell-page');
 dom.sellCompanyTicker = $('#sell-company-ticker');
 dom.sellShares = $('#sell-shares');
+dom.totalShares = $('#total-shares');
 dom.sellPrice = $('#sell-price');
 dom.totalSellPrice = $('#total-sell-price');
+dom.remainingValue = $('#remaining-value');
 dom.cancelSell = $('#cancel-sell');
 dom.sellButton = $('#sell-button');
-dom.totalShares = $('#total-shares');
-dom.remainingValue = $('#remaining-value');
 
 
 //////////////////////////////
@@ -794,7 +794,7 @@ function loadCompanyPage(ticker) {
   createCheckClickListener(ticker, 'company');
   createCheckClickListener(ticker, 'button');
 
-  if (data.getPortfolioShares(companyTicker) > 0) {
+  if (username != undefined && data.getPortfolioShares(companyTicker) > 0) {
     dom.companySellButton.removeClass('hide');
   } else {
     dom.companySellButton.addClass('hide');
@@ -1013,7 +1013,6 @@ dom.companyPage
 // buy page
 dom.buyPage
   .modal({
-    autofocus: false,
     allowMultiple: false,
   })
   .modal('attach events', dom.companyBuyButton);
@@ -1039,12 +1038,14 @@ dom.companyBuyButton.click(function() {
 // input shares to buy
 dom.buyShares.on('input', function(e) {
   dom.buyShares.parent().removeClass('error');
+  dom.buyButton.removeClass('disabled');
   dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
   dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
 
   var shares = parseInt(dom.buyShares.val());
-  if (shares < 0) {
+  if (shares <= 0) {
     dom.buyShares.parent().addClass('error');
+    dom.buyButton.addClass('disabled');
   }
 });
 
@@ -1076,7 +1077,6 @@ dom.buyButton.click(function() {
 // sell page
 dom.sellPage
   .modal({
-    autofocus: false,
     allowMultiple: false,
   })
   .modal('attach events', dom.companySellButton);
@@ -1085,38 +1085,32 @@ dom.sellPage
 dom.companySellButton.click(function() {
   dom.sellShares.val('');
   dom.sellCompanyTicker.text(companyTicker);
+  dom.totalShares.text(data.getPortfolioShares(companyTicker));
   var price = data.getPrice(companyTicker).withCommas();
   dom.sellPrice.text(price);
   dom.totalSellPrice.text('0.00');
   dom.sellShares.parent().removeClass('error');
-  var totalShares = data.getPortfolioShares(companyTicker);
-  var companyPortfolio = data.getPortfolioValue(companyTicker);
-  dom.totalShares.text(totalShares);
-  dom.remainingValue.text(companyPortfolio);
-
+  dom.remainingValue.text(data.getPortfolioValue(companyTicker));
 });
 
 // input shares to sell
 dom.sellShares.on('input', function(e) {
   dom.sellShares.parent().removeClass('error');
-  dom.sellButton.addClass('positive');
   dom.sellButton.removeClass('disabled');
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
-  dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
-  var companyPortfolio = data.getPortfolioValue(companyTicker);
-  var newRemaining = companyPortfolio - (data.getPrice(companyTicker) * dom.sellShares.val());
-  if (0 > newRemaining.withCommas()) {
-    dom.remainingValue.text('0.00');
+  var total = data.getPrice(companyTicker) * dom.sellShares.val();
+  dom.totalSellPrice.text(total.withCommas());
+
+  var remaining = data.getPortfolioValue(companyTicker) - total;
+  if (remaining < 0) {
+    dom.remainingValue.text((0).withCommas());
   } else {
-    dom.remainingValue.text(newRemaining.withCommas());
+    dom.remainingValue.text(remaining.withCommas());
   }
 
-
   var shares = parseInt(dom.sellShares.val());
-  if (shares < 0 || shares > data.getPortfolioShares(companyTicker)) {
+  if (shares <= 0 || shares > data.getPortfolioShares(companyTicker)) {
     dom.sellShares.parent().addClass('error');
-    dom.sellButton.removeClass('positive');
-    dom.sellButton.addClass('negative');
     dom.sellButton.addClass('disabled');
   }
 });
@@ -1137,7 +1131,7 @@ dom.sellButton.click(function() {
     plotStock('growth');
     updateData('portfolio', sectionTimeRanges.portfolio);
   } else {
-      dom.sellShares.parent().addClass('error');
+    dom.sellShares.parent().addClass('error');
     return false;
   }
 });
