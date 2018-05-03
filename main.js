@@ -1100,6 +1100,7 @@ dom.companySellButton.click(function() {
 dom.sellShares.on('input', function(e) {
   dom.sellShares.parent().removeClass('error');
   dom.sellButton.addClass('positive');
+  dom.sellButton.removeClass('disabled');
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
   dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
   var companyPortfolio = data.getPortfolioValue(companyTicker);
@@ -1116,6 +1117,7 @@ dom.sellShares.on('input', function(e) {
     dom.sellShares.parent().addClass('error');
     dom.sellButton.removeClass('positive');
     dom.sellButton.addClass('negative');
+    dom.sellButton.addClass('disabled');
   }
 });
 
