@@ -452,7 +452,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .attr('x1', xScale(0) - HOVER_MARGIN)
       .attr('y1', 0)
       .attr('x2', xScale(0) - HOVER_MARGIN)
-      .attr('y2', container.height() + )
+      .attr('y2', container.height())
       .classed('dark', graphName != 'company')
       .classed('hide', true);
 
