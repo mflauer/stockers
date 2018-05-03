@@ -92,7 +92,7 @@ dom.sellButton = $('#sell-button');
 
 // constants
 const GRAPH_X_MARGIN = 20;
-const GRAPH_Y_MARGIN = 3;
+const GRAPH_Y_MARGIN = 20;
 const LABEL_OFFSET = 4;
 const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 1;
@@ -450,6 +450,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     hover.append('text')
       .attr('id', `${graphName}-hover-date`)
       .attr('x', 0)
+      .attr('y', GRAPH_Y_MARGIN/2 + 1)
       .classed('dark', graphName != 'company')
       .classed('hide', true);
     hover.append('line')
