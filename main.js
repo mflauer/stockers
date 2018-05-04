@@ -1028,6 +1028,7 @@ dom.compareButton.mouseleave(function() {
 // load buy page
 dom.companyBuyButton.click(function() {
   dom.buyShares.val('');
+  dom.buyButton.addClass('disabled');
   dom.buyCompanyTicker.text(companyTicker);
   var price = data.getPrice(companyTicker).withCommas();
   dom.buyPrice.text(price);
@@ -1084,6 +1085,7 @@ dom.sellPage
 // load sell page
 dom.companySellButton.click(function() {
   dom.sellShares.val('');
+  dom.sellButton.addClass('disabled');
   dom.sellCompanyTicker.text(companyTicker);
   dom.totalShares.text(data.getPortfolioShares(companyTicker));
   var price = data.getPrice(companyTicker).withCommas();
