@@ -829,8 +829,13 @@ function loadCompanyPage(ticker) {
 
   if (username != undefined && data.getPortfolioShares(companyTicker) > 0) {
     dom.companySellButton.removeClass('hide');
-  } else {
+    dom.companySellButton.removeClass('disabled');
+  } else if (username == undefined){
     dom.companySellButton.addClass('hide');
+    dom.companyBuyButton.addClass('hide');
+  } else {
+    dom.companySellButton.addClass('disabled');
+    dom.companyBuyButton.removeClass('hide');
   }
 
   // populate company information
@@ -965,6 +970,7 @@ dom.login.click(function() {
     dom.user.text(username);
     dom.login.text('Logout');
     dom.companyBuyButton.removeClass('hide');
+    dom.companySellButton.removeClass('hide');
 
     // populate portfolio
     dom.portfolioValue.text(data.getPortfolioValue().withCommas());
@@ -975,6 +981,7 @@ dom.login.click(function() {
     dom.user.text('');
     dom.login.text('Login');
     dom.companyBuyButton.addClass('hide');
+    dom.companySellButton.addClass('hide');
 
     // clear portfolio
     portfolioColor = 0;
