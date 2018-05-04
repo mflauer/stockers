@@ -346,7 +346,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     .defined(function(d) {
       return d != null;
     });
-  
+
   // for the 1D and 5D graphs, the stock data will not always extend
   // to the end of the x-axis (aka midday, the plot will fill half the graph).
   var numBufferPoints = Math.floor(xScaleDomain - numDataDates);
@@ -734,7 +734,7 @@ function createCheckClickListener(ticker, section) {
     // create click event listener for removing stock
     $(`#${tickerString}-remove`).click(function() {
       $(`#${tickerString}-compare-item`).mouseleave();
-      
+
       data.removeCompareStock(ticker);
       $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
@@ -924,6 +924,7 @@ if (username != undefined) {
 data.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
 data.getSuggestedTickers().map(x => createCheckClickListener(x, 'suggested'));
 
+
 // search bar data
 dom.search.search({
   source: data.getSearchContent(),
@@ -963,6 +964,7 @@ dom.login.click(function() {
     dom.welcome.removeClass('hide');
     dom.user.text(username);
     dom.login.text('Logout');
+    dom.companyBuyButton.removeClass('hide');
 
     // populate portfolio
     dom.portfolioValue.text(data.getPortfolioValue().withCommas());
@@ -972,6 +974,7 @@ dom.login.click(function() {
     dom.welcome.addClass('hide');
     dom.user.text('');
     dom.login.text('Login');
+    dom.companyBuyButton.addClass('hide');
 
     // clear portfolio
     portfolioColor = 0;
@@ -987,6 +990,8 @@ dom.login.click(function() {
     dom.portfolioHidden.addClass('hide');
   }
 });
+
+
 
 // select input on focus
 dom.searchInput.click(function() {
