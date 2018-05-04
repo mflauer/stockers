@@ -302,7 +302,7 @@
         <div class="ten wide baseline column">Shares</div>
         <div class="six wide right aligned column shares-container">
           <div class="ui fluid input">
-            <input id="buy-shares" class="right" type="text" placeholder="0" maxlength="4">
+            <input id="buy-shares" class="right" type="text" maxlength="4">
           </div>
         </div>
         <div class="ten wide column">Market Price</div>
@@ -310,7 +310,7 @@
       </div>
       <div class="ui divider shares-divider"></div>
       <div class="ui grid">
-        <div class="ten wide column">Total</div>
+        <div class="ten wide column">Buy  Total</div>
         <div class="six wide right aligned column">$<span id="total-price"></span></div>
       </div>
     </div>
@@ -329,7 +329,10 @@
         <div class="ten wide baseline column">Shares</div>
         <div class="six wide right aligned column shares-container">
           <div class="ui fluid input">
-            <input id="sell-shares" class="right" type="text" placeholder="0" maxlength="4">
+            <input id="sell-shares" class="right" type="text" maxlength="4">
+            <div id="total-shares-container">
+              /<span id="total-shares"></span>
+            </div>
           </div>
         </div>
         <div class="ten wide column">Market Price</div>
@@ -337,8 +340,10 @@
       </div>
       <div class="ui divider shares-divider"></div>
       <div class="ui grid">
-        <div class="ten wide column">Total</div>
+        <div class="ten wide column">Sell Total</div>
         <div class="six wide right aligned column">$<span id="total-sell-price"></span></div>
+        <div class="ten wide column">Remaining</div>
+        <div class="six wide right aligned column">$<span id="remaining-value"></span></div>
       </div>
     </div>
     <div class="actions">

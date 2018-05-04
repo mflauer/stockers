@@ -80,8 +80,10 @@ dom.buyButton = $('#buy-button');
 dom.sellPage = $('#sell-page');
 dom.sellCompanyTicker = $('#sell-company-ticker');
 dom.sellShares = $('#sell-shares');
+dom.totalShares = $('#total-shares');
 dom.sellPrice = $('#sell-price');
 dom.totalSellPrice = $('#total-sell-price');
+dom.remainingValue = $('#remaining-value');
 dom.cancelSell = $('#cancel-sell');
 dom.sellButton = $('#sell-button');
 
@@ -492,7 +494,7 @@ function handleMouseOver(graphName) {
       // hover item and row
       $(`#${ticker}-${section}-item`).removeClass('dark');
       $(`#${ticker}-${section}-row`).addClass('hover');
-      
+
       // hover line and move to front
       if (section == 'compare' && !data.getCompareChecked(ticker)) {
         // ticker is not visible
@@ -575,7 +577,7 @@ function handleMouseMove(graphName, xScale, plotData) {
       var hoverDateX = x + 2;
       var hoverDateAlignment = 'start'
     }
-    
+
     // show date tooltip
     var dateFormat = getHoverDateFormat(plotData.time.interval)
     var displayDate = dateFormat(new Date(plotData.dates[i]));
@@ -780,7 +782,7 @@ function loadCompanyPage(ticker) {
   dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
   createCheckClickListener(ticker, 'company');
 
-  if (data.getPortfolioShares(companyTicker) > 0) {
+  if (username != undefined && data.getPortfolioShares(companyTicker) > 0) {
     dom.companySellButton.removeClass('hide');
   } else {
     dom.companySellButton.addClass('hide');
@@ -1000,7 +1002,6 @@ dom.companyPage
 // buy page
 dom.buyPage
   .modal({
-    autofocus: false,
     allowMultiple: false,
   })
   .modal('attach events', dom.companyBuyButton);
@@ -1008,6 +1009,7 @@ dom.buyPage
 // load buy page
 dom.companyBuyButton.click(function() {
   dom.buyShares.val('');
+  dom.buyButton.addClass('disabled');
   dom.buyCompanyTicker.text(companyTicker);
   var price = data.getPrice(companyTicker).withCommas();
   dom.buyPrice.text(price);
@@ -1018,12 +1020,14 @@ dom.companyBuyButton.click(function() {
 // input shares to buy
 dom.buyShares.on('input', function(e) {
   dom.buyShares.parent().removeClass('error');
+  dom.buyButton.removeClass('disabled');
   dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
   dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
 
   var shares = parseInt(dom.buyShares.val());
-  if (shares < 0) {
+  if (shares <= 0) {
     dom.buyShares.parent().addClass('error');
+    dom.buyButton.addClass('disabled');
   }
 });
 
@@ -1055,7 +1059,6 @@ dom.buyButton.click(function() {
 // sell page
 dom.sellPage
   .modal({
-    autofocus: false,
     allowMultiple: false,
   })
   .modal('attach events', dom.companySellButton);
@@ -1063,22 +1066,35 @@ dom.sellPage
 // load sell page
 dom.companySellButton.click(function() {
   dom.sellShares.val('');
+  dom.sellButton.addClass('disabled');
   dom.sellCompanyTicker.text(companyTicker);
+  dom.totalShares.text(data.getPortfolioShares(companyTicker));
   var price = data.getPrice(companyTicker).withCommas();
   dom.sellPrice.text(price);
   dom.totalSellPrice.text('0.00');
   dom.sellShares.parent().removeClass('error');
+  dom.remainingValue.text(data.getPortfolioValue(companyTicker));
 });
 
 // input shares to sell
 dom.sellShares.on('input', function(e) {
   dom.sellShares.parent().removeClass('error');
+  dom.sellButton.removeClass('disabled');
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
-  dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
+  var total = data.getPrice(companyTicker) * dom.sellShares.val();
+  dom.totalSellPrice.text(total.withCommas());
+
+  var remaining = data.getPortfolioValue(companyTicker) - total;
+  if (remaining < 0) {
+    dom.remainingValue.text((0).withCommas());
+  } else {
+    dom.remainingValue.text(remaining.withCommas());
+  }
 
   var shares = parseInt(dom.sellShares.val());
-  if (shares < 0 || shares > data.getPortfolioShares(companyTicker)) {
+  if (shares <= 0 || shares > data.getPortfolioShares(companyTicker)) {
     dom.sellShares.parent().addClass('error');
+    dom.sellButton.addClass('disabled');
   }
 });
 
