@@ -118,6 +118,11 @@ var sectionTimeRanges = {
   compare : '1D',
   company : '1D'
 };
+var sectionHoverStatus = {
+  portfolio : true,
+  compare : true,
+  company : true,
+};
 var companyTicker;
 
 // next color to use for section
@@ -359,6 +364,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
       .attr('y', yScale(0) + LABEL_OFFSET);
     graph.select(`#${graphName}-capture`)
+      .on('click', handleClick(graphName))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     graph.selectAll(`[id$='${graphName}-line']`).each(function() {
       var element = d3.select(this);
@@ -367,7 +373,8 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
         element.classed('red green', false).classed(forceColor, true);
       }
       element.attr('d', tickerLine(plotData.tickers[company]))
-        .on('mousemove', handleMouseMove(graphName, xScale, plotData));;
+        .on('click', handleClick(graphName))
+        .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     });
     if (drawArea) {
       graph.selectAll(`[id$='${graphName}-area']`).each(function() {
@@ -377,7 +384,8 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
           element.classed('red green', false).classed(forceColor, true);
         }
         element.attr('d', area(plotData.tickers[company]))
-          .on('mousemove', handleMouseMove(graphName, xScale, plotData));;
+          .on('click', handleClick(graphName))
+          .on('mousemove', handleMouseMove(graphName, xScale, plotData));
       });
     }
   }
@@ -390,8 +398,9 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .attr('x', xScale(0))
       .attr('width', Math.max(0, container.width() - GRAPH_X_MARGIN))
       .attr('height', container.height())
-      .on('mousemove', handleMouseMove(graphName, xScale, plotData))
+      .on('click', handleClick(graphName))
       .on('mouseleave', handleMouseLeave(graphName))
+      .on('mousemove', handleMouseMove(graphName, xScale, plotData))
       .on('outsidemove', function() {
         // custom event for handling linked hover bars
         var x = d3.event.detail.x;
@@ -436,6 +445,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .call(d3.axisBottom(xTimeScale)
               .ticks(NUM_GRAPH_TICKS)
               .tickFormat(getAxisDateFormat(plotData.timeRange)))
+      .on('click', handleClick(graphName))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
 
     base.append('text')
@@ -457,6 +467,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
         .attr('d', area(tickerData))
         .classed(color, true)
         .classed('fill', true)
+        .on('click', handleClick(graphName))
         .on('mouseover', handleMouseOver(graphName))
         .on('mouseleave', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));
@@ -466,6 +477,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
         .attr('id', `${tickerString}-value-line`)
         .attr('d', tickerLine(tickerData))
         .classed('very thick', true)
+        .on('click', handleClick(graphName))
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     } else {
       // draw ticker line
@@ -473,6 +485,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
         .attr('id', `${tickerString}-${graphName}-line`)
         .attr('d', tickerLine(tickerData))
         .classed(color, true)
+        .on('click', handleClick(graphName))
         .on('mouseover', handleMouseOver(graphName))
         .on('mouseleave', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));
@@ -532,80 +545,92 @@ function handleMouseLeave(graphName) {
       $(`#${ticker}-value-area`).removeClass('hover');
     }
 
-    // remove hover bar
-    $(`#${graphName}-hover-rect`).addClass('hide');
-    $(`#${graphName}-hover-line`).addClass('hide');
-    $(`#${graphName}-hover-date`).addClass('hide');
+    if (sectionHoverStatus[section]) {
+      // remove hover bar
+      $(`#${graphName}-hover-rect`).addClass('hide');
+      $(`#${graphName}-hover-line`).addClass('hide');
+      $(`#${graphName}-hover-date`).addClass('hide');
 
-    // remove linked hover bar
-    if (graphName == 'value') {
-      $('#growth-hover-rect, #growth-hover-line').addClass('hide');
-    } else if (graphName == 'growth') {
-      $('#value-hover-rect, #value-hover-line').addClass('hide');
+      // remove linked hover bar
+      if (graphName == 'value') {
+        $('#growth-hover-rect, #growth-hover-line').addClass('hide');
+      } else if (graphName == 'growth') {
+        $('#value-hover-rect, #value-hover-line').addClass('hide');
+      }
+
+      // reset data
+      updateData(section, sectionTimeRanges[section]);
     }
-
-    // reset data
-    updateData(section, sectionTimeRanges[section]);
   }
 }
 
-// mousemove event listener on plot line
+// mousemove event listener on plot
 function handleMouseMove(graphName, xScale, plotData) {
   return function() {
-    var graph = d3.select(`#${graphName}-graph`);
-    var mouseX = d3.mouse(graph.node())[0];
-    var i = Math.round(xScale.invert(mouseX)); //index of the data
-    var x = xScale(i);
+    if (sectionHoverStatus[getSection(graphName)]) {
+      var graph = d3.select(`#${graphName}-graph`);
+      var mouseX = d3.mouse(graph.node())[0];
+      var i = Math.round(xScale.invert(mouseX)); //index of the data
+      var x = xScale(i);
 
-    // show hover line
-    d3.select(`#${graphName}-hover-rect`)
-      .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN)
-      .classed('hide', false);
+      // show hover line
+      d3.select(`#${graphName}-hover-rect`)
+        .attr('width', x + HOVER_MARGIN - GRAPH_X_MARGIN)
+        .classed('hide', false);
 
-    d3.select(`#${graphName}-hover-line`)
-      .attr('x1', x - HOVER_BAR_MARGIN)
-      .attr('x2', x - HOVER_BAR_MARGIN)
-      .classed('hide', false);
+      d3.select(`#${graphName}-hover-line`)
+        .attr('x1', x - HOVER_BAR_MARGIN)
+        .attr('x2', x - HOVER_BAR_MARGIN)
+        .classed('hide', false);
 
-    var graphWidth = graph.node().getBoundingClientRect().width;
-    if (graphWidth - (x - GRAPH_X_MARGIN) < FLIP_HOVER_DATE_THRESHOLD) {
-      var hoverDateX = x - 2;
-      var hoverDateAlignment = 'end'
-    } else {
-      var hoverDateX = x + 2;
-      var hoverDateAlignment = 'start'
+      var graphWidth = graph.node().getBoundingClientRect().width;
+      if (graphWidth - (x - GRAPH_X_MARGIN) < FLIP_HOVER_DATE_THRESHOLD) {
+        var hoverDateX = x - 2;
+        var hoverDateAlignment = 'end'
+      } else {
+        var hoverDateX = x + 2;
+        var hoverDateAlignment = 'start'
+      }
+      
+      // show date tooltip
+      var dateFormat = getHoverDateFormat(plotData.time.interval)
+      var displayDate = dateFormat(new Date(plotData.dates[i]));
+      d3.select(`#${graphName}-hover-date`)
+        .attr('text-anchor', hoverDateAlignment)
+        .attr('x', hoverDateX)
+        .classed('hide', false)
+        .text(displayDate);
+
+      // hover on linked graph
+      if (graphName == 'value') {
+        $('#growth-hover-rect, #growth-hover-line').removeClass('hide');
+        d3.select('#growth-capture').dispatch('outsidemove', { detail: { x: x } });
+      } else if (graphName == 'growth') {
+        $('#value-hover-rect, #value-hover-line').removeClass('hide');
+        d3.select('#value-capture').dispatch('outsidemove', { detail: { x: x } });
+      }
+
+      // calculate hover data
+      var section = getSection(graphName);
+      var time = data.getTime(sectionTimeRanges[section])
+      var hoverRange = {
+        n: time.n - (i) * time.period,
+        interval: time.interval,
+        period: time.period,
+      };
+      updateData(section, hoverRange, hoverRange);
+
+      // rescale data
+      rescaleLines(graphName, i);
     }
-    
-    // show date tooltip
-    var dateFormat = getHoverDateFormat(plotData.time.interval)
-    var displayDate = dateFormat(new Date(plotData.dates[i]));
-    d3.select(`#${graphName}-hover-date`)
-      .attr('text-anchor', hoverDateAlignment)
-      .attr('x', hoverDateX)
-      .classed('hide', false)
-      .text(displayDate);
+  }
+}
 
-    // hover on linked graph
-    if (graphName == 'value') {
-      $('#growth-hover-rect, #growth-hover-line').removeClass('hide');
-      d3.select('#growth-capture').dispatch('outsidemove', { detail: { x: x } });
-    } else if (graphName == 'growth') {
-      $('#value-hover-rect, #value-hover-line').removeClass('hide');
-      d3.select('#value-capture').dispatch('outsidemove', { detail: { x: x } });
-    }
-
-    // calculate hover data
+// click event listener on plot
+function handleClick(graphName) {
+  return function() {
     var section = getSection(graphName);
-    var time = data.getTime(sectionTimeRanges[section])
-    var hoverRange = {
-      n: time.n - (i) * time.period,
-      interval: time.interval,
-      period: time.period,
-    };
-    updateData(section, hoverRange, hoverRange);
-
-    // rescale data
-    rescaleLines(graphName, i);
+    sectionHoverStatus[section] = !sectionHoverStatus[section];
   }
 }
 
@@ -614,8 +639,6 @@ function rescaleLines(graphName, i) {
   graphName = graphName == 'value' ? 'growth' : graphName;
   plotStock(graphName, undefined, undefined, undefined, undefined, i);
 }
-
-
 
 // get color associated with change
 function getColor(change) {
