@@ -632,7 +632,7 @@ function handleMouseMove(graphName, xScale, plotData) {
 
       var graphWidth = graph.node().getBoundingClientRect().width;
       if (graphWidth - (x - GRAPH_X_MARGIN) < FLIP_HOVER_DATE_THRESHOLD) {
-        var hoverDateX = x - 2;
+        var hoverDateX = x - 4;
         var hoverDateAlignment = 'end'
       } else {
         var hoverDateX = x + 2;
