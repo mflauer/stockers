@@ -843,6 +843,7 @@ function loadCompanyPage(ticker) {
   // reset time range selector
   timeRange = '1D';
   sectionTimeRanges.company = timeRange;
+  sectionHoverStatus.company = true;
   dom.companySelector.children().each(function(i, value) {
     $(value).removeClass('active');
   });
