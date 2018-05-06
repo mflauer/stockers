@@ -516,6 +516,10 @@ i.caret.icon {
   }
 }
 
+svg {
+  cursor: crosshair;
+}
+
 path {
   fill: none;
   stroke: $light-grey;
@@ -758,6 +762,6 @@ line {
 
 text {
   fill: $light-grey;
-  font-size: 12px;
   pointer-events: none;
+  font-size: 12px;
 }

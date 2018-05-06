@@ -271,6 +271,9 @@ i.caret.icon {
 #articles .ui.sub.header {
   margin-top: 0 !important; }
 
+svg {
+  cursor: crosshair; }
+
 path {
   fill: none;
   stroke: #b2b2b3;
@@ -282,6 +285,7 @@ path {
     path.thick.very {
       stroke-width: 4; }
   path.fill {
+    stroke: none;
     pointer-events: all; }
   path.red {
     stroke: #db2828; }
@@ -403,5 +407,5 @@ line {
 
 text {
   fill: #b2b2b3;
-  font-size: 12px;
-  pointer-events: none; }
+  pointer-events: none;
+  font-size: 12px; }
