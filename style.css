@@ -114,8 +114,7 @@ i.caret.icon {
     color: #21ba45 !important; }
 
 .graph-container {
-  width: 100%;
-  padding: 20px 0; }
+  width: 100%; }
   .graph-container.portfolio {
     height: 25vh; }
   .graph-container.compare {
@@ -129,6 +128,9 @@ i.caret.icon {
 .shares-container {
   padding-top: .25rem !important;
   padding-bottom: .25rem !important; }
+  .shares-container #total-shares-container {
+    margin-left: .25rem;
+    padding: 0.7rem 0; }
 
 .shares-divider {
   margin: 1.25rem 0 !important; }
@@ -401,4 +403,5 @@ line {
 
 text {
   fill: #b2b2b3;
-  font-size: 12px; }
+  font-size: 12px;
+  pointer-events: none; }

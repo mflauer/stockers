@@ -208,7 +208,6 @@ i.caret.icon {
 
 .graph-container {
   width: 100%;
-  padding: 20px 0;
 
   &.portfolio {
     height: 25vh;
@@ -230,7 +229,13 @@ i.caret.icon {
 .shares-container {
   padding-top: .25rem !important;
   padding-bottom: .25rem !important;
+
+  #total-shares-container {
+    margin-left: .25rem;
+    padding: 0.7rem 0;
+  }
 }
+
 
 .shares-divider {
   margin: 1.25rem 0 !important;
@@ -754,4 +759,5 @@ line {
 text {
   fill: $light-grey;
   font-size: 12px;
+  pointer-events: none;
 }

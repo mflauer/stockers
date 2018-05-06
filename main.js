@@ -80,8 +80,10 @@ dom.buyButton = $('#buy-button');
 dom.sellPage = $('#sell-page');
 dom.sellCompanyTicker = $('#sell-company-ticker');
 dom.sellShares = $('#sell-shares');
+dom.totalShares = $('#total-shares');
 dom.sellPrice = $('#sell-price');
 dom.totalSellPrice = $('#total-sell-price');
+dom.remainingValue = $('#remaining-value');
 dom.cancelSell = $('#cancel-sell');
 dom.sellButton = $('#sell-button');
 
@@ -92,11 +94,11 @@ dom.sellButton = $('#sell-button');
 
 // constants
 const GRAPH_X_MARGIN = 20;
-const GRAPH_Y_MARGIN = 3;
+const GRAPH_Y_MARGIN = 20;
 const LABEL_OFFSET = 4;
 const HOVER_BAR_MARGIN = 1;
 const HOVER_MARGIN = 1;
-const FLIP_HOVER_DATE_THRESHOLD = 80;
+const FLIP_HOVER_DATE_THRESHOLD = 100;
 const NUM_GRAPH_TICKS = 5;
 const COLORS = [
   'blue',
@@ -156,10 +158,20 @@ function getHoverDateFormat(interval) {
   }
 }
 
+function getNumPointsPerTimeRange(timeRange, plotDataLength) {
+    if (timeRange == '1D') {
+      return 79;
+    } else if (timeRange == '5D') {
+      return 79 * 5/data.getTime(timeRange).period;
+    } else {
+      return plotDataLength
+    }
+}
+
 // gets the date format for the axes label depending on timeRange
 function getAxisDateFormat(timeRange) {
   if (timeRange == '1D') {
-    return d3.timeFormat("%-I:%M %p");
+    return d3.timeFormat("%-I %p");
   } else if (timeRange == '5D' || timeRange == '1M') {
     return d3.timeFormat("%b %-d");
   } else if (timeRange == '3M' || timeRange == '6M') {
@@ -252,7 +264,10 @@ function getChangePlotData(graphName, scaleIndex) {
 
     // populate dates
     if (dates.length == 0) {
-      dates = stockData.map(x => Date.parse(x.date)).reverse();
+      dates = stockData.map(function(x) {
+        var d = new Date(x.date + "Z");
+        return new Date(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
+      }).reverse();
     }
 
     // scale based on value of first item
@@ -319,9 +334,11 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
   }
 
   // rescale plots
+  var numDataDates = plotData.dates.length - 1;
+  var xScaleDomain = getNumPointsPerTimeRange(plotData['timeRange'], numDataDates);
   var xScale = d3.scaleLinear()
     .range([GRAPH_X_MARGIN, container.width()])
-    .domain([0, plotData.dates.length - 1]);
+    .domain([0, xScaleDomain]);
   var yScale = d3.scaleLinear()
     .range([container.height() - GRAPH_Y_MARGIN, GRAPH_Y_MARGIN])
     .domain([plotData.min, plotData.max]);
@@ -334,9 +351,16 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     .defined(function(d) {
       return d != null;
     });
+
+  // for the 1D and 5D graphs, the stock data will not always extend
+  // to the end of the x-axis (aka midday, the plot will fill half the graph).
+  var numBufferPoints = Math.floor(xScaleDomain - numDataDates);
+  var endDateForScale = new Date(plotData.dates[numDataDates - 1]).getTime() + numBufferPoints*5*60*1000/plotData.time.period;
+  var datesForScaling = plotData['dates'].slice();
+  datesForScaling.push(endDateForScale);
   var xTimeScale = d3.scaleTime()
     .range([0, container.width() - GRAPH_X_MARGIN])
-    .domain(d3.extent(plotData['dates'], function(d) { return d; }));
+    .domain(d3.extent(datesForScaling, function(d) { return d; }));
   if (drawArea) {
     var area = d3.area()
       .x(function(d, i) { return xScale(i); })
@@ -360,10 +384,22 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
               .ticks(NUM_GRAPH_TICKS)
               .tickSizeOuter(0)
               .tickFormat(getAxisDateFormat(plotData.timeRange)));
+
+    // hide last label if graph overflows
+    if (plotData.timeRange == '1D' || plotData.timeRange == '1Y') {
+      $('#' + graphName + '-baseline .tick').last().text('');
+    }
+
     base.select(`#${graphName}-baseline-label`)
       .attr('x', xScale(0) - GRAPH_X_MARGIN)
       .attr('y', yScale(0) + LABEL_OFFSET);
+    hover.select(`#${graphName}-hover-rect`)
+      .attr('height', container.height());
+    hover.select(`#${graphName}-hover-line`)
+      .attr('y2', container.height());
     graph.select(`#${graphName}-capture`)
+      .attr('width', Math.max(0, xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN))
+      .attr('height', container.height())
       .on('click', handleClick(graphName))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     graph.selectAll(`[id$='${graphName}-line']`).each(function() {
@@ -396,7 +432,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     graph.append('rect')
       .attr('id', `${graphName}-capture`)
       .attr('x', xScale(0))
-      .attr('width', Math.max(0, container.width() - GRAPH_X_MARGIN))
+      .attr('width', Math.max(0, xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN))
       .attr('height', container.height())
       .on('click', handleClick(graphName))
       .on('mouseleave', handleMouseLeave(graphName))
@@ -425,6 +461,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     hover.append('text')
       .attr('id', `${graphName}-hover-date`)
       .attr('x', 0)
+      .attr('y', GRAPH_Y_MARGIN/2 + 1)
       .classed('dark', graphName != 'company')
       .classed('hide', true);
     hover.append('line')
@@ -437,16 +474,22 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .classed('hide', true);
 
     // add baseline and baseline labels
-    base.append("g")
+    base.append('g')
       .attr('id', `${graphName}-baseline`)
       .attr('transform', 'translate(' + xScale(0) + ',' + yScale(0) + ')')
       .classed('dark', graphName != 'company')
       .classed('baseline', true)
       .call(d3.axisBottom(xTimeScale)
               .ticks(NUM_GRAPH_TICKS)
+              .tickSizeOuter(0)
               .tickFormat(getAxisDateFormat(plotData.timeRange)))
       .on('click', handleClick(graphName))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
+
+    // hide last label if graph overflows
+    if (plotData.timeRange == '1D' || plotData.timeRange == '1Y') {
+      $('#' + graphName + '-baseline .tick').last().text('');
+    }
 
     base.append('text')
       .attr('id', `${graphName}-baseline-label`)
@@ -505,7 +548,7 @@ function handleMouseOver(graphName) {
       // hover item and row
       $(`#${ticker}-${section}-item`).removeClass('dark');
       $(`#${ticker}-${section}-row`).addClass('hover');
-      
+
       // hover line and move to front
       if (section == 'compare' && !data.getCompareChecked(ticker)) {
         // ticker is not visible
@@ -572,6 +615,10 @@ function handleMouseMove(graphName, xScale, plotData) {
       var mouseX = d3.mouse(graph.node())[0];
       var i = Math.round(xScale.invert(mouseX)); //index of the data
       var x = xScale(i);
+
+      if (i >= plotData.time.n) {
+        return;
+      }
 
       // show hover line
       d3.select(`#${graphName}-hover-rect`)
@@ -712,7 +759,7 @@ function createCheckClickListener(ticker, section) {
     // create click event listener for removing stock
     $(`#${tickerString}-remove`).click(function() {
       $(`#${tickerString}-compare-item`).mouseleave();
-      
+
       data.removeCompareStock(ticker);
       $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
@@ -805,10 +852,18 @@ function loadCompanyPage(ticker) {
   dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
   createCheckClickListener(ticker, 'company');
 
-  if (data.getPortfolioShares(companyTicker) > 0) {
-    dom.companySellButton.removeClass('hide');
-  } else {
+  if (username == undefined) {
+    dom.companyBuyButton.addClass('hide');
     dom.companySellButton.addClass('hide');
+  } else {
+    dom.companyBuyButton.removeClass('hide');
+    dom.companySellButton.removeClass('hide');
+
+    if (data.getPortfolioShares(companyTicker) > 0) {
+      dom.companySellButton.removeClass('disabled');
+    } else {
+      dom.companySellButton.addClass('disabled');
+    }
   }
 
   // populate company information
@@ -1035,7 +1090,6 @@ dom.companyPage
 // buy page
 dom.buyPage
   .modal({
-    autofocus: false,
     allowMultiple: false,
   })
   .modal('attach events', dom.companyBuyButton);
@@ -1043,6 +1097,7 @@ dom.buyPage
 // load buy page
 dom.companyBuyButton.click(function() {
   dom.buyShares.val('');
+  dom.buyButton.addClass('disabled');
   dom.buyCompanyTicker.text(companyTicker);
   var price = data.getPrice(companyTicker).withCommas();
   dom.buyPrice.text(price);
@@ -1053,12 +1108,14 @@ dom.companyBuyButton.click(function() {
 // input shares to buy
 dom.buyShares.on('input', function(e) {
   dom.buyShares.parent().removeClass('error');
+  dom.buyButton.removeClass('disabled');
   dom.buyShares.val(dom.buyShares.val().replace(/\D/g,''));
   dom.totalPrice.text((data.getPrice(companyTicker) * dom.buyShares.val()).withCommas());
 
   var shares = parseInt(dom.buyShares.val());
-  if (shares < 0) {
+  if (shares <= 0) {
     dom.buyShares.parent().addClass('error');
+    dom.buyButton.addClass('disabled');
   }
 });
 
@@ -1090,7 +1147,6 @@ dom.buyButton.click(function() {
 // sell page
 dom.sellPage
   .modal({
-    autofocus: false,
     allowMultiple: false,
   })
   .modal('attach events', dom.companySellButton);
@@ -1098,22 +1154,35 @@ dom.sellPage
 // load sell page
 dom.companySellButton.click(function() {
   dom.sellShares.val('');
+  dom.sellButton.addClass('disabled');
   dom.sellCompanyTicker.text(companyTicker);
+  dom.totalShares.text(data.getPortfolioShares(companyTicker));
   var price = data.getPrice(companyTicker).withCommas();
   dom.sellPrice.text(price);
   dom.totalSellPrice.text('0.00');
   dom.sellShares.parent().removeClass('error');
+  dom.remainingValue.text(data.getPortfolioValue(companyTicker));
 });
 
 // input shares to sell
 dom.sellShares.on('input', function(e) {
   dom.sellShares.parent().removeClass('error');
+  dom.sellButton.removeClass('disabled');
   dom.sellShares.val(dom.sellShares.val().replace(/\D/g,''));
-  dom.totalSellPrice.text((data.getPrice(companyTicker) * dom.sellShares.val()).withCommas());
+  var total = data.getPrice(companyTicker) * dom.sellShares.val();
+  dom.totalSellPrice.text(total.withCommas());
+
+  var remaining = data.getPortfolioValue(companyTicker) - total;
+  if (remaining < 0) {
+    dom.remainingValue.text((0).withCommas());
+  } else {
+    dom.remainingValue.text(remaining.withCommas());
+  }
 
   var shares = parseInt(dom.sellShares.val());
-  if (shares < 0 || shares > data.getPortfolioShares(companyTicker)) {
+  if (shares <= 0 || shares > data.getPortfolioShares(companyTicker)) {
     dom.sellShares.parent().addClass('error');
+    dom.sellButton.addClass('disabled');
   }
 });
 
