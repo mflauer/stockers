@@ -244,7 +244,7 @@ class Data {
     return false;
   }
 
-  getPortfolioShares(ticker, timeRange, last=false) {
+  getPortfolioShares(ticker, timeRange) {
     if (!(ticker in this.PORTFOLIO_STOCKS)) {
       return 0;
     } else {
@@ -259,9 +259,6 @@ class Data {
           }
         }
         amount += changes[i].amount;
-      }
-      if (last) {
-        amount -= changes.slice(-1)[0].amount;
       }
     }
     return amount;
