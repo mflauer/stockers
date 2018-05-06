@@ -331,17 +331,10 @@ class Data {
   getPortfolioChange(ticker, timeRange) {
     // compare current value with value at start of timeRange
     var current = this.getPortfolioValue(ticker);
-    var value = this.getPortfolioValue(ticker, timeRange);
-    if (current == 0 && value == 0) {
+    if (current == 0) {
       return '—';
     }
-    if (current == 0) {
-      current = this.getPortfolioShares(ticker, undefined, true) * this.PORTFOLIO_STOCKS[ticker].slice(-1)[0].price;
-    }
-    if (value == 0) {
-      value = this.getPortfolioValue(ticker, timeRange, true);
-    }
-    return 100 * ((current / value) - 1);
+    return 100 * ((current / this.getPortfolioValue(ticker, timeRange, true)) - 1);
   }
 
   getPortfolioPercent(ticker, timeRange) {
