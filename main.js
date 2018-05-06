@@ -630,8 +630,17 @@ function handleMouseMove(graphName, xScale, plotData) {
         .attr('x2', x - HOVER_BAR_MARGIN)
         .classed('hide', false);
 
-      var graphWidth = graph.node().getBoundingClientRect().width;
-      if (graphWidth - (x - GRAPH_X_MARGIN) < FLIP_HOVER_DATE_THRESHOLD) {
+      if (graphName == 'value') {
+        var container = dom.valueGraphContainer;
+      } else if (graphName == 'growth') {
+        var container = dom.growthGraphContainer;
+      } else if (graphName == 'compare') {
+        if (!data.getCompareChecked()) { return; }
+        var container = dom.compareGraphContainer;
+      } else if (graphName == 'company') {
+        var container = dom.companyGraphContainer;
+      }
+      if (container.width() - (x - GRAPH_X_MARGIN) < FLIP_HOVER_DATE_THRESHOLD) {
         var hoverDateX = x - 4;
         var hoverDateAlignment = 'end'
       } else {
