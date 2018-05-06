@@ -346,7 +346,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     .defined(function(d) {
       return d != null;
     });
-  
+
   // for the 1D and 5D graphs, the stock data will not always extend
   // to the end of the x-axis (aka midday, the plot will fill half the graph).
   var numBufferPoints = Math.floor(xScaleDomain - numDataDates);
@@ -734,7 +734,7 @@ function createCheckClickListener(ticker, section) {
     // create click event listener for removing stock
     $(`#${tickerString}-remove`).click(function() {
       $(`#${tickerString}-compare-item`).mouseleave();
-      
+
       data.removeCompareStock(ticker);
       $(`#${tickerString}-compare-item`).remove();
       $(`#${tickerString}-compare-row`).remove();
@@ -827,10 +827,18 @@ function loadCompanyPage(ticker) {
   dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
   createCheckClickListener(ticker, 'company');
 
-  if (username != undefined && data.getPortfolioShares(companyTicker) > 0) {
-    dom.companySellButton.removeClass('hide');
-  } else {
+  if (username == undefined) {
+    dom.companyBuyButton.addClass('hide');
     dom.companySellButton.addClass('hide');
+  } else {
+    dom.companyBuyButton.removeClass('hide');
+    dom.companySellButton.removeClass('hide');
+
+    if (data.getPortfolioShares(companyTicker) > 0) {
+      dom.companySellButton.removeClass('disabled');
+    } else {
+      dom.companySellButton.addClass('disabled');
+    }
   }
 
   // populate company information
