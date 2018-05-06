@@ -827,15 +827,18 @@ function loadCompanyPage(ticker) {
   dom.compareButton.children().first().replaceWith(createCheckButton(ticker, 'company'));
   createCheckClickListener(ticker, 'company');
 
-  if (username != undefined && data.getPortfolioShares(companyTicker) > 0) {
-    dom.companySellButton.removeClass('hide');
-    dom.companySellButton.removeClass('disabled');
-  } else if (username == undefined){
-    dom.companySellButton.addClass('hide');
+  if (username == undefined) {
     dom.companyBuyButton.addClass('hide');
+    dom.companySellButton.addClass('hide');
   } else {
-    dom.companySellButton.addClass('disabled');
     dom.companyBuyButton.removeClass('hide');
+    dom.companySellButton.removeClass('hide');
+
+    if (data.getPortfolioShares(companyTicker) > 0) {
+      dom.companySellButton.removeClass('disabled');
+    } else {
+      dom.companySellButton.addClass('disabled');
+    }
   }
 
   // populate company information
@@ -929,7 +932,6 @@ if (username != undefined) {
 data.getCompareTickers().map(x => createCheckClickListener(x, 'compare'));
 data.getSuggestedTickers().map(x => createCheckClickListener(x, 'suggested'));
 
-
 // search bar data
 dom.search.search({
   source: data.getSearchContent(),
@@ -969,8 +971,6 @@ dom.login.click(function() {
     dom.welcome.removeClass('hide');
     dom.user.text(username);
     dom.login.text('Logout');
-    dom.companyBuyButton.removeClass('hide');
-    dom.companySellButton.removeClass('hide');
 
     // populate portfolio
     dom.portfolioValue.text(data.getPortfolioValue().withCommas());
@@ -980,8 +980,6 @@ dom.login.click(function() {
     dom.welcome.addClass('hide');
     dom.user.text('');
     dom.login.text('Login');
-    dom.companyBuyButton.addClass('hide');
-    dom.companySellButton.addClass('hide');
 
     // clear portfolio
     portfolioColor = 0;
@@ -997,8 +995,6 @@ dom.login.click(function() {
     dom.portfolioHidden.addClass('hide');
   }
 });
-
-
 
 // select input on focus
 dom.searchInput.click(function() {
