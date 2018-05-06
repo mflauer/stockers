@@ -244,7 +244,7 @@ class Data {
     return false;
   }
 
-  getPortfolioShares(ticker, timeRange) {
+  getPortfolioShares(ticker, timeRange, last=false) {
     if (!(ticker in this.PORTFOLIO_STOCKS)) {
       return 0;
     } else {
@@ -259,6 +259,9 @@ class Data {
           }
         }
         amount += changes[i].amount;
+      }
+      if (last) {
+        amount -= changes.slice(-1)[0].amount;
       }
     }
     return amount;
@@ -327,7 +330,18 @@ class Data {
 
   getPortfolioChange(ticker, timeRange) {
     // compare current value with value at start of timeRange
-    return 100 * ((this.getPortfolioValue(ticker) / this.getPortfolioValue(ticker, timeRange, true)) - 1);
+    var current = this.getPortfolioValue(ticker);
+    var value = this.getPortfolioValue(ticker, timeRange);
+    if (current == 0 && value == 0) {
+      return '—';
+    }
+    if (current == 0) {
+      current = this.getPortfolioShares(ticker, undefined, true) * this.PORTFOLIO_STOCKS[ticker].slice(-1)[0].price;
+    }
+    if (value == 0) {
+      value = this.getPortfolioValue(ticker, timeRange, true);
+    }
+    return 100 * ((current / value) - 1);
   }
 
   getPortfolioPercent(ticker, timeRange) {

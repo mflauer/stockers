@@ -615,6 +615,8 @@ function rescaleLines(graphName, i) {
   plotStock(graphName, undefined, undefined, undefined, undefined, i);
 }
 
+
+
 // get color associated with change
 function getColor(change) {
   if (change > 0) {
