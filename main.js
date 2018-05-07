@@ -418,7 +418,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
     graph.select(`#${graphName}-capture`)
       .attr('width', Math.max(0, xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN))
       .attr('height', container.height())
-      .on('click', handleClick(graphName, xScale))
+      .on('click', handleClick(graphName, xScale, plotData))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     graph.selectAll(`[id$='${graphName}-line']`).each(function() {
       var element = d3.select(this);
@@ -427,7 +427,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
         element.classed('red green', false).classed(forceColor, true);
       }
       element.attr('d', tickerLine(plotData.tickers[company]))
-        .on('click', handleClick(graphName, xScale))
+        .on('click', handleClick(graphName, xScale, plotData))
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     });
     if (drawArea) {
@@ -438,7 +438,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
           element.classed('red green', false).classed(forceColor, true);
         }
         element.attr('d', area(plotData.tickers[company]))
-          .on('click', handleClick(graphName, xScale))
+          .on('click', handleClick(graphName, xScale, plotData))
           .on('mousemove', handleMouseMove(graphName, xScale, plotData));
       });
     }
@@ -452,7 +452,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
       .attr('x', xScale(0))
       .attr('width', Math.max(0, xScale(plotData.dates.length - 1) - GRAPH_X_MARGIN))
       .attr('height', container.height())
-      .on('click', handleClick(graphName, xScale))
+      .on('click', handleClick(graphName, xScale, plotData))
       .on('mouseleave', handleMouseLeave(graphName))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData))
       .on('outsidemove', function() {
@@ -501,7 +501,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
               .ticks(NUM_GRAPH_TICKS)
               .tickSizeOuter(0)
               .tickFormat(getAxisDateFormat(plotData.timeRange)))
-      .on('click', handleClick(graphName, xScale, xScale))
+      .on('click', handleClick(graphName, xScale, plotData))
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
 
     // hide last label if graph overflows
@@ -528,7 +528,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
         .attr('d', area(tickerData))
         .classed(color, true)
         .classed('fill', true)
-        .on('click', handleClick(graphName, xScale))
+        .on('click', handleClick(graphName, xScale, plotData))
         .on('mouseover', handleMouseOver(graphName))
         .on('mouseleave', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));
@@ -538,7 +538,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
         .attr('id', `${tickerString}-value-line`)
         .attr('d', tickerLine(tickerData))
         .classed('very thick', true)
-        .on('click', handleClick(graphName, xScale))
+        .on('click', handleClick(graphName, xScale, plotData))
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));
     } else {
       // draw ticker line
@@ -546,7 +546,7 @@ function plotStock(graphName, ticker, tickerString, color, forceColor, scaleInde
         .attr('id', `${tickerString}-${graphName}-line`)
         .attr('d', tickerLine(tickerData))
         .classed(color, true)
-        .on('click', handleClick(graphName, xScale))
+        .on('click', handleClick(graphName, xScale, plotData))
         .on('mouseover', handleMouseOver(graphName))
         .on('mouseleave', handleMouseLeave(graphName))
         .on('mousemove', handleMouseMove(graphName, xScale, plotData));
@@ -631,7 +631,7 @@ function handleMouseMove(graphName, xScale, plotData) {
     if (sectionHoverStatus[getSection(graphName)] == undefined) {
       var graph = d3.select(`#${graphName}-graph`);
       var mouseX = d3.mouse(graph.node())[0];
-      var i = Math.round(xScale.invert(mouseX)); //index of the data
+      var i = Math.round(xScale.invert(mouseX)); // index of the data
       var x = xScale(i);
 
       if (i >= plotData.time.n) {
@@ -701,16 +701,17 @@ function handleMouseMove(graphName, xScale, plotData) {
 }
 
 // click event listener on plot
-function handleClick(graphName, xScale) {
+function handleClick(graphName, xScale, plotData) {
   return function() {
     var graph = d3.select(`#${graphName}-graph`);
     var mouseX = d3.mouse(graph.node())[0];
-    var i = Math.round(xScale.invert(mouseX)); //index of the data
+    var i = Math.round(xScale.invert(mouseX)); // index of the data
     var section = getSection(graphName);
     if (sectionHoverStatus[section] == undefined) {
       sectionHoverStatus[section] = i;
     } else {
       sectionHoverStatus[section] = undefined;
+      handleMouseMove(graphName, xScale, plotData)();
     }
   }
 }
@@ -1116,6 +1117,22 @@ $('.selector>.right.menu>.item, .selector>.item').click(function(e) {
   var timeRange = timeRangeElement.text();
   var section = timeRangeElement.closest('.selector').attr('id').split('-')[0];
   sectionTimeRanges[section] = timeRange;
+  sectionHoverStatus[section] = undefined;
+  if (section == 'portfolio') {
+    // remove hover bar
+    $('#value-hover-rect').addClass('hide');
+    $('#value-hover-line').addClass('hide');
+    $('#value-hover-date').addClass('hide');
+    $('#growth-hover-rect').addClass('hide');
+    $('#growth-hover-line').addClass('hide');
+    $('#growth-hover-date').addClass('hide');
+  } else {
+    // remove hover bar
+    $(`#${section}-hover-rect`).addClass('hide');
+    $(`#${section}-hover-line`).addClass('hide');
+    $(`#${section}-hover-date`).addClass('hide');
+  }
+
   updateData(section, timeRange);
 });
 
