@@ -305,7 +305,7 @@ function getChangePlotData(graphName, scaleIndex) {
 
 // add ticker stock to plot
 // optionally force color of existing lines or clear the plot
-function plotStock(graphName, ticker, tickerString, color, forceColor, scaleIndex, clear=false) {
+function plotStock(graphName, ticker, tickerString, color, scaleIndex, forceColor, clear=false) {
   var section = getSection(graphName);
   var plotData = getChangePlotData(graphName, scaleIndex);
   var drawArea = graphName == 'value';
@@ -719,7 +719,7 @@ function handleClick(graphName, xScale, plotData) {
 // rescales lines on hover
 function rescaleLines(graphName, i) {
   graphName = graphName == 'value' ? 'growth' : graphName;
-  plotStock(graphName, undefined, undefined, undefined, undefined, i);
+  plotStock(graphName, undefined, undefined, undefined, i);
 }
 
 // get color associated with change
@@ -768,8 +768,8 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStock('value', ticker, tickerString, color);
-    plotStock('growth', ticker, tickerString, color);
+    plotStock('value', ticker, tickerString, color, sectionHoverStatus[section]);
+    plotStock('growth', ticker, tickerString, color, sectionHoverStatus[section]);
     createPortfolioTableRow(dom, ticker, timeRange, color);
     createCompanyClickListener($(`#${tickerString}-portfolio-table`), ticker);
     addCompanyHoverHandlers(ticker, section);
@@ -786,7 +786,7 @@ function createCheckClickListener(ticker, section) {
 
     // create elements
     createCompareItem(dom, ticker, section, color);
-    plotStock(section, ticker, tickerString, color);
+    plotStock(section, ticker, tickerString, color, sectionHoverStatus[section]);
     createCompareTableRow(dom, ticker, timeRange, color);
     createCompanyClickListener($(`#${tickerString}-compare-table`), ticker);
     addCompanyHoverHandlers(ticker, section);
@@ -839,7 +839,7 @@ function createCheckClickListener(ticker, section) {
       dom.compareHidden.removeClass('hide');
       // show/hide plot
       $(`#${tickerString}-compare-line`).toggleClass('hide');
-      plotStock('compare');
+      plotStock('compare', undefined, undefined, undefined, sectionHoverStatus[section]);
       // highlight ticker
       if (data.getCompareChecked(ticker)) {
         $(this).mouseenter();
@@ -980,7 +980,7 @@ function updateData(section, timeRange, hoverRange) {
     var change = data.getChange(companyTicker, timeRange);
     var stats = data.getStats(companyTicker, timeRange);
 
-    plotStock('company', undefined, undefined, undefined, getColor(change));
+    plotStock('company', undefined, undefined, undefined, undefined, getColor(change));
 
     dom.companyPrice.text(data.getPrice(companyTicker, hoverRange).withCommas());
     dom.companyChange.text(change.withCommas());
@@ -1196,6 +1196,14 @@ dom.buyButton.click(function() {
       plotStock('growth');
       updateData('portfolio', sectionTimeRanges.portfolio);
     }
+
+    sectionHoverStatus.portfolio = undefined;
+    $('#value-hover-rect').addClass('hide');
+    $('#value-hover-line').addClass('hide');
+    $('#value-hover-date').addClass('hide');
+    $('#growth-hover-rect').addClass('hide');
+    $('#growth-hover-line').addClass('hide');
+    $('#growth-hover-date').addClass('hide');
   } else {
     dom.buyShares.parent().addClass('error');
     return false;
@@ -1259,6 +1267,14 @@ dom.sellButton.click(function() {
     plotStock('value');
     plotStock('growth');
     updateData('portfolio', sectionTimeRanges.portfolio);
+
+    sectionHoverStatus.portfolio = undefined;
+    $('#value-hover-rect').addClass('hide');
+    $('#value-hover-line').addClass('hide');
+    $('#value-hover-date').addClass('hide');
+    $('#growth-hover-rect').addClass('hide');
+    $('#growth-hover-line').addClass('hide');
+    $('#growth-hover-date').addClass('hide');
   } else {
     dom.sellShares.parent().addClass('error');
     return false;
