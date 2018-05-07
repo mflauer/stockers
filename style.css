@@ -271,9 +271,6 @@ i.caret.icon {
 #articles .ui.sub.header {
   margin-top: 0 !important; }
 
-svg {
-  cursor: crosshair; }
-
 path {
   fill: none;
   stroke: #b2b2b3;
