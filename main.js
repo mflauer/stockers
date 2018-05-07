@@ -814,6 +814,12 @@ function createCheckClickListener(ticker, section) {
       // show/hide plot
       $(`#${tickerString}-compare-line`).toggleClass('hide');
       plotStock('compare');
+      // highlight ticker
+      if (data.getCompareChecked(ticker)) {
+        $(this).mouseenter();
+      } else {
+        $(this).mouseleave();
+      }
     }
 
     if (section == 'search') {
