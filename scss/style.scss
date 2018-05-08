@@ -534,6 +534,7 @@ path {
   }
 
   &.fill {
+    stroke: none;
     pointer-events: all;
   }
 
@@ -757,6 +758,6 @@ line {
 
 text {
   fill: $light-grey;
-  font-size: 12px;
   pointer-events: none;
+  font-size: 12px;
 }

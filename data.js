@@ -92,6 +92,18 @@ class Data {
           amount: 1,
         },
       ],
+      'FB' : [
+        {
+          date: '2014-01-17T12:00:00',
+          price: 57.91,
+          amount: 10,
+        },
+        {
+          date: '2016-03-11T14:15:00',
+          price: 106.29,
+          amount: -10,
+        },
+      ],
     };
     this.COMPARE_STOCKS = {};
     this.SUGGESTED_STOCKS = ['AAPL',  'AMZN', 'FB', 'GOOG'];
@@ -218,13 +230,34 @@ class Data {
     });
   }
 
-  getPortfolioShares(ticker) {
+  isTickerInRange(ticker, timeRange) {
+    if (this.getPortfolioShares(ticker, timeRange) > 0) {
+      return true;
+    }
+    var changes = this.PORTFOLIO_STOCKS[ticker];
+    var time = this.getTime(timeRange);
+    for (var i = 0; i < changes.length; i++) {
+      if (new Date(changes[i].date) >= new Date(this.getStockData(ticker)[time.interval][time.n - time.period].date)) {
+        return true
+      }
+    }
+    return false;
+  }
+
+  getPortfolioShares(ticker, timeRange) {
     if (!(ticker in this.PORTFOLIO_STOCKS)) {
       return 0;
     } else {
       var amount = 0;
       var changes = this.PORTFOLIO_STOCKS[ticker];
       for (var i = 0; i < changes.length; i++) {
+        if (timeRange != undefined) {
+          // get number of shares of stock at start of timeRange
+          var time = this.getTime(timeRange);
+          if (new Date(changes[i].date) >= new Date(this.getStockData(ticker)[time.interval][time.n - time.period].date)) {
+            break;
+          }
+        }
         amount += changes[i].amount;
       }
     }
@@ -294,7 +327,11 @@ class Data {
 
   getPortfolioChange(ticker, timeRange) {
     // compare current value with value at start of timeRange
-    return 100 * ((this.getPortfolioValue(ticker) / this.getPortfolioValue(ticker, timeRange, true)) - 1);
+    var current = this.getPortfolioValue(ticker);
+    if (current == 0) {
+      return '—';
+    }
+    return 100 * ((current / this.getPortfolioValue(ticker, timeRange, true)) - 1);
   }
 
   getPortfolioPercent(ticker, timeRange) {
