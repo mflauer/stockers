@@ -385,9 +385,9 @@ function plotStock(graphName, ticker, tickerString, color, scaleIndex, forceColo
               .tickFormat(getAxisDateFormat(plotData.timeRange)));
 
     // hide last label if graph overflows
-    $('#' + graphName + '-baseline .tick').last().removeClass('hide');
+    $(`#${graphName}-baseline .tick`).last().removeClass('hide');
     if (plotData.timeRange == '1D' || plotData.timeRange == '1Y') {
-      $('#' + graphName + '-baseline .tick').last().addClass('hide');
+      $(`#${graphName}-baseline .tick`).last().addClass('hide');
     }
 
     if (sectionHoverStatus[section] != undefined) {
@@ -506,8 +506,9 @@ function plotStock(graphName, ticker, tickerString, color, scaleIndex, forceColo
       .on('mousemove', handleMouseMove(graphName, xScale, plotData));
 
     // hide last label if graph overflows
+    $(`#${graphName}-baseline .tick`).last().removeClass('hide');
     if (plotData.timeRange == '1D' || plotData.timeRange == '1Y') {
-      $('#' + graphName + '-baseline .tick').last().text('');
+      $(`#${graphName}-baseline .tick`).last().addClass('hide');
     }
 
     base.append('text')
